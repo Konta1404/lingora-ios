@@ -359,8 +359,16 @@ struct HoldToTalkButton: View {
             .symbolEffect(.variableColor.iterative, isActive: dictation.isRecording)
             .frame(width: 48, height: 48)
             .background(on ? theme.a : theme.chip, in: Circle())
-            .scaleEffect(holding ? 1.15 : 1)
-            .animation(.spring(duration: 0.25), value: holding)
+            .background {
+                // Pulsing halo while the mic is listening.
+                if dictation.isRecording {
+                    Circle().fill(theme.a.opacity(0.25))
+                        .phaseAnimator([1.0, 1.35]) { c, p in c.scaleEffect(p) } animation: { _ in .easeInOut(duration: 0.7) }
+                }
+            }
+            .scaleEffect(on ? 1.6 : 1, anchor: .center)
+            .animation(.spring(duration: 0.3, bounce: 0.35), value: on)
+            .zIndex(1)
             .contentShape(Circle())
             .gesture(
                 DragGesture(minimumDistance: 0)
