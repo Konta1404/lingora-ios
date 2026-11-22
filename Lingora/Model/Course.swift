@@ -246,17 +246,37 @@ enum Check {
 @MainActor
 final class Speaker {
     static let shared = Speaker()
-    private let synth = AVSpeechSynthesizer()
+    private let synth: AVSpeechSynthesizer = {
+        let s = AVSpeechSynthesizer()
+        // Let the synthesizer handle its own audio: no session switching on the main thread,
+        // and no clash with the microphone used for dictation.
+        s.usesApplicationAudioSession = false
+        return s
+    }()
+    private static var voices: [String: AVSpeechSynthesisVoice] = [:]
+
+    /// The best voice installed for the language: Premium, then Enhanced, then the default one.
+    static func bestVoice(for lang: String) -> AVSpeechSynthesisVoice? {
+        let id = Dictation.locale(for: lang).identifier.replacingOccurrences(of: "_", with: "-")
+        if let v = voices[id] { return v }
+        let code = String(id.prefix(2))
+        let all = AVSpeechSynthesisVoice.speechVoices()
+        let exact = all.filter { $0.language == id }
+        let pool = exact.isEmpty ? all.filter { $0.language.hasPrefix(code) } : exact
+        let v = pool.max { $0.quality.rawValue < $1.quality.rawValue } ?? AVSpeechSynthesisVoice(language: id)
+        voices[id] = v
+        return v
+    }
+
+    /// True when only the basic (compact) voice is installed for the language.
+    static func hasOnlyBasicVoice(_ lang: String) -> Bool {
+        (bestVoice(for: lang)?.quality ?? .default) == .default
+    }
 
     func say(_ text: String, lang: String, slow: Bool = false) {
         synth.stopSpeaking(at: .immediate)
-        // Keep the mic usable for speaking exercises; only ask for it once it was already allowed.
-        let canRecord = AVAudioApplication.shared.recordPermission == .granted
-        try? AVAudioSession.sharedInstance().setCategory(canRecord ? .playAndRecord : .playback, mode: .default,
-                                                         options: canRecord ? [.defaultToSpeaker, .duckOthers] : [.duckOthers])
-        try? AVAudioSession.sharedInstance().setActive(true)
         let u = AVSpeechUtterance(string: text)
-        u.voice = AVSpeechSynthesisVoice(language: Dictation.locale(for: lang).identifier)
+        u.voice = Self.bestVoice(for: lang)
         u.rate = slow ? 0.32 : 0.45
         synth.speak(u)
     }

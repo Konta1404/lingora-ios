@@ -9048,6 +9048,59 @@
         }
       }
     },
+    "For a more natural voice: Settings → Accessibility → Read & Speak → Voices → %@ → download an Enhanced voice." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für eine natürlichere Stimme: Einstellungen → Bedienungshilfen → Vorlesen & Sprechen → Stimmen → %@ → eine erweiterte Stimme laden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For a more natural voice: Settings → Accessibility → Read & Speak → Voices → %@ → download an Enhanced voice."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para una voz más natural: Ajustes → Accesibilidad → Leer y hablar → Voces → %@ → descarga una voz mejorada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pour une voix plus naturelle : Réglages → Accessibilité → Lire et énoncer → Voix → %@ → télécharge une voix améliorée."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per una voce più naturale: Impostazioni → Accessibilità → Leggi e pronuncia → Voci → %@ → scarica una voce migliorata."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para uma voz mais natural: Ajustes → Acessibilidade → Ler e Falar → Vozes → %@ → baixe uma voz aprimorada."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для более естественного голоса: Настройки → Универсальный доступ → Чтение и речь → Голоса → %@ → загрузите улучшенный голос."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za prirodniji glas: Podešavanja → Pristupačnost → Čitanje i govor → Glasovi → %@ → preuzmi poboljšani glas."
+          }
+        }
+      }
+    },
     "For security, log out and sign in again, then delete your account." : {
       "extractionState" : "manual",
       "localizations" : {

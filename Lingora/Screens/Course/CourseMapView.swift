@@ -43,6 +43,14 @@ struct CourseMapView: View {
                                     unitCard(unit, number: i + 1, course: course, hue: h).id(unit.id)
                                 }
                             }
+                            if Speaker.hasOnlyBasicVoice(lang) {
+                                HStack(alignment: .top, spacing: 10) {
+                                    Image(systemName: "speaker.wave.2").padding(.top, 2)
+                                    Text(L("For a more natural voice: Settings → Accessibility → Read & Speak → Voices → %@ → download an Enhanced voice.", language?.name ?? ""))
+                                        .font(.fig(13))
+                                }
+                                .tintedNote(theme.at, theme.ad, radius: theme.radius)
+                            }
                             Text(L("More units are on the way."))
                                 .font(.fig(13)).foregroundStyle(theme.muted).frame(maxWidth: .infinity).padding(.vertical, 8)
                         }

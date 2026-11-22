@@ -209,21 +209,21 @@ struct LessonPlayerView: View {
             choices(options)
         case .pickWord(_, let item, let options):
             promptCard(item.en, speak: false)
-            choices(options)
+            choices(options, speak: true)
         case .listenPick(_, let item, let options):
             listenButtons(item.t)
-            choices(options)
+            choices(options, speak: true)
         case .fillBlank(_, let item, let blank, let options):
             let ws = Check.words(item.t)
             let shown = ws.enumerated().map { $0.offset == blank ? (picked ?? "_____") : $0.element }.joined(separator: " ")
             promptCard(shown, speak: false, sub: item.en)
-            choices(options)
+            choices(options, speak: true)
         case .buildTarget(_, let item, let tiles):
             promptCard(item.en, speak: false)
-            tileBoard(tiles)
+            tileBoard(tiles, speak: true)
         case .buildMeaning(_, let item, let tiles):
             promptCard(item.t, speak: true)
-            tileBoard(tiles)
+            tileBoard(tiles, speak: false)
         case .listenType(_, let item):
             listenButtons(item.t)
             answerField(L("Type in %@", model.language(lang)?.name ?? ""))
@@ -261,6 +261,7 @@ struct LessonPlayerView: View {
             }
             VStack(alignment: .leading, spacing: 6) {
                 Text(text).font(.fig(20, .semibold))
+                    .onTapGesture { if speak { Speaker.shared.say(text, lang: lang) } }
                 if let sub { Text(sub).font(.fig(14)).foregroundStyle(theme.muted) }
             }
             Spacer(minLength: 0)
@@ -285,11 +286,16 @@ struct LessonPlayerView: View {
         .frame(maxWidth: .infinity).padding(.vertical, 8)
     }
 
-    private func choices(_ opts: [String]) -> some View {
+    private func choices(_ opts: [String], speak: Bool = false) -> some View {
         VStack(spacing: 10) {
             ForEach(opts, id: \.self) { o in
                 let on = picked == o
-                Button { if result == nil { picked = o; Haptics.tap() } } label: {
+                Button {
+                    guard result == nil else { return }
+                    picked = o
+                    Haptics.tap()
+                    if speak { Speaker.shared.say(o, lang: lang) }
+                } label: {
                     Text(o).font(.fig(17, .semibold)).foregroundStyle(on ? theme.ad : theme.text)
                         .frame(maxWidth: .infinity, minHeight: 54)
                         .background(on ? theme.at : theme.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
@@ -301,7 +307,7 @@ struct LessonPlayerView: View {
         }
     }
 
-    private func tileBoard(_ tiles: [String]) -> some View {
+    private func tileBoard(_ tiles: [String], speak: Bool) -> some View {
         VStack(alignment: .leading, spacing: 18) {
             FlowLayout(spacing: 8) {
                 ForEach(Array(chosenTiles.enumerated()), id: \.offset) { pos, i in
@@ -314,7 +320,12 @@ struct LessonPlayerView: View {
             FlowLayout(spacing: 8) {
                 ForEach(Array(tiles.enumerated()), id: \.offset) { i, w in
                     let used = chosenTiles.contains(i)
-                    tile(w, filled: !used) { if !used && result == nil { chosenTiles.append(i); Haptics.tap() } }
+                    tile(w, filled: !used) {
+                        guard !used && result == nil else { return }
+                        chosenTiles.append(i)
+                        Haptics.tap()
+                        if speak { Speaker.shared.say(w, lang: lang) }
+                    }
                         .opacity(used ? 0.35 : 1)
                 }
             }

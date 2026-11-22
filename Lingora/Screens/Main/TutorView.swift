@@ -54,7 +54,7 @@ struct TutorView: View {
                             case .correction:
                                 CorrectionBubble(wrong: m.wrong ?? "", right: m.right ?? "", note: m.note ?? "")
                             default:
-                                ChatBubble(text: m.text, mine: m.role == .me)
+                                ChatBubble(text: m.text, mine: m.role == .me, speakLang: lang?.key)
                             }
                         }
                         if model.tutorTyping {

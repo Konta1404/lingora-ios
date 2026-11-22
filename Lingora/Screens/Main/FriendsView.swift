@@ -535,7 +535,7 @@ struct FriendChatView: View {
                                 .font(.fig(14)).foregroundStyle(theme.muted).multilineTextAlignment(.center).padding(.top, 30)
                         }
                         ForEach(messages) { m in
-                            ChatBubble(text: m.text, mine: m.mine)
+                            ChatBubble(text: m.text, mine: m.mine, speakLang: lang?.key)
                             if let c = m.correction {
                                 CorrectionBubble(wrong: c.wrong, right: c.right, note: c.note, header: L("ChatGPT · only you see this"))
                             }

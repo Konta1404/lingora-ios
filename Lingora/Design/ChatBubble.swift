@@ -8,6 +8,8 @@ struct ChatBubble: View {
     let text: String
     let mine: Bool
     var translatable = true
+    /// Language key to read the message in (nil = no Listen option).
+    var speakLang: String? = nil
 
     @State private var showTranslation = false
     @State private var translated: String?
@@ -51,6 +53,9 @@ struct ChatBubble: View {
             .contentShape(shape)
             .onTapGesture { if translatable { toggle() } }
             .contextMenu {
+                if let speakLang {
+                    Button { Speaker.shared.say(text, lang: speakLang) } label: { Label(L("Listen"), systemImage: "speaker.wave.2") }
+                }
                 Button { UIPasteboard.general.string = text } label: { Label(L("Copy"), systemImage: "doc.on.doc") }
                 if translatable {
                     Button { toggle() } label: {
