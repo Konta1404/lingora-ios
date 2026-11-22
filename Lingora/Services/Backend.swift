@@ -50,11 +50,27 @@ enum Backend {
 
     static var currentUID: String? { isConfigured ? Auth.auth().currentUser?.uid : nil }
 
+    /// Base URL of a self-hosted backend (Render). Empty → Firebase Cloud Functions in `region`.
+    static var apiBaseURL: URL? {
+        guard !usesEmulators,
+              let s = Bundle.main.object(forInfoDictionaryKey: "LingoraAPIURL") as? String,
+              !s.trimmingCharacters(in: .whitespaces).isEmpty,
+              let url = URL(string: s.trimmingCharacters(in: .whitespaces)) else { return nil }
+        return url
+    }
+
+    private static func callable(_ name: String) -> HTTPSCallable {
+        if let base = apiBaseURL {
+            return Functions.functions().httpsCallable(base.appendingPathComponent(name))
+        }
+        return Functions.functions(region: region).httpsCallable(name)
+    }
+
     /// Calls a Cloud Function and decodes its JSON result.
     static func call<T: Decodable>(_ name: String, _ payload: [String: Any]) async throws -> T {
         guard isConfigured else { throw BackendError.notConfigured }
         guard Auth.auth().currentUser != nil else { throw BackendError.signedOut }
-        let result = try await Functions.functions(region: region).httpsCallable(name).call(payload)
+        let result = try await callable(name).call(payload)
         let data = try JSONSerialization.data(withJSONObject: result.data, options: [.fragmentsAllowed])
         return try JSONDecoder().decode(T.self, from: data)
     }
@@ -62,7 +78,7 @@ enum Backend {
     /// Same as `call`, for functions that also work before sign-in (Sign in with ChatGPT).
     static func callAllowingSignedOut<T: Decodable>(_ name: String, _ payload: [String: Any]) async throws -> T {
         guard isConfigured else { throw BackendError.notConfigured }
-        let result = try await Functions.functions(region: region).httpsCallable(name).call(payload)
+        let result = try await callable(name).call(payload)
         let data = try JSONSerialization.data(withJSONObject: result.data, options: [.fragmentsAllowed])
         return try JSONDecoder().decode(T.self, from: data)
     }

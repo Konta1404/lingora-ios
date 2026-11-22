@@ -15,6 +15,9 @@
 			</array>
 		</dict>
 	</array>
+	<!-- Lingora backend URL when it runs outside Firebase Functions (e.g. Render). Set LINGORA_API_URL in Build Settings. -->
+	<key>LingoraAPIURL</key>
+	<string>$(LINGORA_API_URL)</string>
 	<key>CFBundleAllowMixedLocalizations</key>
 	<true/>
 </dict>
