@@ -35,6 +35,14 @@ enum MessageAlerts {
                 }
             }
         }
+        for f in o.friends where !seen.ids.contains("friend-\(f.uid)") {
+            seen.ids.insert("friend-\(f.uid)")
+            // If their request was waiting for me, I accepted it myself — nothing to announce.
+            if !seen.ids.contains("req-\(f.uid)") {
+                out.append(Event(id: "friend-\(f.uid)", title: L("New friend"),
+                                 body: L("%@ accepted your friend request", f.name), friend: f.uid))
+            }
+        }
         for p in o.incoming where !seen.ids.contains("req-\(p.uid)") {
             seen.ids.insert("req-\(p.uid)")
             out.append(Event(id: "req-\(p.uid)", title: L("Friend request"), body: L("%@ wants to be friends", p.name), friend: nil))
