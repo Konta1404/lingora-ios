@@ -118,6 +118,7 @@ struct MainTabView: View {
                             switch route {
                             case .addLanguage: LanguagesView(addMode: true)
                             case .addLevels: LevelsView(addMode: true)
+                            case .friends: FriendsListView()
                             }
                         }
                         .toolbar(.hidden, for: .navigationBar)

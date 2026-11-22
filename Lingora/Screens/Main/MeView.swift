@@ -49,7 +49,12 @@ struct MeView: View {
                 HStack(spacing: 10) {
                     stat("\(model.streak)", L("day streak"), icon: "flame")
                     stat("\(model.myWeekMinutes)", L("min this week"), icon: "clock")
-                    stat("\(model.friends.count)", L("friends"), icon: "person.2")
+                    Button { model.mePath.append(.friends) } label: {
+                        stat("\(model.friends.count)", L("friends"), icon: "person.2", chevron: true)
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(!model.socialAvailable)
+                    .accessibilityHint(L("Shows all your friends"))
                 }
 
                 SectionLabel(text: L("My languages")).padding(.top, 6)
@@ -267,57 +272,47 @@ struct MeView: View {
     }
 
     private var friendsSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        let all = model.friends.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        // Unread chats first, then alphabetical; the full list is one tap away.
+        let shown = Array((all.filter { ($0.unread ?? 0) > 0 } + all.filter { ($0.unread ?? 0) == 0 }).prefix(4))
+        return VStack(alignment: .leading, spacing: 10) {
             HStack {
                 SectionLabel(text: L("Friends"))
                 Spacer()
-                Button(L("Add")) { model.showAddFriend = true }
-                    .font(.fig(14, .semibold)).foregroundStyle(theme.ad)
+                if !all.isEmpty {
+                    Button(L("See all (%lld)", all.count)) { model.mePath.append(.friends) }
+                        .font(.fig(14, .semibold)).foregroundStyle(theme.ad)
+                } else {
+                    Button(L("Add")) { model.showAddFriend = true }
+                        .font(.fig(14, .semibold)).foregroundStyle(theme.ad)
+                }
             }
             .padding(.top, 6)
             VStack(spacing: 0) {
-                if model.friends.isEmpty {
+                if all.isEmpty {
                     Text(L("No friends yet. Add someone by username or send your invite link."))
                         .font(.fig(14)).foregroundStyle(theme.muted).padding(16)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                ForEach(Array(model.friends.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }.enumerated()),
-                        id: \.element.id) { i, f in
-                    HStack(spacing: 12) {
-                        Button {
-                            model.tab = .friends
-                            model.friendsPath = [f.uid]
-                        } label: {
-                            HStack(spacing: 12) {
-                                Avatar(initial: f.initial, hue: Hue(h: f.hue), size: 40, uid: f.uid, photo: f.photoVersion)
-                                VStack(alignment: .leading, spacing: 1) {
-                                    Text(verbatim: f.name).font(.fig(15, .semibold))
-                                    Text(verbatim: friendSubtitle(f)).font(.fig(13)).foregroundStyle(theme.muted).lineLimit(1)
-                                }
-                                Spacer(minLength: 4)
-                                if let n = f.unread, n > 0 {
-                                    Text(verbatim: "\(n)").font(.fig(12, .bold)).foregroundStyle(.white)
-                                        .frame(minWidth: 22, minHeight: 22).background(theme.a, in: Capsule())
-                                        .accessibilityLabel(L("%lld unread", n))
-                                }
-                            }
-                            .contentShape(Rectangle())
+                ForEach(Array(shown.enumerated()), id: \.element.id) { i, f in
+                    FriendListRow(friend: f, separator: i > 0) { removing = f }
+                }
+                if all.count > shown.count {
+                    Button { model.mePath.append(.friends) } label: {
+                        HStack {
+                            Text(L("See all %lld friends", all.count)).font(.fig(15, .semibold))
+                            Spacer()
+                            Image(systemName: "chevron.forward").font(.system(size: 12, weight: .semibold)).foregroundStyle(theme.muted)
                         }
-                        .buttonStyle(.plain)
-                        Button(L("Remove")) { removing = f }
-                            .font(.fig(13, .semibold)).foregroundStyle(theme.muted)
+                        .padding(.horizontal, 16).padding(.vertical, 12)
+                        .contentShape(Rectangle())
                     }
-                    .padding(.horizontal, 14).padding(.vertical, 10)
-                    .overlay(alignment: .top) { if i > 0 { Rectangle().fill(theme.line).frame(height: 1) } }
+                    .buttonStyle(.plain)
+                    .overlay(alignment: .top) { Rectangle().fill(theme.line).frame(height: 1) }
                 }
             }
             .card(padding: 0)
         }
-    }
-
-    private func friendSubtitle(_ f: Social.Person) -> String {
-        if let m = f.lastMessage, !m.isEmpty { return (f.lastFromMe == true ? L("You: %@", m) : m) }
-        return f.atHandle
     }
 
     private var aiStatus: String {
@@ -329,9 +324,15 @@ struct MeView: View {
         return L("Not connected · using standard plans. Connect your ChatGPT Plus or Pro plan to turn on AI.")
     }
 
-    private func stat(_ value: String, _ label: String, icon: String) -> some View {
+    private func stat(_ value: String, _ label: String, icon: String, chevron: Bool = false) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Image(systemName: icon).font(.system(size: 14, weight: .semibold)).foregroundStyle(theme.ad)
+            HStack {
+                Image(systemName: icon).font(.system(size: 14, weight: .semibold)).foregroundStyle(theme.ad)
+                Spacer(minLength: 0)
+                if chevron && model.socialAvailable {
+                    Image(systemName: "chevron.forward").font(.system(size: 11, weight: .bold)).foregroundStyle(theme.muted)
+                }
+            }
             Text(verbatim: value).font(.fig(22, .bold))
             Text(label).font(.fig(12, .semibold)).foregroundStyle(theme.muted).lineLimit(1).minimumScaleFactor(0.8)
         }

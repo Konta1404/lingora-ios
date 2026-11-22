@@ -13,7 +13,7 @@ enum OnboardingStep: Hashable {
     case plan
 }
 
-enum MeRoute: Hashable { case addLanguage, addLevels }
+enum MeRoute: Hashable { case addLanguage, addLevels, friends }
 
 @MainActor
 final class AppModel: ObservableObject {
