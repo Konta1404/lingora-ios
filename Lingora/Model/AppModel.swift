@@ -571,6 +571,30 @@ final class AppModel: ObservableObject {
         }
     }
 
+    // Friends Quest: you and one friend (a new one each week) earn 300 XP together.
+
+    static let friendsQuestGoal = 300
+
+    var myWeekXP: Int {
+        let ws = DateUtil.dayKey(DateUtil.weekStart())
+        return s.days.filter { $0.key >= ws }.values.reduce(0) { $0 + $1.xp }
+    }
+
+    var questPartner: Social.Person? {
+        let ws = DateUtil.dayKey(DateUtil.weekStart())
+        return friends.filter { $0.sharesActivity != false }
+            .min { Social.sha256(ws + $0.uid) < Social.sha256(ws + $1.uid) }
+    }
+
+    var friendsQuestKey: String { "fq|\(DateUtil.dayKey(DateUtil.weekStart()))" }
+
+    func claimFriendsQuest() {
+        guard !s.claimedQuests.contains(friendsQuestKey) else { return }
+        s.claimedQuests.insert(friendsQuestKey)
+        addXP(25)
+        celebration = .quest(L("Friends Quest"), 25)
+    }
+
     /// On launch and when the app comes back: use a freeze for a missed yesterday, or offer a repair.
     func maintainStreak() {
         let cal = DateUtil.calendar

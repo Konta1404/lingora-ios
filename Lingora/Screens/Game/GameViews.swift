@@ -316,3 +316,53 @@ struct Confetti: View {
         }
     }
 }
+
+/// Friends tab: a weekly shared goal with one friend.
+struct FriendsQuestCard: View {
+    @EnvironmentObject private var model: AppModel
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        if let p = model.questPartner {
+            let goal = AppModel.friendsQuestGoal
+            let mine = model.myWeekXP, theirs = p.weekXP ?? 0
+            let done = mine + theirs >= goal
+            let claimed = model.s.claimedQuests.contains(model.friendsQuestKey)
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(spacing: 10) {
+                    Image(systemName: "person.2.fill").foregroundStyle(.white)
+                        .frame(width: 36, height: 36).background(theme.a, in: Circle())
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(L("Friends Quest")).font(.fig(16, .bold))
+                        Text(L("Earn %lld XP together with %@ this week", goal, p.firstName)).font(.fig(13)).foregroundStyle(theme.muted)
+                    }
+                    Spacer(minLength: 0)
+                    Text(L("%lld days left", LeagueStyle.daysLeft)).font(.fig(12, .semibold)).foregroundStyle(theme.ad)
+                }
+                GeometryReader { g in
+                    let w = g.size.width
+                    ZStack(alignment: .leading) {
+                        Capsule().fill(theme.chip)
+                        HStack(spacing: 0) {
+                            Rectangle().fill(theme.a).frame(width: w * min(1, Double(mine) / Double(goal)))
+                            Rectangle().fill(Hue(h: p.hue).base).frame(width: w * min(max(0, 1 - Double(mine) / Double(goal)), Double(theirs) / Double(goal)))
+                        }
+                        .clipShape(Capsule())
+                    }
+                }
+                .frame(height: 12)
+                HStack {
+                    Label(L("You · %lld XP", mine), systemImage: "circle.fill").font(.fig(12)).foregroundStyle(theme.ad)
+                    Spacer()
+                    Label(L("%@ · %lld XP", p.firstName, theirs), systemImage: "circle.fill").font(.fig(12)).foregroundStyle(Hue(h: p.hue).deep)
+                }
+                if done && !claimed {
+                    Button(L("Claim 25 XP")) { model.claimFriendsQuest() }.buttonStyle(PrimaryButtonStyle(kind: .accent, height: 44))
+                } else if claimed {
+                    Label(L("Quest complete!"), systemImage: "checkmark.seal.fill").font(.fig(14, .semibold)).foregroundStyle(theme.ad)
+                }
+            }
+            .card()
+        }
+    }
+}

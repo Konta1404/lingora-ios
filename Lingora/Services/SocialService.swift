@@ -21,6 +21,7 @@ enum Social {
         var lastMessageAt: Double?
         var lastFromMe: Bool?
         var friendStreak: Int?
+        var weekXP: Int?
         var photoVersion: Int { photo ?? 0 }
         var id: String { uid }
         var firstName: String { name.split(separator: " ").first.map(String.init) ?? name }

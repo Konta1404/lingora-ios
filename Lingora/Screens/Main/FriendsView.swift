@@ -21,6 +21,7 @@ struct FriendsView: View {
                 } else {
                     nudges
                     requests
+                    FriendsQuestCard()
                     segmented
                     switch tab {
                     case 0: feed
