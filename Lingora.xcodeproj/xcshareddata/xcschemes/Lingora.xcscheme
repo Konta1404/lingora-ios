@@ -52,7 +52,7 @@
          <EnvironmentVariable
             key = "LINGORA_USE_EMULATORS"
             value = "1"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "LINGORA_EMULATOR_HOST"
