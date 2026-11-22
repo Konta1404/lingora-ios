@@ -431,7 +431,8 @@ struct ChatInputBar: View {
                     .onTapGesture { dictation.error = nil }
             }
         }
-        .onDisappear { dictation.stop() }
+        .onAppear { dictation.prepare(language: speechLanguage) }
+        .onDisappear { dictation.shutdown() }
     }
 }
 

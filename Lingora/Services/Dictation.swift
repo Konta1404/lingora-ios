@@ -14,6 +14,9 @@ final class Dictation: ObservableObject {
     private var task: SFSpeechRecognitionTask?
     /// False once the finger lifts — also covers a release while permissions are still being asked.
     private var held = false
+    /// Reused between recordings so pressing the button starts listening right away.
+    private var recognizers: [String: SFSpeechRecognizer] = [:]
+    private var sessionActive = false
 
     /// Maps Lingora language keys to speech locales.
     static func locale(for key: String?) -> Locale {
@@ -24,10 +27,36 @@ final class Dictation: ObservableObject {
         return Locale(identifier: map[key] ?? key)
     }
 
+    /// Call when the input bar appears: loads the recogniser and audio setup ahead of the first press.
+    func prepare(language key: String?) {
+        _ = recognizer(for: key)
+        let session = AVAudioSession.sharedInstance()
+        try? session.setCategory(.record, mode: .measurement, options: .duckOthers)
+        try? session.setAllowHapticsAndSystemSoundsDuringRecording(true)
+        _ = engine.inputNode   // creating the input node is the slow part of the first start
+    }
+
+    private func recognizer(for key: String?) -> SFSpeechRecognizer? {
+        let id = Self.locale(for: key).identifier
+        if let r = recognizers[id] { return r }
+        let r = SFSpeechRecognizer(locale: Locale(identifier: id))
+        r?.defaultTaskHint = .dictation
+        recognizers[id] = r
+        return r
+    }
+
+    private var permissionsGranted: Bool {
+        SFSpeechRecognizer.authorizationStatus() == .authorized && AVAudioApplication.shared.recordPermission == .granted
+    }
+
     func press(language key: String?, onText: @escaping (String) -> Void) {
         held = true
         cancel()
-        Task { await start(language: key, onText: onText) }
+        if permissionsGranted {
+            begin(language: key, onText: onText)   // no async hop: start in the same frame as the touch
+        } else {
+            Task { await askThenStart(language: key, onText: onText) }
+        }
     }
 
     /// Stops listening; the recogniser still delivers the last words, then finishes.
@@ -39,10 +68,10 @@ final class Dictation: ObservableObject {
         request?.endAudio()
         isRecording = false
         Haptics.recordStop()
-        deactivateSession()
+        // The audio session stays on while the chat is open, so the next press starts instantly.
     }
 
-    private func start(language key: String?, onText: @escaping (String) -> Void) async {
+    private func askThenStart(language key: String?, onText: @escaping (String) -> Void) async {
         error = nil
         let speechOK = await withCheckedContinuation { c in
             SFSpeechRecognizer.requestAuthorization { c.resume(returning: $0 == .authorized) }
@@ -54,16 +83,24 @@ final class Dictation: ObservableObject {
         }
         // The first time, the permission alerts take the touch — the user lifts their finger meanwhile.
         guard held else { return }
-        guard let recognizer = SFSpeechRecognizer(locale: Self.locale(for: key)), recognizer.isAvailable else {
+        begin(language: key, onText: onText)
+    }
+
+    private func begin(language key: String?, onText: @escaping (String) -> Void) {
+        error = nil
+        guard let recognizer = recognizer(for: key), recognizer.isAvailable else {
             error = L("Dictation isn't available for this language on your iPhone.")
             return
         }
         do {
-            let session = AVAudioSession.sharedInstance()
-            try session.setCategory(.record, mode: .measurement, options: .duckOthers)
-            // iOS mutes vibrations while the mic records unless this is allowed.
-            try? session.setAllowHapticsAndSystemSoundsDuringRecording(true)
-            try session.setActive(true, options: .notifyOthersOnDeactivation)
+            if !sessionActive {
+                let session = AVAudioSession.sharedInstance()
+                try session.setCategory(.record, mode: .measurement, options: .duckOthers)
+                // iOS mutes vibrations while the mic records unless this is allowed.
+                try? session.setAllowHapticsAndSystemSoundsDuringRecording(true)
+                try session.setActive(true, options: .notifyOthersOnDeactivation)
+                sessionActive = true
+            }
 
             let req = SFSpeechAudioBufferRecognitionRequest()
             req.shouldReportPartialResults = true
@@ -119,7 +156,15 @@ final class Dictation: ObservableObject {
         request = nil
     }
 
+    /// Leaving the chat: stop everything and give the audio back to other apps.
+    func shutdown() {
+        stop()
+        deactivateSession()
+    }
+
     private func deactivateSession() {
+        guard sessionActive else { return }
+        sessionActive = false
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 }
