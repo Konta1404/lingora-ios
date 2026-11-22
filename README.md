@@ -12,8 +12,8 @@ The backend lives in its own repo: **[lingora-backend](https://github.com/Konta1
 
 ## What's new in this version
 
-- **Accounts through Firebase Auth**: Apple, Google, OpenAI (OpenID Connect) and email/password, with password reset and account deletion.
-- **Backend**: every ChatGPT feature runs in Cloud Functions. The OpenAI key is a server secret, not on the phone. Each user has a daily limit (300 calls by default).
+- **Accounts through Firebase Auth**: ChatGPT, Apple, Google and email/password, with password reset and account deletion.
+- **AI on the user's own ChatGPT plan**: users sign in with ChatGPT (or connect it in Me → ChatGPT), and every AI feature runs on their own Plus/Pro plan through the backend. Lingora has no OpenAI key. Users without a connected plan get the built-in content.
 - **Sync**: plans, progress and vocab progress are saved to Firestore, so they follow the user to a new phone.
 - **German vocab game** (Today → *German words*, or Me):
   - Words appear in random order, never alphabetically.
@@ -45,7 +45,7 @@ Without `GoogleService-Info.plist` the app runs in **offline mode**:
 
 ## 3. Deploy the backend
 
-Follow the setup in [lingora-backend](https://github.com/Konta1404/lingora-backend). In short: set the `OPENAI_API_KEY` secret, then run `firebase deploy`.
+Follow the setup in [lingora-backend](https://github.com/Konta1404/lingora-backend): get a Sign in with ChatGPT client ID from OpenAI, set the secrets, then run `firebase deploy`. For local testing, run `./scripts/dev.sh` there and start the app on a simulator.
 
 ## 4. Sign-in providers
 
@@ -54,7 +54,7 @@ Follow the setup in [lingora-backend](https://github.com/Konta1404/lingora-backe
 | Email | Nothing extra. |
 | Google | Steps 2 and 3 above. |
 | Apple | A **paid** Apple Developer account. In Xcode, *Signing & Capabilities* → **+ Capability → Sign in with Apple**. Free "Personal Team" accounts can't use it, so the button shows an error until then. |
-| OpenAI | "Sign in with ChatGPT" is a limited OpenAI preview that requires approval. Once you have OpenID Connect client credentials from OpenAI, upgrade Firebase Auth to **Identity Platform** and add an **OpenID Connect** provider with the id `oidc.openai`. Until then, the button explains that it isn't available yet. |
+| ChatGPT | Sign in with ChatGPT is an OpenAI preview, and hosted apps need a client ID from OpenAI. Setup is in [lingora-backend](https://github.com/Konta1404/lingora-backend). The app opens OpenAI's sign-in in a secure browser sheet and returns via `lingora://chatgpt`. Until the backend has a client ID, the button says it isn't available yet. |
 
 ## Data model (Firestore)
 

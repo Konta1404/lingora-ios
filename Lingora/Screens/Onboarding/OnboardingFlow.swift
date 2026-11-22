@@ -53,11 +53,11 @@ struct SocialSignInButtons: View {
 
     var body: some View {
         VStack(spacing: 10) {
-            Button { model.signInWithOpenAI() } label: {
-                Label(L("Continue with OpenAI"), systemImage: "sparkles")
+            Button { model.signInWithChatGPT() } label: {
+                Label(L("Continue with ChatGPT"), systemImage: "sparkles")
             }
             .buttonStyle(PrimaryButtonStyle(kind: compact ? .chip : .accent, height: compact ? 52 : 54))
-            .disabled(!Backend.isConfigured || Backend.usesEmulators)
+            .disabled(!Backend.isConfigured)
 
             SignInWithAppleButton(.continue) { req in
                 AuthService.shared.prepare(req)

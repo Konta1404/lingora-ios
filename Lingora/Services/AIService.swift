@@ -1,7 +1,8 @@
 import Foundation
 
-/// ChatGPT features, served by Lingora's Firebase Cloud Functions (see backend/functions).
-/// The OpenAI key lives only on the server; the app sends the user's language so replies come back in it.
+/// ChatGPT features, served by Lingora's Firebase Cloud Functions (lingora-backend).
+/// They run on the user's own ChatGPT plan (Sign in with ChatGPT); the app sends the user's language
+/// so replies come back in it.
 struct AIService {
     struct AIPlan: Decodable {
         struct Day: Decodable { var focus: String; var tasks: [AITask] }
@@ -32,6 +33,11 @@ struct AIService {
 
     struct Translations: Decodable { var language: String; var translations: [String: [String]] }
     struct TranslationCheck: Decodable { var correct: Bool; var note: String }
+
+    struct ChatGPTStatus: Decodable, Equatable { var connected: Bool; var email: String?; var model: String? }
+
+    func chatGPTStatus() async throws -> ChatGPTStatus { try await Backend.call("chatgptStatus", [:]) }
+    func disconnectChatGPT() async throws -> ChatGPTStatus { try await Backend.call("chatgptDisconnect", [:]) }
 
     private var ui: String { AppLocale.tag }
 

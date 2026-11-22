@@ -59,6 +59,21 @@ enum Backend {
         return try JSONDecoder().decode(T.self, from: data)
     }
 
+    /// Same as `call`, for functions that also work before sign-in (Sign in with ChatGPT).
+    static func callAllowingSignedOut<T: Decodable>(_ name: String, _ payload: [String: Any]) async throws -> T {
+        guard isConfigured else { throw BackendError.notConfigured }
+        let result = try await Functions.functions(region: region).httpsCallable(name).call(payload)
+        let data = try JSONSerialization.data(withJSONObject: result.data, options: [.fragmentsAllowed])
+        return try JSONDecoder().decode(T.self, from: data)
+    }
+
+    /// The `reason` a function attached to its error (e.g. "not-connected", "not-configured", "limit").
+    static func reason(of error: Error) -> String? {
+        let ns = error as NSError
+        guard ns.domain == FunctionsErrorDomain else { return nil }
+        return (ns.userInfo[FunctionsErrorDetailsKey] as? [String: Any])?["reason"] as? String
+    }
+
     enum BackendError: LocalizedError {
         case notConfigured, signedOut
         var errorDescription: String? {

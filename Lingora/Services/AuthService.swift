@@ -15,13 +15,13 @@ struct AuthResult {
 }
 
 enum AuthError: LocalizedError {
-    case notConfigured, missingToken, cancelled, openAIUnavailable(String)
+    case notConfigured, missingToken, cancelled, chatGPT(String)
     var errorDescription: String? {
         switch self {
         case .notConfigured: L("The Lingora server isn't set up in this build.")
         case .missingToken: L("Sign-in didn't return a token. Please try again.")
         case .cancelled: L("Sign-in was cancelled.")
-        case .openAIUnavailable(let d): L("Sign in with OpenAI isn't available yet: %@", d)
+        case .chatGPT(let message): message
         }
     }
 }
@@ -30,9 +30,6 @@ enum AuthError: LocalizedError {
 final class AuthService: NSObject {
     static let shared = AuthService()
 
-    /// Firebase provider id for OpenAI. Create an OpenID Connect provider with this id in
-    /// Firebase console → Authentication → Sign-in method (needs Identity Platform and OpenAI client credentials).
-    static let openAIProviderID = "oidc.openai"
 
     private var currentNonce: String?
     private var appleContinuation: CheckedContinuation<ASAuthorization, Error>?
@@ -80,34 +77,46 @@ final class AuthService: NSObject {
                           email: auth.user.email ?? "", method: .google)
     }
 
-    // MARK: OpenAI (OpenID Connect)
+    // MARK: Sign in with ChatGPT
 
-    func signInWithOpenAI() async throws -> AuthResult {
+    struct ChatGPTFinish: Decodable { var ok: Bool; var customToken: String?; var name: String?; var email: String? }
+    private struct StartResponse: Decodable { var url: String }
+    private var webSession: ASWebAuthenticationSession?
+
+    /// Runs the Sign in with ChatGPT flow. Signed-in users link their plan; otherwise ChatGPT becomes their account.
+    /// Returns an AuthResult when this created a new sign-in, nil when it linked an existing account.
+    func continueWithChatGPT() async throws -> AuthResult? {
         guard Backend.isConfigured else { throw AuthError.notConfigured }
-        // Firebase crashes (fatalError) if the app's encoded-app-ID URL scheme is missing, so check first.
-        let appID = FirebaseApp.app()?.options.googleAppID ?? ""
-        let scheme = "app-" + appID.replacingOccurrences(of: ":", with: "-")
-        guard !Backend.usesEmulators, Self.hasURLScheme(scheme) else {
-            throw AuthError.openAIUnavailable(L("OpenAI sign-in isn't set up in this build."))
-        }
-        let provider = OAuthProvider(providerID: Self.openAIProviderID)
-        provider.scopes = ["openid", "email", "profile"]
-        let credential: AuthCredential = try await withCheckedThrowingContinuation { cont in
-            provider.getCredentialWith(nil) { credential, error in
-                if let credential { cont.resume(returning: credential) }
+        let start: StartResponse = try await Backend.callAllowingSignedOut("chatgptAuthStart", [:])
+        guard let url = URL(string: start.url) else { throw AuthError.missingToken }
+
+        let callback: URL = try await withCheckedThrowingContinuation { cont in
+            let session = ASWebAuthenticationSession(url: url, callbackURLScheme: "lingora") { url, error in
+                if let url { cont.resume(returning: url) }
+                else if (error as? ASWebAuthenticationSessionError)?.code == .canceledLogin { cont.resume(throwing: AuthError.cancelled) }
                 else { cont.resume(throwing: error ?? AuthError.missingToken) }
             }
+            session.presentationContextProvider = self
+            session.prefersEphemeralWebBrowserSession = false
+            webSession = session
+            session.start()
         }
-        do {
-            let auth = try await Auth.auth().signIn(with: credential)
-            return AuthResult(uid: auth.user.uid, name: auth.user.displayName ?? "", email: auth.user.email ?? "", method: .openai)
-        } catch {
-            let code = AuthErrorCode(rawValue: (error as NSError).code)
-            if code == .operationNotAllowed || code == .invalidProviderID {
-                throw AuthError.openAIUnavailable(error.localizedDescription)
-            }
-            throw error
+        webSession = nil
+
+        let items = URLComponents(url: callback, resolvingAgainstBaseURL: false)?.queryItems ?? []
+        func item(_ n: String) -> String? { items.first { $0.name == n }?.value }
+        switch item("status") {
+        case "ok": break
+        case "cancelled": throw AuthError.cancelled
+        default: throw AuthError.chatGPT(item("message") ?? L("Sign in with ChatGPT didn't finish. Please try again."))
         }
+
+        let finish: ChatGPTFinish = try await Backend.callAllowingSignedOut("chatgptAuthFinish", ["state": item("state") ?? ""])
+        guard finish.ok else { throw AuthError.chatGPT(L("Sign in with ChatGPT didn't finish. Please try again.")) }
+        guard let token = finish.customToken else { return nil }   // linked to the current account
+        let auth = try await Auth.auth().signIn(withCustomToken: token)
+        return AuthResult(uid: auth.user.uid, name: finish.name ?? auth.user.displayName ?? "",
+                          email: finish.email ?? auth.user.email ?? "", method: .openai)
     }
 
     // MARK: Email
@@ -171,11 +180,6 @@ final class AuthService: NSObject {
         return false
     }
 
-    private static func hasURLScheme(_ scheme: String) -> Bool {
-        let types = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [[String: Any]] ?? []
-        return types.contains { ($0["CFBundleURLSchemes"] as? [String] ?? []).contains(scheme) }
-    }
-
     private static func topViewController() -> UIViewController? {
         let scene = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first { $0.activationState == .foregroundActive }
             ?? UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first
@@ -194,5 +198,14 @@ final class AuthService: NSObject {
 
     private static func sha256(_ input: String) -> String {
         SHA256.hash(data: Data(input.utf8)).map { String(format: "%02x", $0) }.joined()
+    }
+}
+
+extension AuthService: ASWebAuthenticationPresentationContextProviding {
+    nonisolated func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        MainActor.assumeIsolated {
+            UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+                .flatMap(\.windows).first { $0.isKeyWindow } ?? ASPresentationAnchor()
+        }
     }
 }

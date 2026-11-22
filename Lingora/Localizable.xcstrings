@@ -3984,59 +3984,6 @@
         }
       }
     },
-    "ChatGPT didn't answer — %@" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ChatGPT hat nicht geantwortet – %@"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ChatGPT didn't answer — %@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ChatGPT no respondió: %@"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ChatGPT n’a pas répondu — %@"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ChatGPT non ha risposto — %@"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O ChatGPT não respondeu — %@"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ChatGPT не ответил — %@"
-          }
-        },
-        "sr-Latn" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ChatGPT nije odgovorio — %@"
-          }
-        }
-      }
-    },
     "ChatGPT is building your week" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4673,6 +4620,112 @@
         }
       }
     },
+    "Connect" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbinden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecter"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collega"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectar"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подключить"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poveži"
+          }
+        }
+      }
+    },
+    "Connect your ChatGPT account in Me to use AI features." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbinde dein ChatGPT-Konto unter „Ich“, um KI-Funktionen zu nutzen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect your ChatGPT account in Me to use AI features."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conecta tu cuenta de ChatGPT en Yo para usar las funciones de IA."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecte ton compte ChatGPT dans Moi pour utiliser les fonctions d’IA."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collega il tuo account ChatGPT in Io per usare le funzioni IA."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conecte sua conta do ChatGPT em Eu para usar os recursos de IA."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подключите аккаунт ChatGPT в разделе «Я», чтобы пользоваться функциями ИИ."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poveži svoj ChatGPT nalog u odjeljku Ja da koristiš AI funkcije."
+          }
+        }
+      }
+    },
     "Continue" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4893,6 +4946,59 @@
         }
       }
     },
+    "Continue with ChatGPT" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weiter mit ChatGPT"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue with ChatGPT"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar con ChatGPT"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuer avec ChatGPT"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continua con ChatGPT"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar com o ChatGPT"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продолжить с ChatGPT"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavi preko ChatGPT-a"
+          }
+        }
+      }
+    },
     "Continue with Google" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4942,59 +5048,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nastavi preko Google-a"
-          }
-        }
-      }
-    },
-    "Continue with OpenAI" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Weiter mit OpenAI"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continue with OpenAI"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continuar con OpenAI"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continuer avec OpenAI"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continua con OpenAI"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continuar com a OpenAI"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Продолжить с OpenAI"
-          }
-        },
-        "sr-Latn" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nastavi preko OpenAI-ja"
           }
         }
       }
@@ -5843,6 +5896,59 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jesi li znao značenje?"
+          }
+        }
+      }
+    },
+    "Disconnect" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trennen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disconnect"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconectar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déconnecter"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disconnetti"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconectar"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отключить"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prekini vezu"
           }
         }
       }
@@ -8285,59 +8391,6 @@
         }
       }
     },
-    "Local test server (Firebase emulators)" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lokaler Testserver (Firebase-Emulatoren)"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Local test server (Firebase emulators)"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Servidor de prueba local (emuladores de Firebase)"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Serveur de test local (émulateurs Firebase)"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Server di test locale (emulatori Firebase)"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Servidor de teste local (emuladores do Firebase)"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Локальный тестовый сервер (эмуляторы Firebase)"
-          }
-        },
-        "sr-Latn" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lokalni test server (Firebase emulatori)"
-          }
-        }
-      }
-    },
     "Local test server: sign up with email." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -9981,6 +10034,59 @@
         }
       }
     },
+    "Not connected · using standard plans. Connect your ChatGPT Plus or Pro plan to turn on AI." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht verbunden · Standardpläne. Verbinde deinen ChatGPT-Plus- oder Pro-Plan, um KI einzuschalten."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not connected · using standard plans. Connect your ChatGPT Plus or Pro plan to turn on AI."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No conectado · planes estándar. Conecta tu plan ChatGPT Plus o Pro para activar la IA."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non connecté · programmes standard. Connecte ton forfait ChatGPT Plus ou Pro pour activer l’IA."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non collegato · piani standard. Collega il tuo piano ChatGPT Plus o Pro per attivare l’IA."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não conectado · planos padrão. Conecte seu plano ChatGPT Plus ou Pro para ativar a IA."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не подключено · стандартные планы. Подключите план ChatGPT Plus или Pro, чтобы включить ИИ."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nije povezano · koriste se standardni planovi. Poveži svoj ChatGPT Plus ili Pro plan da uključiš AI."
+          }
+        }
+      }
+    },
     "Not in our list — ChatGPT can still teach it" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -10511,59 +10617,6 @@
         }
       }
     },
-    "On · plans, lessons and tutor run on the Lingora server" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "An · Pläne, Lektionen und Tutor laufen auf dem Lingora-Server"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "On · plans, lessons and tutor run on the Lingora server"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activado · planes, lecciones y tutor funcionan en el servidor de Lingora"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activé · programmes, leçons et tuteur tournent sur le serveur Lingora"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Attivo · piani, lezioni e tutor girano sul server Lingora"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ativado · planos, lições e tutor rodam no servidor do Lingora"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Вкл. · планы, уроки и репетитор работают на сервере Lingora"
-          }
-        },
-        "sr-Latn" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Uključeno · planovi, lekcije i tutor rade na Lingora serveru"
-          }
-        }
-      }
-    },
     "One moment…" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -10666,59 +10719,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Otvoreno"
-          }
-        }
-      }
-    },
-    "OpenAI sign-in isn't set up in this build." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Die Anmeldung mit OpenAI ist in diesem Build nicht eingerichtet."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OpenAI sign-in isn't set up in this build."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "El inicio de sesión con OpenAI no está configurado en esta versión."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La connexion avec OpenAI n’est pas configurée dans cette version."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "L’accesso con OpenAI non è configurato in questa build."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O login com a OpenAI não está configurado nesta versão."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Вход через OpenAI не настроен в этой сборке."
-          }
-        },
-        "sr-Latn" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prijava preko OpenAI-ja nije podešena u ovoj verziji."
           }
         }
       }
@@ -13320,55 +13320,108 @@
         }
       }
     },
-    "Sign in with OpenAI isn't available yet: %@" : {
+    "Sign in with ChatGPT didn't finish. Please try again." : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die Anmeldung mit OpenAI ist noch nicht verfügbar: %@"
+            "value" : "Die Anmeldung mit ChatGPT wurde nicht abgeschlossen. Bitte versuche es erneut."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sign in with OpenAI isn't available yet: %@"
+            "value" : "Sign in with ChatGPT didn't finish. Please try again."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Iniciar sesión con OpenAI aún no está disponible: %@"
+            "value" : "No se completó el inicio de sesión con ChatGPT. Inténtalo de nuevo."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La connexion avec OpenAI n’est pas encore disponible : %@"
+            "value" : "La connexion avec ChatGPT n’a pas abouti. Réessaie."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L’accesso con OpenAI non è ancora disponibile: %@"
+            "value" : "L’accesso con ChatGPT non è stato completato. Riprova."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Entrar com a OpenAI ainda não está disponível: %@"
+            "value" : "O login com o ChatGPT não foi concluído. Tente novamente."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вход через OpenAI пока недоступен: %@"
+            "value" : "Вход через ChatGPT не завершён. Попробуйте ещё раз."
           }
         },
         "sr-Latn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prijava preko OpenAI-ja još nije dostupna: %@"
+            "value" : "Prijava preko ChatGPT-a nije završena. Pokušaj ponovo."
+          }
+        }
+      }
+    },
+    "Sign in with ChatGPT isn't available in Lingora yet." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Anmeldung mit ChatGPT ist in Lingora noch nicht verfügbar."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in with ChatGPT isn't available in Lingora yet."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar sesión con ChatGPT aún no está disponible en Lingora."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La connexion avec ChatGPT n’est pas encore disponible dans Lingora."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’accesso con ChatGPT non è ancora disponibile in Lingora."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrar com o ChatGPT ainda não está disponível no Lingora."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вход через ChatGPT пока недоступен в Lingora."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prijava preko ChatGPT-a još nije dostupna u Lingori."
           }
         }
       }
@@ -15493,6 +15546,165 @@
         }
       }
     },
+    "Uses your ChatGPT plan" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nutzt deinen ChatGPT-Plan"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uses your ChatGPT plan"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa tu plan de ChatGPT"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utilise ton forfait ChatGPT"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa il tuo piano ChatGPT"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa seu plano do ChatGPT"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Использует ваш план ChatGPT"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koristi tvoj ChatGPT plan"
+          }
+        }
+      }
+    },
+    "Uses your ChatGPT plan · %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nutzt deinen ChatGPT-Plan · %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uses your ChatGPT plan · %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa tu plan de ChatGPT · %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utilise ton forfait ChatGPT · %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa il tuo piano ChatGPT · %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa seu plano do ChatGPT · %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Использует ваш план ChatGPT · %@"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koristi tvoj ChatGPT plan · %@"
+          }
+        }
+      }
+    },
+    "Using your plan in Lingora needs ChatGPT Plus or Pro." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um deinen Plan in Lingora zu nutzen, brauchst du ChatGPT Plus oder Pro."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Using your plan in Lingora needs ChatGPT Plus or Pro."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar tu plan en Lingora requiere ChatGPT Plus o Pro."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utiliser ton forfait dans Lingora nécessite ChatGPT Plus ou Pro."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per usare il tuo piano in Lingora serve ChatGPT Plus o Pro."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar seu plano no Lingora requer ChatGPT Plus ou Pro."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Чтобы использовать ваш план в Lingora, нужен ChatGPT Plus или Pro."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za korišćenje tvog plana u Lingori potreban je ChatGPT Plus ili Pro."
+          }
+        }
+      }
+    },
     "Verb" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -15864,55 +16076,55 @@
         }
       }
     },
-    "Without ChatGPT, you check your own translations. Sign in to have them checked for you." : {
+    "Without ChatGPT, you check your own translations. Connect your ChatGPT plan in Me to have them checked for you." : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ohne ChatGPT prüfst du deine Übersetzungen selbst. Melde dich an, damit sie für dich geprüft werden."
+            "value" : "Ohne ChatGPT prüfst du deine Übersetzungen selbst. Verbinde deinen ChatGPT-Plan unter „Ich“, damit sie für dich geprüft werden."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Without ChatGPT, you check your own translations. Sign in to have them checked for you."
+            "value" : "Without ChatGPT, you check your own translations. Connect your ChatGPT plan in Me to have them checked for you."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sin ChatGPT, compruebas tú mismo tus traducciones. Inicia sesión para que las revise por ti."
+            "value" : "Sin ChatGPT, compruebas tú mismo tus traducciones. Conecta tu plan de ChatGPT en Yo para que las revise por ti."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sans ChatGPT, tu vérifies toi-même tes traductions. Connecte-toi pour qu’elles soient vérifiées pour toi."
+            "value" : "Sans ChatGPT, tu vérifies toi-même tes traductions. Connecte ton forfait ChatGPT dans Moi pour qu’elles soient vérifiées pour toi."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Senza ChatGPT controlli da solo le traduzioni. Accedi per farle controllare."
+            "value" : "Senza ChatGPT controlli da solo le traduzioni. Collega il tuo piano ChatGPT in Io per farle controllare."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sem o ChatGPT, você mesmo confere suas traduções. Entre para que elas sejam verificadas para você."
+            "value" : "Sem o ChatGPT, você mesmo confere suas traduções. Conecte seu plano do ChatGPT em Eu para que elas sejam verificadas."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Без ChatGPT вы проверяете переводы сами. Войдите, чтобы их проверяли за вас."
+            "value" : "Без ChatGPT вы проверяете переводы сами. Подключите план ChatGPT в разделе «Я», чтобы их проверяли за вас."
           }
         },
         "sr-Latn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bez ChatGPT-a sam provjeravaš svoje prevode. Prijavi se da ih on provjerava umjesto tebe."
+            "value" : "Bez ChatGPT-a sam provjeravaš svoje prevode. Poveži svoj ChatGPT plan u odjeljku Ja da ih on provjerava."
           }
         }
       }
@@ -16549,6 +16761,59 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ti, Lena i Prija"
+          }
+        }
+      }
+    },
+    "Your ChatGPT plan limit for Lingora is used up for now. Try again later." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Limit deines ChatGPT-Plans für Lingora ist vorerst aufgebraucht. Versuch es später noch einmal."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your ChatGPT plan limit for Lingora is used up for now. Try again later."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El límite de tu plan de ChatGPT para Lingora se ha agotado por ahora. Inténtalo más tarde."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La limite de ton forfait ChatGPT pour Lingora est atteinte pour l’instant. Réessaie plus tard."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il limite del tuo piano ChatGPT per Lingora è esaurito per ora. Riprova più tardi."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O limite do seu plano do ChatGPT para o Lingora acabou por enquanto. Tente mais tarde."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Лимит вашего плана ChatGPT для Lingora пока исчерпан. Попробуйте позже."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limit tvog ChatGPT plana za Lingoru je za sada potrošen. Pokušaj kasnije."
           }
         }
       }

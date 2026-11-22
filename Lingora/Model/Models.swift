@@ -4,7 +4,7 @@ enum AuthMethod: String, Codable {
     case openai, apple, google, email, local
     var label: String {
         switch self {
-        case .openai: "OpenAI"
+        case .openai: "ChatGPT"
         case .apple: "Apple"
         case .google: "Google"
         case .email: L("Email & password")

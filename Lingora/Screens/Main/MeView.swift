@@ -75,8 +75,14 @@ struct MeView: View {
                 SectionLabel(text: L("Settings")).padding(.top, 6)
                 VStack(spacing: 0) {
                     row(L("ChatGPT"), sub: aiStatus, first: true) {
-                        Image(systemName: model.aiAvailable ? "checkmark.circle.fill" : "exclamationmark.circle")
-                            .foregroundStyle(model.aiAvailable ? theme.a : theme.muted)
+                        if Backend.isConfigured && model.signedInUID != nil {
+                            let on = model.chatGPT?.connected == true
+                            PillButton(title: on ? L("Disconnect") : L("Connect"),
+                                       bg: on ? theme.chip : theme.a, fg: on ? theme.text : .white, height: 32) {
+                                if on { model.disconnectChatGPT() } else { model.connectChatGPT() }
+                            }
+                            .disabled(model.authBusy)
+                        }
                     }
                     row(L("Adapt tasks daily"), sub: L("ChatGPT adjusts today from your results")) {
                         LingoraSwitch(isOn: $model.s.settings.adaptDaily)
@@ -146,6 +152,7 @@ struct MeView: View {
             .padding(.horizontal, 20).padding(.bottom, 24)
         }
         .background(theme.ground)
+        .task { await model.refreshChatGPT() }
         .confirmationDialog(L("Log out of Lingora?"), isPresented: $confirmLogout, titleVisibility: .visible) {
             Button(L("Log out"), role: .destructive) { model.logOut() }
         } message: {
@@ -169,8 +176,11 @@ struct MeView: View {
 
     private var aiStatus: String {
         if !Backend.isConfigured { return L("Offline mode · using standard plans") }
-        if Backend.usesEmulators { return L("Local test server (Firebase emulators)") }
-        return model.aiAvailable ? L("On · plans, lessons and tutor run on the Lingora server") : L("Sign in to turn it on")
+        if model.signedInUID == nil { return L("Sign in to turn it on") }
+        if let s = model.chatGPT, s.connected {
+            return s.email.map { L("Uses your ChatGPT plan · %@", $0) } ?? L("Uses your ChatGPT plan")
+        }
+        return L("Not connected · using standard plans. Connect your ChatGPT Plus or Pro plan to turn on AI.")
     }
 
     private func progress(_ key: String, index: Int) -> Double {

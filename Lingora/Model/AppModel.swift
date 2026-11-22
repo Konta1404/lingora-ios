@@ -23,6 +23,8 @@ final class AppModel: ObservableObject {
     // Auth
     @Published var signedInUID: String?
     @Published var authBusy = false
+    /// The user's own ChatGPT plan, connected through Sign in with ChatGPT.
+    @Published var chatGPT: AIService.ChatGPTStatus?
 
     // Navigation
     @Published var tab: AppTab = .today
@@ -94,8 +96,8 @@ final class AppModel: ObservableObject {
     // MARK: - Derived
 
     var theme: Theme { Theme(accent: s.settings.accent, direction: s.settings.direction, languageTints: s.settings.languageTints) }
-    /// ChatGPT features run through the Lingora backend and need a signed-in Firebase user.
-    var aiAvailable: Bool { Backend.isConfigured && signedInUID != nil }
+    /// ChatGPT features run on the user's own ChatGPT plan, through the Lingora backend.
+    var aiAvailable: Bool { Backend.isConfigured && signedInUID != nil && chatGPT?.connected == true }
 
     func language(_ key: String) -> Language? {
         if var l = Catalog.byKey[key] {
@@ -136,7 +138,9 @@ final class AppModel: ObservableObject {
         guard uid != signedInUID || !cloudLoaded else { return }
         signedInUID = uid
         cloudLoaded = false
+        chatGPT = nil
         guard let uid else { return }
+        Task { await refreshChatGPT() }
         Task {
             let (remoteState, remoteVocab) = await CloudSync.load(uid: uid)
             if let remoteState, remoteState.onboarded, !(s.onboarded && s.user?.uid == uid && s.plans.count >= remoteState.plans.count) {
@@ -188,7 +192,50 @@ final class AppModel: ObservableObject {
     }
 
     func signInWithGoogle() { run { try await AuthService.shared.signInWithGoogle() } }
-    func signInWithOpenAI() { run { try await AuthService.shared.signInWithOpenAI() } }
+    /// Welcome screen: ChatGPT becomes the Lingora account and powers the AI.
+    func signInWithChatGPT() {
+        authBusy = true
+        Task {
+            defer { authBusy = false }
+            do {
+                let result = try await AuthService.shared.continueWithChatGPT()
+                if let result { finishSignIn(result) }
+                await refreshChatGPT()
+            } catch {
+                if !AuthService.isCancellation(error) { toast = chatGPTMessage(error) }
+            }
+        }
+    }
+
+    /// Me → ChatGPT: link the user's own plan to their current account.
+    func connectChatGPT() {
+        guard signedInUID != nil else { toast = L("Sign in to use ChatGPT features."); return }
+        signInWithChatGPT()
+    }
+
+    func disconnectChatGPT() {
+        Task {
+            chatGPT = try? await ai.disconnectChatGPT()
+        }
+    }
+
+    func refreshChatGPT() async {
+        guard Backend.isConfigured, signedInUID != nil else { chatGPT = nil; return }
+        chatGPT = try? await ai.chatGPTStatus()
+    }
+
+    /// Friendly text for errors from ChatGPT-powered calls.
+    func chatGPTMessage(_ error: Error) -> String {
+        switch Backend.reason(of: error) {
+        case "not-configured": return L("Sign in with ChatGPT isn't available in Lingora yet.")
+        case "not-connected", "revoked":
+            chatGPT = AIService.ChatGPTStatus(connected: false, email: nil, model: nil)
+            return L("Connect your ChatGPT account in Me to use AI features.")
+        case "not-eligible": return L("Using your plan in Lingora needs ChatGPT Plus or Pro.")
+        case "limit": return L("Your ChatGPT plan limit for Lingora is used up for now. Try again later.")
+        default: return AuthService.message(for: error)
+        }
+    }
 
     /// Returns an error message to show under the form, or nil on success.
     func signInWithEmail(name: String, email: String, password: String, createAccount: Bool) async -> String? {
@@ -206,6 +253,7 @@ final class AppModel: ObservableObject {
         AuthService.shared.signOut()
         signedInUID = nil
         cloudLoaded = false
+        chatGPT = nil
         s = PersistedState()
         vocab = VocabProgressStore()
         onboardingPath = []
@@ -435,7 +483,7 @@ final class AppModel: ObservableObject {
                 markRoleplayIfEarned(key)
                 return
             } catch {
-                toast = L("ChatGPT didn't answer — %@", Backend.message(for: error))
+                toast = chatGPTMessage(error)
             }
         }
         try? await Task.sleep(for: .milliseconds(1100))
@@ -508,7 +556,8 @@ final class AppModel: ObservableObject {
 
     /// Fetches translations into the user's language for words that don't have one cached yet.
     func prefetchTranslations(for words: [VocabWord]) async {
-        guard aiAvailable else { return }
+        // Cached translations are shared by everyone; new ones need the user's ChatGPT plan.
+        guard Backend.isConfigured, signedInUID != nil else { return }
         let lang = normalizedVocabLang
         let missing = words.map(\.id).filter { vocab.translations[lang]?[$0] == nil }
         guard !missing.isEmpty else { return }

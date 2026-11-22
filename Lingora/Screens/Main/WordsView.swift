@@ -143,7 +143,7 @@ struct WordsView: View {
             .tintedNote(theme.at, theme.ad, radius: theme.radius)
 
             if !model.aiAvailable {
-                Text(L("Without ChatGPT, you check your own translations. Sign in to have them checked for you."))
+                Text(L("Without ChatGPT, you check your own translations. Connect your ChatGPT plan in Me to have them checked for you."))
                     .font(.fig(13)).foregroundStyle(theme.muted)
             }
         }
