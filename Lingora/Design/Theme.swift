@@ -54,10 +54,10 @@ enum Accent: String, CaseIterable, Codable, Identifiable {
     }
     var label: String {
         switch self {
-        case .sage: "Sage"
-        case .blue: "Dusty blue"
-        case .terracotta: "Soft terracotta"
-        case .lavender: "Muted lavender"
+        case .sage: L("Sage")
+        case .blue: L("Dusty blue")
+        case .terracotta: L("Soft terracotta")
+        case .lavender: L("Muted lavender")
         }
     }
 }
@@ -65,7 +65,7 @@ enum Accent: String, CaseIterable, Codable, Identifiable {
 enum Direction: String, CaseIterable, Codable, Identifiable {
     case cards, open
     var id: String { rawValue }
-    var label: String { self == .cards ? "Soft cards" : "Open" }
+    var label: String { self == .cards ? L("Soft cards") : L("Open") }
 }
 
 struct Theme {

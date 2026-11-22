@@ -1,17 +1,25 @@
 import Foundation
 
 enum AuthMethod: String, Codable {
-    case chatgpt, apple, email
+    case openai, apple, google, email, local
     var label: String {
         switch self {
-        case .chatgpt: "ChatGPT"
+        case .openai: "OpenAI"
         case .apple: "Apple"
-        case .email: "Email & password"
+        case .google: "Google"
+        case .email: L("Email & password")
+        case .local: L("This iPhone only")
         }
+    }
+
+    init(from decoder: Decoder) throws {
+        let raw = try decoder.singleValueContainer().decode(String.self)
+        self = AuthMethod(rawValue: raw == "chatgpt" ? "openai" : raw) ?? .local
     }
 }
 
 struct UserProfile: Codable, Equatable {
+    var uid: String? = nil
     var name: String
     var email: String
     var handle: String
@@ -38,13 +46,23 @@ enum Level: Int, Codable, CaseIterable, Identifiable {
     case a1, a2, b1, b2, c1
     var id: Int { rawValue }
     var code: String { ["A1", "A2", "B1", "B2", "C1"][rawValue] }
-    var label: String { ["Beginner", "Elementary", "Intermediate", "Upper-intermediate", "Advanced"][rawValue] }
+    var label: String { [L("Beginner"), L("Elementary"), L("Intermediate"), L("Upper-intermediate"), L("Advanced")][rawValue] }
     var next: Level { Level(rawValue: min(rawValue + 1, 4)) ?? .c1 }
 }
 
 enum TaskType: String, Codable, CaseIterable {
     case vocabulary, listening, speaking, reading, writing, grammar, roleplay
-    var label: String { rawValue.capitalized }
+    var label: String {
+        switch self {
+        case .vocabulary: L("Vocabulary")
+        case .listening: L("Listening")
+        case .speaking: L("Speaking")
+        case .reading: L("Reading")
+        case .writing: L("Writing")
+        case .grammar: L("Grammar")
+        case .roleplay: L("Roleplay")
+        }
+    }
 }
 
 struct PlanTask: Codable, Hashable, Identifiable {
@@ -117,7 +135,6 @@ struct AppSettings: Codable, Equatable {
     var accent: Accent = .sage
     var direction: Direction = .cards
     var languageTints = true
-    var model = "gpt-5-mini"
 }
 
 /// Everything the app persists between launches.
@@ -143,4 +160,34 @@ struct PersistedState: Codable {
     var addedFriends: Set<String> = []
     var streak = 12
     var settings = AppSettings()
+
+    init() {}
+
+    /// Decodes whatever is present so older saves (and cloud copies) never wipe progress.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        let d = PersistedState()
+        func v<T: Decodable>(_ k: CodingKeys, _ fallback: T) -> T { (try? c.decodeIfPresent(T.self, forKey: k)) ?? fallback }
+        user = (try? c.decodeIfPresent(UserProfile.self, forKey: .user)) ?? nil
+        onboarded = v(.onboarded, d.onboarded)
+        learning = v(.learning, d.learning)
+        customLanguages = v(.customLanguages, d.customLanguages)
+        levels = v(.levels, d.levels)
+        goals = v(.goals, d.goals)
+        dailyMinutes = v(.dailyMinutes, d.dailyMinutes)
+        plans = v(.plans, d.plans)
+        done = v(.done, d.done)
+        results = v(.results, d.results)
+        adaptNote = (try? c.decodeIfPresent(String.self, forKey: .adaptNote)) ?? nil
+        adaptedOn = (try? c.decodeIfPresent(String.self, forKey: .adaptedOn)) ?? nil
+        tutorThreads = v(.tutorThreads, d.tutorThreads)
+        friendThreads = v(.friendThreads, d.friendThreads)
+        cheered = v(.cheered, d.cheered)
+        joined = v(.joined, d.joined)
+        nudged = v(.nudged, d.nudged)
+        startedChallenges = v(.startedChallenges, d.startedChallenges)
+        addedFriends = v(.addedFriends, d.addedFriends)
+        streak = v(.streak, d.streak)
+        settings = v(.settings, d.settings)
+    }
 }

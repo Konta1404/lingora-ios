@@ -9,9 +9,9 @@ struct FriendsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 14) {
                 HStack {
-                    ScreenTitle(text: "Friends")
+                    ScreenTitle(text: L("Friends"))
                     Spacer()
-                    PillButton(title: "Add", icon: "plus", bg: theme.a, fg: .white) { model.showAddFriend = true }
+                    PillButton(title: L("Add"), icon: "plus", bg: theme.a, fg: .white) { model.showAddFriend = true }
                 }
                 segmented
                 switch tab {
@@ -27,7 +27,7 @@ struct FriendsView: View {
 
     private var segmented: some View {
         HStack(spacing: 0) {
-            ForEach(Array(["Activity", "This week", "Challenges"].enumerated()), id: \.offset) { i, label in
+            ForEach(Array([L("Activity"), L("This week"), L("Challenges")].enumerated()), id: \.offset) { i, label in
                 Button { withAnimation(.easeInOut(duration: 0.2)) { tab = i } } label: {
                     Text(label).font(.fig(14, .semibold)).foregroundStyle(theme.text)
                         .frame(maxWidth: .infinity, minHeight: 30)
@@ -56,7 +56,7 @@ struct FriendsView: View {
                             HStack(alignment: .top, spacing: 12) {
                                 Avatar(initial: f.initial, hue: Hue(h: f.hue), size: 40)
                                 VStack(alignment: .leading, spacing: 2) {
-                                    (Text(f.firstName).font(.fig(15, .bold)) + Text(" \(item.text)").font(.fig(15)))
+                                    (Text(verbatim: f.firstName).font(.fig(15, .bold)) + Text(verbatim: " \(item.text)").font(.fig(15)))
                                         .multilineTextAlignment(.leading)
                                     Text(item.time).font(.fig(13)).foregroundStyle(theme.muted)
                                 }
@@ -65,13 +65,13 @@ struct FriendsView: View {
                         }
                         .buttonStyle(.plain)
                         HStack(spacing: 8) {
-                            PillButton(title: "Cheer · \(item.cheers + (cheered ? 1 : 0))",
+                            PillButton(title: L("Cheer · %lld", item.cheers + (cheered ? 1 : 0)),
                                        icon: cheered ? "heart.fill" : "heart",
                                        bg: cheered ? theme.at : theme.chip, fg: cheered ? theme.ad : theme.text, height: 34) {
                                 model.toggle(\.cheered, item.id)
                             }
                             if item.isPlan {
-                                PillButton(title: joined ? "Joined" : "Join plan", icon: joined ? "checkmark" : nil,
+                                PillButton(title: joined ? L("Joined") : L("Join plan"), icon: joined ? "checkmark" : nil,
                                            bg: joined ? theme.at : theme.a, fg: joined ? theme.ad : .white, height: 34) {
                                     model.toggle(\.joined, item.id)
                                 }
@@ -92,28 +92,28 @@ struct FriendsView: View {
             BoardRow(id: $0.id, name: $0.name, initial: $0.initial, hue: $0.hue,
                      minutes: $0.weekMinutes, streak: $0.streak, today: $0.practisedToday, isMe: false)
         }
-        rows.append(BoardRow(id: "me", name: "You", initial: model.s.user?.initial ?? "Y", hue: theme.accent.hue,
+        rows.append(BoardRow(id: "me", name: L("You"), initial: model.s.user?.initial ?? "Y", hue: theme.accent.hue,
                              minutes: model.myWeekMinutes, streak: model.s.streak, today: true, isMe: true))
         rows.sort { $0.minutes > $1.minutes }
         return VStack(spacing: 0) {
             ForEach(Array(rows.enumerated()), id: \.element.id) { i, r in
                 let nudged = model.s.nudged.contains(r.id)
                 HStack(spacing: 12) {
-                    Text("\(i + 1)").font(.fig(14, .bold)).foregroundStyle(theme.muted).frame(width: 18)
+                    Text(verbatim: "\(i + 1)").font(.fig(14, .bold)).foregroundStyle(theme.muted).frame(width: 18)
                     Avatar(initial: r.initial, hue: Hue(h: r.hue), size: 36)
                     VStack(alignment: .leading, spacing: 1) {
                         Text(r.name).font(.fig(15, .semibold))
-                        Text("\(r.streak)-day streak · \(r.today ? "practised today" : "not yet today")")
+                        Text(L("%lld-day streak · %@", r.streak, r.today ? L("practised today") : L("not yet today")))
                             .font(.fig(12)).foregroundStyle(theme.muted)
                     }
                     Spacer(minLength: 0)
                     if !r.isMe && !r.today {
-                        PillButton(title: nudged ? "Nudged" : "Nudge", bg: nudged ? theme.at : theme.chip,
+                        PillButton(title: nudged ? L("Nudged") : L("Nudge"), bg: nudged ? theme.at : theme.chip,
                                    fg: nudged ? theme.ad : theme.text, height: 30) {
                             if !nudged { model.toggle(\.nudged, r.id) }
                         }
                     }
-                    Text("\(r.minutes) min").font(.fig(14, .semibold))
+                    Text(L("%lld min", r.minutes)).font(.fig(14, .semibold))
                 }
                 .padding(.horizontal, 14).padding(.vertical, 12)
                 .background(r.isMe ? theme.at : .clear)
@@ -132,29 +132,29 @@ struct FriendsView: View {
         let sprintMine = 20 + model.doneMinutesToday
         let you = theme.a
         let active: [Challenge] = [
-            Challenge(title: "7-day streak duel", who: "You and Marco", left: "2 days left",
-                      note: "Day 5 of 7 — you’re both still in.",
-                      rows: [.init(name: "You", value: 5.0 / 7, label: "5/7", color: you),
+            Challenge(title: L("7-day streak duel"), who: L("You and Marco"), left: L("2 days left"),
+                      note: L("Day 5 of 7 — you’re both still in."),
+                      rows: [.init(name: L("You"), value: 5.0 / 7, label: "5/7", color: you),
                              .init(name: "Marco", value: 5.0 / 7, label: "5/7", color: Hue(h: 110).base)]),
-            Challenge(title: "Weekend sprint", who: "You, Lena and Priya", left: "Ends Sunday",
-                      note: "Everyone aims for 60 min — finish together, celebrate together.",
-                      rows: [.init(name: "You", value: min(1, Double(sprintMine) / 60), label: "\(sprintMine)m", color: you),
+            Challenge(title: L("Weekend sprint"), who: L("You, Lena and Priya"), left: L("Ends Sunday"),
+                      note: L("Everyone aims for 60 min — finish together, celebrate together."),
+                      rows: [.init(name: L("You"), value: min(1, Double(sprintMine) / 60), label: "\(sprintMine)m", color: you),
                              .init(name: "Lena", value: 0.75, label: "45m", color: Hue(h: 20).base),
                              .init(name: "Priya", value: 0.25, label: "15m", color: Hue(h: 300).base)])
         ]
-        let newOnes = [("duel", "Streak duel", "Keep a streak going with a friend"),
-                       ("sprint", "Minutes sprint", "A shared goal for the weekend"),
-                       ("plan", "Learn the same plan", "ChatGPT builds one plan for both of you")]
+        let newOnes = [("duel", L("Streak duel"), L("Keep a streak going with a friend")),
+                       ("sprint", L("Minutes sprint"), L("A shared goal for the weekend")),
+                       ("plan", L("Learn the same plan"), L("ChatGPT builds one plan for both of you"))]
         return VStack(alignment: .leading, spacing: 10) {
             ForEach(active, id: \.title) { c in
                 VStack(alignment: .leading, spacing: 12) {
                     HStack(alignment: .firstTextBaseline) {
                         VStack(alignment: .leading, spacing: 1) {
-                            Text(c.title).font(.fig(17, .bold))
-                            Text(c.who).font(.fig(13)).foregroundStyle(theme.muted)
+                            Text(verbatim: c.title).font(.fig(17, .bold))
+                            Text(verbatim: c.who).font(.fig(13)).foregroundStyle(theme.muted)
                         }
                         Spacer()
-                        Text(c.left).font(.fig(12, .semibold)).foregroundStyle(theme.ad)
+                        Text(verbatim: c.left).font(.fig(12, .semibold)).foregroundStyle(theme.ad)
                             .padding(.horizontal, 10).frame(height: 26).background(theme.at, in: Capsule())
                     }
                     ForEach(c.rows, id: \.name) { row in
@@ -168,7 +168,7 @@ struct FriendsView: View {
                 }
                 .card()
             }
-            SectionLabel(text: "Start something new").padding(.top, 8)
+            SectionLabel(text: L("Start something new")).padding(.top, 8)
             VStack(spacing: 0) {
                 ForEach(Array(newOnes.enumerated()), id: \.element.0) { i, n in
                     let on = model.s.startedChallenges.contains(n.0)
@@ -178,7 +178,7 @@ struct FriendsView: View {
                             Text(n.2).font(.fig(13)).foregroundStyle(theme.muted)
                         }
                         Spacer()
-                        PillButton(title: on ? "Invite sent" : "Start", bg: on ? theme.at : theme.chip, fg: on ? theme.ad : theme.text, height: 34) {
+                        PillButton(title: on ? L("Invite sent") : L("Start"), bg: on ? theme.at : theme.chip, fg: on ? theme.ad : theme.text, height: 34) {
                             if !on { model.toggle(\.startedChallenges, n.0) }
                         }
                     }
@@ -222,7 +222,7 @@ struct FriendChatView: View {
 
     var body: some View {
         let f = model.friend(friendID)
-        let langName = f.flatMap { model.language($0.chatLang)?.name } ?? "Spanish"
+        let langName = f.flatMap { model.language($0.chatLang)?.name } ?? ""
         let messages = model.friendMessages(friendID)
 
         VStack(spacing: 0) {
@@ -230,8 +230,8 @@ struct FriendChatView: View {
                 BackButton { dismiss() }
                 if let f { Avatar(initial: f.initial, hue: Hue(h: f.hue), size: 40) }
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(f?.name ?? "").font(.fig(16, .bold))
-                    Text("Practising \(langName) together").font(.fig(13)).foregroundStyle(theme.muted)
+                    Text(verbatim: f?.name ?? "").font(.fig(16, .bold))
+                    Text(L("Practising %@ together", langName)).font(.fig(13)).foregroundStyle(theme.muted)
                 }
                 Spacer()
             }
@@ -244,13 +244,13 @@ struct FriendChatView: View {
                             switch m.role {
                             case .correction:
                                 CorrectionBubble(wrong: m.wrong ?? "", right: m.right ?? "", note: m.note ?? "",
-                                                 header: "ChatGPT · only you see this")
+                                                 header: L("ChatGPT · only you see this"))
                             default:
                                 ChatBubble(text: m.text, mine: m.role == .me)
                             }
                         }
                         if model.friendTyping {
-                            TypingIndicator(label: "\(f?.firstName ?? "") is typing…")
+                            TypingIndicator(label: L("%@ is typing…", f?.firstName ?? ""))
                         }
                         Color.clear.frame(height: 1).id("bottom")
                     }
@@ -263,14 +263,14 @@ struct FriendChatView: View {
             }
 
             HStack {
-                PillButton(title: "Suggest a reply", icon: "sparkles", bg: theme.at, fg: theme.ad, height: 34) {
+                PillButton(title: L("Suggest a reply"), icon: "sparkles", bg: theme.at, fg: theme.ad, height: 34) {
                     if let f, let s = SampleFriends.chats[f.chatLang]?.suggestion { draft = s }
                 }
                 Spacer()
             }
             .padding(.horizontal, 20).padding(.top, 4)
 
-            ChatInputBar(text: $draft, placeholder: "Write in \(langName)…", disabled: model.friendTyping) {
+            ChatInputBar(text: $draft, placeholder: L("Write in %@…", langName), disabled: model.friendTyping) {
                 let t = draft
                 draft = ""
                 Task { await model.sendFriend(t, to: friendID) }

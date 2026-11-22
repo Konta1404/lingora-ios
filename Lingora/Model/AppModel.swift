@@ -2,12 +2,12 @@ import SwiftUI
 import Combine
 import AuthenticationServices
 import UserNotifications
+import FirebaseAuth
 
 enum AppTab: Hashable { case today, plan, tutor, friends, me }
 
 enum OnboardingStep: Hashable {
     case email(login: Bool)
-    case connect
     case languages
     case levels
     case plan
@@ -18,7 +18,11 @@ enum MeRoute: Hashable { case addLanguage, addLevels }
 @MainActor
 final class AppModel: ObservableObject {
     @Published var s: PersistedState
-    @Published var apiKey: String?
+    @Published var vocab: VocabProgressStore
+
+    // Auth
+    @Published var signedInUID: String?
+    @Published var authBusy = false
 
     // Navigation
     @Published var tab: AppTab = .today
@@ -29,6 +33,7 @@ final class AppModel: ObservableObject {
     @Published var tutorLang: String?
     @Published var lessonTask: PlanTask?
     @Published var showAddFriend = false
+    @Published var showWords = false
 
     // Plan generation
     @Published var generating = false
@@ -48,42 +53,64 @@ final class AppModel: ObservableObject {
     private var friendReplyIndex = 0
     private var bag = Set<AnyCancellable>()
     private var adaptInFlight = false
+    private var authHandle: AuthStateDidChangeListenerHandle?
+    private var cloudLoaded = false
 
-    nonisolated private static var fileURL: URL {
+    let ai = AIService()
+
+    nonisolated private static func file(_ name: String) -> URL {
         let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        return dir.appendingPathComponent("lingora-state.json")
+        return dir.appendingPathComponent(name)
     }
 
     init() {
-        if let data = try? Data(contentsOf: Self.fileURL),
-           let saved = try? JSONDecoder().decode(PersistedState.self, from: data) {
-            s = saved
-        } else {
-            s = PersistedState()
-        }
-        apiKey = Keychain.get("openai")
+        s = (try? Data(contentsOf: Self.file("lingora-state.json"))).flatMap { try? JSONDecoder().decode(PersistedState.self, from: $0) } ?? PersistedState()
+        vocab = (try? Data(contentsOf: Self.file("lingora-vocab.json"))).flatMap { try? JSONDecoder().decode(VocabProgressStore.self, from: $0) } ?? VocabProgressStore()
+
         $s.dropFirst()
-            .debounce(for: .milliseconds(400), scheduler: RunLoop.main)
-            .sink { state in
-                if let data = try? JSONEncoder().encode(state) { try? data.write(to: Self.fileURL, options: .atomic) }
+            .debounce(for: .milliseconds(600), scheduler: RunLoop.main)
+            .sink { [weak self] state in
+                if let data = try? JSONEncoder().encode(state) { try? data.write(to: Self.file("lingora-state.json"), options: .atomic) }
+                if let uid = self?.signedInUID, self?.cloudLoaded == true { CloudSync.save(state: state, uid: uid) }
             }
             .store(in: &bag)
+        $vocab.dropFirst()
+            .debounce(for: .seconds(2), scheduler: RunLoop.main)
+            .sink { [weak self] store in
+                if let data = try? JSONEncoder().encode(store) { try? data.write(to: Self.file("lingora-vocab.json"), options: .atomic) }
+                if let uid = self?.signedInUID, self?.cloudLoaded == true { CloudSync.save(vocab: store, uid: uid) }
+            }
+            .store(in: &bag)
+
+        if Backend.isConfigured {
+            signedInUID = Auth.auth().currentUser?.uid
+            authHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
+                Task { @MainActor in self?.authChanged(uid: user?.uid) }
+            }
+        }
     }
 
     // MARK: - Derived
 
     var theme: Theme { Theme(accent: s.settings.accent, direction: s.settings.direction, languageTints: s.settings.languageTints) }
-    var connected: Bool { !(apiKey ?? "").isEmpty }
-    var ai: OpenAIService { OpenAIService(apiKey: apiKey, model: s.settings.model) }
+    /// ChatGPT features run through the Lingora backend and need a signed-in Firebase user.
+    var aiAvailable: Bool { Backend.isConfigured && signedInUID != nil }
 
-    func language(_ key: String) -> Language? { Catalog.byKey[key] ?? s.customLanguages[key] }
+    func language(_ key: String) -> Language? {
+        if var l = Catalog.byKey[key] {
+            l.name = AppLocale.languageName(code: key, fallback: l.name)
+            return l
+        }
+        return s.customLanguages[key]
+    }
     var languages: [Language] { s.learning.compactMap(language) }
     func level(_ key: String) -> Level { s.levels[key] ?? .a1 }
     func hue(_ l: Language) -> Hue { theme.colors(for: l.hue) }
     func content(_ key: String) -> LanguageContent {
         LanguageContent.forLanguage(language(key) ?? Catalog.byKey["es"]!)
     }
+    var learnsGerman: Bool { s.learning.contains("de") }
 
     var todayIndex: Int { DateUtil.weekdayIndex(Date()) }
     var planIsStale: Bool {
@@ -105,61 +132,82 @@ final class AppModel: ObservableObject {
 
     // MARK: - Auth
 
-    func signInWithEmail(name: String, email: String, login: Bool) {
-        let n = name.trimmingCharacters(in: .whitespaces)
-        let existing = s.user
-        s.user = UserProfile(name: n.isEmpty ? (existing?.name ?? email.components(separatedBy: "@").first?.capitalized ?? "Friend") : n,
-                             email: email.trimmingCharacters(in: .whitespaces),
-                             handle: Self.handle(from: n.isEmpty ? email : n),
-                             authMethod: .email)
-        if login && !s.learning.isEmpty && !s.plans.isEmpty {
-            s.onboarded = true
-        } else {
-            onboardingPath.append(connected ? .languages : .connect)
+    private func authChanged(uid: String?) {
+        guard uid != signedInUID || !cloudLoaded else { return }
+        signedInUID = uid
+        cloudLoaded = false
+        guard let uid else { return }
+        Task {
+            let (remoteState, remoteVocab) = await CloudSync.load(uid: uid)
+            if let remoteState, remoteState.onboarded, !(s.onboarded && s.user?.uid == uid && s.plans.count >= remoteState.plans.count) {
+                var merged = remoteState
+                merged.user = s.user?.uid == uid ? s.user : remoteState.user
+                s = merged
+            }
+            if var remoteVocab, remoteVocab.words.count > vocab.words.count {
+                remoteVocab.translations = vocab.translations
+                vocab = remoteVocab
+            }
+            cloudLoaded = true
+            CloudSync.save(state: s, uid: uid)
+        }
+    }
+
+    private func finishSignIn(_ r: AuthResult) {
+        let name = r.name.trimmingCharacters(in: .whitespaces)
+        let finalName = name.isEmpty ? (s.user?.name ?? r.email.components(separatedBy: "@").first?.capitalized ?? L("Friend")) : name
+        s.user = UserProfile(uid: r.uid, name: finalName, email: r.email, handle: Self.handle(from: finalName),
+                             authMethod: Backend.isConfigured ? r.method : .local)
+        if r.uid != nil { signedInUID = r.uid }
+        if s.onboarded && !s.learning.isEmpty { return }
+        // Cloud state may finish onboarding for a returning user; otherwise continue setup.
+        Task {
+            try? await Task.sleep(for: .milliseconds(700))
+            if !s.onboarded { onboardingPath = [.languages] }
+        }
+    }
+
+    private func run(_ work: @escaping () async throws -> AuthResult) {
+        authBusy = true
+        Task {
+            defer { authBusy = false }
+            do {
+                finishSignIn(try await work())
+            } catch {
+                if !AuthService.isCancellation(error) { toast = AuthService.message(for: error) }
+            }
         }
     }
 
     func signInWithApple(_ result: Result<ASAuthorization, Error>) {
         switch result {
-        case .success(let auth):
-            guard let cred = auth.credential as? ASAuthorizationAppleIDCredential else { return }
-            let name = [cred.fullName?.givenName, cred.fullName?.familyName].compactMap { $0 }.joined(separator: " ")
-            let finalName = name.isEmpty ? (s.user?.name ?? "Friend") : name
-            s.user = UserProfile(name: finalName,
-                                 email: cred.email ?? s.user?.email ?? "Private relay",
-                                 handle: Self.handle(from: finalName),
-                                 authMethod: .apple,
-                                 appleUserID: cred.user)
-            onboardingPath.append(connected ? .languages : .connect)
+        case .success(let auth): run { try await AuthService.shared.completeApple(auth) }
         case .failure(let error):
-            if (error as? ASAuthorizationError)?.code == .canceled { return }
-            toast = "Apple sign-in didn't work: \(error.localizedDescription)"
+            if !AuthService.isCancellation(error) { toast = L("Apple sign-in didn't work: %@", error.localizedDescription) }
         }
     }
 
-    /// Validates and stores the key. Used by both "Continue with ChatGPT" and "Connect ChatGPT".
-    func connect(key: String) async throws {
-        let k = key.trimmingCharacters(in: .whitespacesAndNewlines)
-        try await ai.validate(key: k)
-        Keychain.set(k, for: "openai")
-        apiKey = k
-    }
+    func signInWithGoogle() { run { try await AuthService.shared.signInWithGoogle() } }
+    func signInWithOpenAI() { run { try await AuthService.shared.signInWithOpenAI() } }
 
-    func signInWithChatGPT(name: String, key: String) async throws {
-        try await connect(key: key)
-        let n = name.trimmingCharacters(in: .whitespaces).isEmpty ? "Friend" : name.trimmingCharacters(in: .whitespaces)
-        s.user = UserProfile(name: n, email: "Signed in with ChatGPT", handle: Self.handle(from: n), authMethod: .chatgpt)
-        onboardingPath.append(.languages)
-    }
-
-    func disconnect() {
-        Keychain.set(nil, for: "openai")
-        apiKey = nil
+    /// Returns an error message to show under the form, or nil on success.
+    func signInWithEmail(name: String, email: String, password: String, createAccount: Bool) async -> String? {
+        authBusy = true
+        defer { authBusy = false }
+        do {
+            finishSignIn(try await AuthService.shared.email(name: name, email: email, password: password, createAccount: createAccount))
+            return nil
+        } catch {
+            return AuthService.message(for: error)
+        }
     }
 
     func logOut() {
-        disconnect()
+        AuthService.shared.signOut()
+        signedInUID = nil
+        cloudLoaded = false
         s = PersistedState()
+        vocab = VocabProgressStore()
         onboardingPath = []
         mePath = []
         friendsPath = []
@@ -190,7 +238,7 @@ final class AppModel: ObservableObject {
         let key = "x-" + name.lowercased().split(separator: " ").joined(separator: "-")
         let nm = name.prefix(1).uppercased() + name.dropFirst()
         s.customLanguages[key] = Language(key: key, code: String(nm.prefix(2)).uppercased(), name: nm,
-                                          native: "Taught by ChatGPT", hello: "Hello", thanks: "Thanks",
+                                          native: L("Taught by ChatGPT"), hello: "Hello", thanks: "Thanks",
                                           hue: 270, isCustom: true)
         if !s.learning.contains(key) { s.learning.append(key) }
         s.levels[key] = s.levels[key] ?? .a1
@@ -198,7 +246,6 @@ final class AppModel: ObservableObject {
 
     // MARK: - Plans
 
-    /// Builds plans for the given languages (all when nil). Runs the 4-step progress animation meanwhile.
     func buildPlans(only keys: [String]? = nil) async {
         let targets = (keys ?? s.learning).compactMap(language)
         guard !targets.isEmpty, !generating else { return }
@@ -223,7 +270,7 @@ final class AppModel: ObservableObject {
         var results: [String: WeeklyPlan] = [:]
         var failed = false
 
-        if connected {
+        if aiAvailable {
             await withTaskGroup(of: (String, WeeklyPlan?).self) { group in
                 for l in targets {
                     group.addTask {
@@ -242,12 +289,11 @@ final class AppModel: ObservableObject {
         for (i, l) in targets.enumerated() where results[l.key] == nil {
             results[l.key] = FallbackPlanner.plan(for: l, index: i, weekStart: ws, goals: goals)
         }
-        // Keep at least ~2.8s so the steps read calmly.
         await ticker.value
         for (k, p) in results { s.plans[k] = p }
         s.adaptedOn = nil
         s.adaptNote = nil
-        if failed { planNotice = "ChatGPT couldn't be reached for some plans, so we used a standard plan for now." }
+        if failed { planNotice = L("ChatGPT couldn't be reached for some plans, so we used a standard plan for now.") }
         planStep = 4
         try? await Task.sleep(for: .milliseconds(400))
         generating = false
@@ -255,21 +301,20 @@ final class AppModel: ObservableObject {
         Haptics.success()
     }
 
-    nonisolated private static func convert(_ p: OpenAIService.AIPlan, lang: Language, weekStart: Date) -> WeeklyPlan {
+    nonisolated private static func convert(_ p: AIService.AIPlan, lang: Language, weekStart: Date) -> WeeklyPlan {
         var days = p.days.prefix(7).enumerated().map { di, d in
             PlanDay(focus: d.focus, tasks: d.tasks.prefix(3).enumerated().map { ti, t in
                 PlanTask(id: "\(lang.key)-\(di)-\(ti)", langKey: lang.key, type: t.type, title: t.title,
                          minutes: min(20, max(3, t.minutes)))
             })
         }
-        while days.count < 7 { days.append(PlanDay(focus: "Rest & review", tasks: [])) }
+        while days.count < 7 { days.append(PlanDay(focus: L("Rest & review"), tasks: [])) }
         return WeeklyPlan(langKey: lang.key, weekStart: weekStart, days: Array(days), rationale: p.rationale, generatedByAI: true)
     }
 
-    /// ChatGPT adapts today's tasks once a day, based on recent results.
     func adaptTodayIfNeeded() async {
         let today = DateUtil.dayKey()
-        guard s.settings.adaptDaily, connected, s.adaptedOn != today, !adaptInFlight,
+        guard s.settings.adaptDaily, aiAvailable, s.adaptedOn != today, !adaptInFlight,
               !s.results.isEmpty, !s.plans.isEmpty, !planIsStale else { return }
         adaptInFlight = true
         defer { adaptInFlight = false }
@@ -288,7 +333,7 @@ final class AppModel: ObservableObject {
             s.adaptNote = out.note
             s.adaptedOn = today
         } catch {
-            // Quietly keep the planned tasks.
+            // Keep the planned tasks.
         }
     }
 
@@ -298,6 +343,8 @@ final class AppModel: ObservableObject {
         if t.type == .roleplay {
             tutorLang = t.langKey
             tab = .tutor
+        } else if t.type == .vocabulary && t.langKey == "de" {
+            showWords = true
         } else {
             lessonTask = t
         }
@@ -320,7 +367,7 @@ final class AppModel: ObservableObject {
         let cacheKey = "\(DateUtil.dayKey())|\(t.id)"
         if let c = lessonCache[cacheKey] { return c }
         let fallback = content(t.langKey).lesson
-        guard connected, let l = language(t.langKey) else { return fallback }
+        guard aiAvailable, let l = language(t.langKey) else { return fallback }
         do {
             var c = try await ai.lesson(language: l, level: level(t.langKey), task: t)
             if c.question.options.count < 2 { return fallback }
@@ -328,19 +375,19 @@ final class AppModel: ObservableObject {
             lessonCache[cacheKey] = c
             return c
         } catch {
-            toast = "ChatGPT couldn't prepare this lesson, so here's a standard one."
+            toast = L("ChatGPT couldn't prepare this lesson, so here's a standard one.")
             return fallback
         }
     }
 
-    func checkWriting(_ t: PlanTask, lesson: LessonContent, answer: String) async -> OpenAIService.WritingCheck {
-        let offline = OpenAIService.WritingCheck(
+    func checkWriting(_ t: PlanTask, lesson: LessonContent, answer: String) async -> AIService.WritingCheck {
+        let offline = AIService.WritingCheck(
             correct: false,
             feedback: answer.trimmingCharacters(in: .whitespaces).isEmpty
-                ? "No worries — try saying it out loud once before moving on."
-                : "Nice work. Compare word order with the model answer.",
+                ? L("No worries — try saying it out loud once before moving on.")
+                : L("Nice work. Compare word order with the model answer."),
             modelAnswer: lesson.writing.modelAnswer)
-        guard connected, let l = language(t.langKey) else { return offline }
+        guard aiAvailable, let l = language(t.langKey) else { return offline }
         do {
             return try await ai.checkWriting(language: l, prompt: lesson.writing.prompt,
                                              modelAnswer: lesson.writing.modelAnswer, answer: answer)
@@ -376,7 +423,7 @@ final class AppModel: ObservableObject {
         tutorTyping = true
         defer { tutorTyping = false }
 
-        if connected {
+        if aiAvailable {
             do {
                 let turn = try await ai.tutorTurn(language: l, level: level(key), scene: tutorScene(key), history: msgs)
                 if turn.hasCorrection, !turn.right.isEmpty {
@@ -388,7 +435,7 @@ final class AppModel: ObservableObject {
                 markRoleplayIfEarned(key)
                 return
             } catch {
-                toast = "ChatGPT didn't answer — \(error.localizedDescription)"
+                toast = L("ChatGPT didn't answer — %@", Backend.message(for: error))
             }
         }
         try? await Task.sleep(for: .milliseconds(1100))
@@ -399,12 +446,11 @@ final class AppModel: ObservableObject {
         markRoleplayIfEarned(key)
     }
 
-    /// Three replies in today's roleplay language count as finishing that roleplay.
     private func markRoleplayIfEarned(_ key: String) {
         let mine = (s.tutorThreads[key] ?? []).filter { $0.role == .me }.count
         guard mine >= 3, let rp = todayTasks.first(where: { $0.langKey == key && $0.type == .roleplay }), !isDone(rp) else { return }
         complete(rp, score: 3)
-        toast = "Roleplay done — nicely handled."
+        toast = L("Roleplay done — nicely handled.")
     }
 
     // MARK: - Friends
@@ -423,7 +469,7 @@ final class AppModel: ObservableObject {
         friendTyping = true
         defer { friendTyping = false }
 
-        let svc: OpenAIService? = connected ? ai : nil
+        let svc: AIService? = aiAvailable ? ai : nil
         let lang = language(f.chatLang)
         async let correction = Self.correction(svc, message: t, language: lang)
         try? await Task.sleep(for: .milliseconds(1400))
@@ -435,7 +481,7 @@ final class AppModel: ObservableObject {
         s.friendThreads[id] = msgs
     }
 
-    nonisolated private static func correction(_ svc: OpenAIService?, message: String, language: Language?) async -> OpenAIService.Correction? {
+    nonisolated private static func correction(_ svc: AIService?, message: String, language: Language?) async -> AIService.Correction? {
         guard let svc, let language else { return nil }
         return try? await svc.correct(message: message, language: language)
     }
@@ -445,6 +491,44 @@ final class AppModel: ObservableObject {
         Haptics.tap()
     }
 
+    // MARK: - German vocabulary
+
+    var vocabLanguage: String { AppLocale.tag }
+
+    func translations(for id: String) -> [String] {
+        vocab.translations[normalizedVocabLang]?[id] ?? []
+    }
+
+    var normalizedVocabLang: String {
+        let parts = vocabLanguage.replacingOccurrences(of: "_", with: "-").split(separator: "-").map(String.init)
+        guard let lang = parts.first?.lowercased() else { return "en" }
+        if let script = parts.first(where: { $0.count == 4 }) { return "\(lang)-\(script.prefix(1).uppercased())\(script.dropFirst().lowercased())" }
+        return lang
+    }
+
+    /// Fetches translations into the user's language for words that don't have one cached yet.
+    func prefetchTranslations(for words: [VocabWord]) async {
+        guard aiAvailable else { return }
+        let lang = normalizedVocabLang
+        let missing = words.map(\.id).filter { vocab.translations[lang]?[$0] == nil }
+        guard !missing.isEmpty else { return }
+        for chunk in stride(from: 0, to: missing.count, by: 40).map({ Array(missing[$0..<min($0 + 40, missing.count)]) }) {
+            do {
+                let res = try await ai.translateWords(ids: chunk)
+                var table = vocab.translations[lang] ?? [:]
+                for (id, t) in res.translations { table[id] = t }
+                vocab.translations[lang] = table
+            } catch {
+                toast = L("Couldn't load translations — %@", Backend.message(for: error))
+                return
+            }
+        }
+    }
+
+    func recordVocab(_ id: String, correct: Bool) {
+        VocabEngine.record(&vocab, id: id, correct: correct)
+    }
+
     // MARK: - Reminders
 
     func setReminders(_ on: Bool) {
@@ -452,11 +536,13 @@ final class AppModel: ObservableObject {
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: ["daily"])
         guard on else { return }
+        let title = L("A calm ten minutes?")
+        let body = L("Today's tasks are ready whenever you are.")
         center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
             guard granted else { return }
             let content = UNMutableNotificationContent()
-            content.title = "A calm ten minutes?"
-            content.body = "Today's tasks are ready whenever you are."
+            content.title = title
+            content.body = body
             var comps = DateComponents()
             comps.hour = 19
             let req = UNNotificationRequest(identifier: "daily", content: content,

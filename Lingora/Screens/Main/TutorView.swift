@@ -17,15 +17,15 @@ struct TutorView: View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    ScreenTitle(text: "Tutor")
+                    ScreenTitle(text: L("Tutor"))
                     Spacer()
                     Menu {
-                        Button("Start a fresh conversation", systemImage: "arrow.clockwise") { model.resetTutor(key) }
+                        Button(L("Start a fresh conversation"), systemImage: "arrow.clockwise") { model.resetTutor(key) }
                     } label: {
                         Image(systemName: "ellipsis").font(.system(size: 16, weight: .semibold))
                             .foregroundStyle(theme.text).frame(width: 40, height: 40).background(theme.chip, in: Circle())
                     }
-                    .accessibilityLabel("More")
+                    .accessibilityLabel(L("More"))
                 }
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
@@ -40,7 +40,7 @@ struct TutorView: View {
                 }
                 HStack(alignment: .top, spacing: 10) {
                     Image(systemName: "theatermasks").padding(.top, 2)
-                    Text("**Roleplay:** \(model.tutorScene(key))")
+                    MD(L("**Roleplay:** %@", model.tutorScene(key)))
                 }
                 .tintedNote(theme.at, theme.ad, radius: theme.radius)
             }
@@ -58,7 +58,7 @@ struct TutorView: View {
                             }
                         }
                         if model.tutorTyping {
-                            TypingIndicator(label: "Tutor is typing…").id("typing")
+                            TypingIndicator(label: L("Tutor is typing…")).id("typing")
                         }
                         Color.clear.frame(height: 1).id("bottom")
                     }
@@ -81,7 +81,7 @@ struct TutorView: View {
             }
             .padding(.top, 4)
 
-            ChatInputBar(text: $draft, placeholder: "Reply in \(lang?.name ?? "Spanish")…", disabled: model.tutorTyping) {
+            ChatInputBar(text: $draft, placeholder: L("Reply in %@…", lang?.name ?? ""), disabled: model.tutorTyping) {
                 send(draft)
             }
         }

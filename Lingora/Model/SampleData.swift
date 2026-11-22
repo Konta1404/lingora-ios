@@ -46,31 +46,31 @@ struct LanguageContent {
     var suggestions: [String]
 
     static let builtIn: [String: LanguageContent] = [
-        "es": .init(grammar: "Ser vs. estar", scene: "Ordering tapas in Madrid",
-                    lesson: .init(card: .init(front: "la cuenta", back: "the bill", example: "La cuenta, por favor."),
-                                  question: .init(prompt: "Mi hermana ___ cansada hoy.", options: ["es", "está", "son", "ser"], answer: 1, why: "Temporary states use estar."),
-                                  writing: .init(prompt: "Translate: “I would like a coffee, please.”", modelAnswer: "Quisiera un café, por favor.")),
+        "es": .init(grammar: "Ser vs. estar", scene: L("Ordering tapas in Madrid"),
+                    lesson: .init(card: .init(front: "la cuenta", back: L("the bill"), example: "La cuenta, por favor."),
+                                  question: .init(prompt: "Mi hermana ___ cansada hoy.", options: ["es", "está", "son", "ser"], answer: 1, why: L("Temporary states use estar.")),
+                                  writing: .init(prompt: L("Translate: “I would like a coffee, please.”"), modelAnswer: "Quisiera un café, por favor.")),
                     tutorOpener: "¡Hola! ¿Qué te pongo?",
                     replies: ["Muy bien. ¿Para tomar aquí o para llevar?", "Son 6,50 euros. ¿Algo más?", "¡Perfecto! Que aproveche."],
                     suggestions: ["Agua con gas, por favor.", "¿Qué me recomienda?", "¿Puedo pagar con tarjeta?"]),
-        "it": .init(grammar: "Partitive articles", scene: "Ordering at a bar in Rome",
-                    lesson: .init(card: .init(front: "il conto", back: "the bill", example: "Il conto, per favore."),
-                                  question: .init(prompt: "Vorrei ___ pane, per favore.", options: ["del", "dello", "della", "dei"], answer: 0, why: "Pane is masculine and starts with a consonant, so del."),
-                                  writing: .init(prompt: "Translate: “I would like a coffee, please.”", modelAnswer: "Vorrei un caffè, per favore.")),
+        "it": .init(grammar: "Partitive articles", scene: L("Ordering at a bar in Rome"),
+                    lesson: .init(card: .init(front: "il conto", back: L("the bill"), example: "Il conto, per favore."),
+                                  question: .init(prompt: "Vorrei ___ pane, per favore.", options: ["del", "dello", "della", "dei"], answer: 0, why: L("Pane is masculine and starts with a consonant, so del.")),
+                                  writing: .init(prompt: L("Translate: “I would like a coffee, please.”"), modelAnswer: "Vorrei un caffè, per favore.")),
                     tutorOpener: "Buongiorno! Cosa prende?",
                     replies: ["Ottimo. Desidera anche un cornetto?", "Sono 3 euro. Paga alla cassa, grazie.", "Perfetto, buona giornata!"],
                     suggestions: ["Al banco, grazie.", "Cosa mi consiglia?", "Posso pagare con la carta?"]),
-        "ja": .init(grammar: "Particles を and が", scene: "Ordering at a Tokyo café",
-                    lesson: .init(card: .init(front: "お会計", back: "the bill", example: "お会計お願いします。"),
-                                  question: .init(prompt: "コーヒー＿ください。", options: ["を", "が", "に", "で"], answer: 0, why: "を marks the thing you are asking for."),
-                                  writing: .init(prompt: "Translate: “A coffee, please.”", modelAnswer: "コーヒーをください。")),
+        "ja": .init(grammar: "Particles を and が", scene: L("Ordering at a Tokyo café"),
+                    lesson: .init(card: .init(front: "お会計", back: L("the bill"), example: "お会計お願いします。"),
+                                  question: .init(prompt: "コーヒー＿ください。", options: ["を", "が", "に", "で"], answer: 0, why: L("を marks the thing you are asking for.")),
+                                  writing: .init(prompt: L("Translate: “A coffee, please.”"), modelAnswer: "コーヒーをください。")),
                     tutorOpener: "いらっしゃいませ！ご注文は？",
                     replies: ["ご一緒にケーキはいかがですか？", "500円です。", "ありがとうございました！"],
                     suggestions: ["ホットでお願いします。", "おすすめは何ですか？", "カードで払えますか？"]),
-        "de": .init(grammar: "Dative articles", scene: "Ordering at a café in Berlin",
-                    lesson: .init(card: .init(front: "die Rechnung", back: "the bill", example: "Die Rechnung, bitte."),
-                                  question: .init(prompt: "Ich gebe ___ Kellner das Trinkgeld.", options: ["der", "dem", "den", "des"], answer: 1, why: "“geben” takes the dative: der Kellner → dem Kellner."),
-                                  writing: .init(prompt: "Translate: “I would like a coffee, please.”", modelAnswer: "Ich hätte gern einen Kaffee, bitte.")),
+        "de": .init(grammar: "Dative articles", scene: L("Ordering at a café in Berlin"),
+                    lesson: .init(card: .init(front: "die Rechnung", back: L("the bill"), example: "Die Rechnung, bitte."),
+                                  question: .init(prompt: "Ich gebe ___ Kellner das Trinkgeld.", options: ["der", "dem", "den", "des"], answer: 1, why: L("“geben” takes the dative: der Kellner → dem Kellner.")),
+                                  writing: .init(prompt: L("Translate: “I would like a coffee, please.”"), modelAnswer: "Ich hätte gern einen Kaffee, bitte.")),
                     tutorOpener: "Guten Morgen! Was darf es sein?",
                     replies: ["Sehr gut! Möchten Sie auch etwas essen?", "Das macht 4,20 Euro.", "Einen schönen Tag noch!"],
                     suggestions: ["Mit Milch, bitte.", "Was empfehlen Sie?", "Kann ich mit Karte zahlen?"])
@@ -79,13 +79,13 @@ struct LanguageContent {
     static func forLanguage(_ l: Language) -> LanguageContent {
         if let c = builtIn[l.key] { return c }
         let others = ["Merci", "Danke", "Gracias"].filter { $0 != l.thanks }.prefix(2)
-        return .init(grammar: "Basic sentence order", scene: "Introducing yourself",
-                     lesson: .init(card: .init(front: l.hello, back: "hello", example: "\(l.hello)! — the everyday greeting."),
-                                   question: .init(prompt: "How do you say “thank you” in \(l.name)?", options: [l.hello, l.thanks] + others, answer: 1, why: "\(l.thanks) is the everyday way to say thanks."),
-                                   writing: .init(prompt: "Write “Good morning, how are you?” in \(l.name).", modelAnswer: "ChatGPT checks your answer and suggests a natural version.")),
-                     tutorOpener: "\(l.hello)! Let’s practise \(l.name). Tell me a little about yourself.",
-                     replies: ["Great start — tell me more.", "Nice! What do you do for work?", "Lovely. Let’s keep going tomorrow."],
-                     suggestions: [l.hello, l.thanks, "How do I say…?"])
+        return .init(grammar: L("Basic sentence order"), scene: L("Introducing yourself"),
+                     lesson: .init(card: .init(front: l.hello, back: L("hello"), example: L("%@! — the everyday greeting.", l.hello)),
+                                   question: .init(prompt: L("How do you say “thank you” in %@?", l.name), options: [l.hello, l.thanks] + others, answer: 1, why: L("%@ is the everyday way to say thanks.", l.thanks)),
+                                   writing: .init(prompt: L("Write “Good morning, how are you?” in %@.", l.name), modelAnswer: L("ChatGPT checks your answer and suggests a natural version."))),
+                     tutorOpener: L("%@! Let’s practise %@. Tell me a little about yourself.", l.hello, l.name),
+                     replies: [L("Great start — tell me more."), L("Nice! What do you do for work?"), L("Lovely. Let’s keep going tomorrow.")],
+                     suggestions: [l.hello, l.thanks, L("How do I say…?")])
     }
 }
 
@@ -100,42 +100,42 @@ enum SampleFriends {
 
     struct Suggested: Identifiable { var id: String; var name: String; var handle: String; var sub: String; var hue: Double }
     static let suggested: [Suggested] = [
-        .init(id: "noah", name: "Noah Berg", handle: "@noahb", sub: "learning Spanish", hue: 200),
-        .init(id: "mia", name: "Mia Costa", handle: "@miac", sub: "3 mutual friends", hue: 60),
-        .init(id: "omar", name: "Omar Haddad", handle: "@omar.h", sub: "learning Japanese", hue: 160)
+        .init(id: "noah", name: "Noah Berg", handle: "@noahb", sub: L("learning Spanish"), hue: 200),
+        .init(id: "mia", name: "Mia Costa", handle: "@miac", sub: L("3 mutual friends"), hue: 60),
+        .init(id: "omar", name: "Omar Haddad", handle: "@omar.h", sub: L("learning Japanese"), hue: 160)
     ]
 
     struct FeedItem: Identifiable { var id: String; var friendID: String; var text: String; var time: String; var cheers: Int; var isPlan: Bool }
     static let feed: [FeedItem] = [
-        .init(id: "lena0", friendID: "lena", text: "finished a roleplay in Italian: “Ordering at a bar in Rome”", time: "12 min ago", cheers: 3, isPlan: false),
-        .init(id: "yuki1", friendID: "yuki", text: "reached a 54-day streak", time: "1 h ago", cheers: 8, isPlan: false),
-        .init(id: "marco2", friendID: "marco", text: "shared a plan: Spanish for travel · 4 weeks", time: "3 h ago", cheers: 2, isPlan: true),
-        .init(id: "sam3", friendID: "sam", text: "completed 3 ser vs. estar drills", time: "Yesterday", cheers: 1, isPlan: false)
+        .init(id: "lena0", friendID: "lena", text: L("finished a roleplay in Italian: “Ordering at a bar in Rome”"), time: L("12 min ago"), cheers: 3, isPlan: false),
+        .init(id: "yuki1", friendID: "yuki", text: L("reached a 54-day streak"), time: L("1 h ago"), cheers: 8, isPlan: false),
+        .init(id: "marco2", friendID: "marco", text: L("shared a plan: Spanish for travel · 4 weeks"), time: L("3 h ago"), cheers: 2, isPlan: true),
+        .init(id: "sam3", friendID: "sam", text: L("completed 3 ser vs. estar drills"), time: L("Yesterday"), cheers: 1, isPlan: false)
     ]
 
     struct ChatSeed { var seed: [ChatMessage]; var replies: [String]; var suggestion: String }
     static let chats: [String: ChatSeed] = [
         "it": .init(seed: [.init(role: .them, text: "Ciao Ana! Com’è andata la giornata?"),
                            .init(role: .me, text: "Ciao! È stato bene, ho lavorato molto."),
-                           .init(role: .correction, wrong: "È stato bene", right: "È andata bene", note: "“Andare” fits better for how a day went."),
+                           .init(role: .correction, wrong: "È stato bene", right: "È andata bene", note: L("“Andare” fits better for how a day went.")),
                            .init(role: .them, text: "Anche io! Stasera guardo un film italiano.")],
                     replies: ["Che bello! Quale film?", "Domani facciamo la sfida dei 20 minuti?", "A domani, buona serata!"],
                     suggestion: "Che film guardi? Io adoro Fellini."),
         "es": .init(seed: [.init(role: .them, text: "¡Hola! ¿Practicamos un poco?"),
                            .init(role: .me, text: "¡Sí! Hoy soy muy cansada."),
-                           .init(role: .correction, wrong: "soy muy cansada", right: "estoy muy cansada", note: "Temporary states use estar."),
+                           .init(role: .correction, wrong: "soy muy cansada", right: "estoy muy cansada", note: L("Temporary states use estar.")),
                            .init(role: .them, text: "Jaja, yo también. ¿Qué hiciste hoy?")],
                     replies: ["¡Qué bien! Cuéntame más.", "¿Hacemos el reto de 20 minutos mañana?", "¡Hasta mañana!"],
                     suggestion: "Fui al mercado y compré fruta."),
         "en": .init(seed: [.init(role: .them, text: "Hi! Shall we practise some English?"),
                            .init(role: .me, text: "Yes! I am learning since two years."),
-                           .init(role: .correction, wrong: "I am learning since two years", right: "I’ve been learning for two years", note: "Use the present perfect continuous + “for”."),
+                           .init(role: .correction, wrong: "I am learning since two years", right: "I’ve been learning for two years", note: L("Use the present perfect continuous + “for”.")),
                            .init(role: .them, text: "Nice! What got you started?")],
                     replies: ["Love that. Tell me more!", "Up for the 20-minute challenge tomorrow?", "Talk tomorrow!"],
                     suggestion: "A trip to London, actually!"),
         "fr": .init(seed: [.init(role: .them, text: "Salut ! On pratique un peu ?"),
                            .init(role: .me, text: "Oui ! Je suis allé au marché hier."),
-                           .init(role: .correction, wrong: "Je suis allé", right: "Je suis allée", note: "The participle agrees with a female subject."),
+                           .init(role: .correction, wrong: "Je suis allé", right: "Je suis allée", note: L("The participle agrees with a female subject.")),
                            .init(role: .them, text: "Super ! Qu’est-ce que tu as acheté ?")],
                     replies: ["Génial, raconte-moi !", "On fait le défi des 20 minutes demain ?", "À demain !"],
                     suggestion: "J’ai acheté des fruits et du fromage.")
@@ -147,16 +147,16 @@ enum FallbackPlanner {
     static func plan(for lang: Language, index: Int, weekStart: Date, goals: [String]) -> WeeklyPlan {
         let c = LanguageContent.forLanguage(lang)
         let today: [(TaskType, String, Int, Bool)] = index % 2 == 0
-            ? [(.vocabulary, "Café & restaurant words", 6, false), (.roleplay, c.scene, 8, false)]
-            : [(.grammar, c.grammar, 7, true), (.listening, "Short dialogue at the counter", 6, false)]
+            ? [(.vocabulary, L("Café & restaurant words"), 6, false), (.roleplay, c.scene, 8, false)]
+            : [(.grammar, c.grammar, 7, true), (.listening, L("Short dialogue at the counter"), 6, false)]
         let raw: [(String, [(TaskType, String, Int, Bool)])] = [
-            ("Vocabulary & listening", [(.vocabulary, "Everyday phrases", 6, false), (.listening, "Ordering at the counter", 5, false)]),
-            ("Grammar & writing", [(.grammar, c.grammar, 7, false), (.writing, "Describe your usual order", 5, false)]),
-            ("Reading & speaking", [(.reading, "A neighbourhood café", 6, false), (.speaking, "Shadow a native speaker", 6, false)]),
-            ("Roleplay", [(.roleplay, "Asking for directions", 10, false)]),
-            ("Mixed practice · adjusted", today),
-            ("Reading & culture", [(.reading, "Local food markets", 8, false), (.vocabulary, "New verbs · 10 cards", 5, false)]),
-            ("Weekly check-in", [(.grammar, "Mixed quiz", 8, false), (.roleplay, "Free conversation with a friend", 8, false)])
+            (L("Vocabulary & listening"), [(.vocabulary, L("Everyday phrases"), 6, false), (.listening, L("Ordering at the counter"), 5, false)]),
+            (L("Grammar & writing"), [(.grammar, c.grammar, 7, false), (.writing, L("Describe your usual order"), 5, false)]),
+            (L("Reading & speaking"), [(.reading, L("A neighbourhood café"), 6, false), (.speaking, L("Shadow a native speaker"), 6, false)]),
+            (L("Roleplay"), [(.roleplay, L("Asking for directions"), 10, false)]),
+            (L("Mixed practice · adjusted"), today),
+            (L("Reading & culture"), [(.reading, L("Local food markets"), 8, false), (.vocabulary, L("New verbs · 10 cards"), 5, false)]),
+            (L("Weekly check-in"), [(.grammar, L("Mixed quiz"), 8, false), (.roleplay, L("Free conversation with a friend"), 8, false)])
         ]
         // Rotate so the "adjusted" mixed day lands on today.
         let todayIdx = DateUtil.weekdayIndex(Date())
@@ -166,9 +166,10 @@ enum FallbackPlanner {
                 PlanTask(id: "\(lang.key)-\(di)-\(ti)", langKey: lang.key, type: t.0, title: t.1, minutes: t.2, adapted: t.3)
             })
         }
-        let g = goals.prefix(2).joined(separator: " and ").lowercased()
+        let g = goals.prefix(2).map { L($0).lowercased() }.joined(separator: L(" and "))
         return WeeklyPlan(langKey: lang.key, weekStart: weekStart, days: days,
-                          rationale: "You chose \(g.isEmpty ? "general practice" : g), so most of your \(lang.name) time goes to listening and speaking. \(c.grammar) is spaced out so it sticks.",
+                          rationale: L("You chose %@, so most of your %@ time goes to listening and speaking. %@ is spaced out so it sticks.",
+                                       g.isEmpty ? L("general practice") : g, lang.name, c.grammar),
                           generatedByAI: false)
     }
 }
@@ -199,10 +200,16 @@ enum DateUtil {
 
     static func format(_ d: Date, _ template: String) -> String {
         let f = DateFormatter()
-        f.locale = Locale(identifier: "en_GB")
+        f.locale = .current
         f.setLocalizedDateFormatFromTemplate(template)
         return f.string(from: d)
     }
 
-    static let shortDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    /// Localized short weekday names, Monday first.
+    static var shortDays: [String] {
+        var c = Calendar.current
+        c.locale = .current
+        let s = c.shortWeekdaySymbols           // Sunday first
+        return Array(s[1...]) + [s[0]]
+    }
 }

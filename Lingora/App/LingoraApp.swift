@@ -1,11 +1,14 @@
 import SwiftUI
+import GoogleSignIn
 
 @main
 struct LingoraApp: App {
-    @StateObject private var model = AppModel()
+    @StateObject private var model: AppModel
 
     init() {
         FontRegistrar.registerAll()
+        Backend.configure()
+        _model = StateObject(wrappedValue: AppModel())
     }
 
     var body: some Scene {
@@ -15,6 +18,7 @@ struct LingoraApp: App {
                 .environment(\.theme, model.theme)
                 .tint(model.theme.a)
                 .preferredColorScheme(.light)
+                .onOpenURL { url in _ = GIDSignIn.sharedInstance.handle(url) }
         }
     }
 }
@@ -60,6 +64,7 @@ struct ToastView: View {
             .background(Color(hex: 0x2b2a28), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
             .padding(.horizontal, 20)
             .padding(.top, 6)
+            .accessibilityAddTraits(.isStaticText)
     }
 }
 
@@ -70,13 +75,13 @@ struct MainTabView: View {
     var body: some View {
         TabView(selection: $model.tab) {
             NavigationStack { TodayView().toolbar(.hidden, for: .navigationBar) }
-                .tabItem { Label("Today", systemImage: "house") }
+                .tabItem { Label(L("Today"), systemImage: "house") }
                 .tag(AppTab.today)
             NavigationStack { PlanView(fromOnboarding: false).toolbar(.hidden, for: .navigationBar) }
-                .tabItem { Label("Plan", systemImage: "calendar") }
+                .tabItem { Label(L("Plan"), systemImage: "calendar") }
                 .tag(AppTab.plan)
             NavigationStack { TutorView().toolbar(.hidden, for: .navigationBar) }
-                .tabItem { Label("Tutor", systemImage: "bubble.left") }
+                .tabItem { Label(L("Tutor"), systemImage: "bubble.left") }
                 .tag(AppTab.tutor)
             NavigationStack(path: $model.friendsPath) {
                 FriendsView()
@@ -87,7 +92,7 @@ struct MainTabView: View {
                             .toolbar(.hidden, for: .tabBar)
                     }
             }
-            .tabItem { Label("Friends", systemImage: "person.2") }
+            .tabItem { Label(L("Friends"), systemImage: "person.2") }
             .tag(AppTab.friends)
             NavigationStack(path: $model.mePath) {
                 MeView()
@@ -103,11 +108,16 @@ struct MainTabView: View {
                         .toolbar(.hidden, for: .tabBar)
                     }
             }
-            .tabItem { Label("Me", systemImage: "person") }
+            .tabItem { Label(L("Me"), systemImage: "person") }
             .tag(AppTab.me)
         }
         .fullScreenCover(item: $model.lessonTask) { task in
             LessonView(task: task)
+                .environmentObject(model)
+                .environment(\.theme, model.theme)
+        }
+        .fullScreenCover(isPresented: $model.showWords) {
+            WordsView()
                 .environmentObject(model)
                 .environment(\.theme, model.theme)
         }

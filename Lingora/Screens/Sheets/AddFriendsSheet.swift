@@ -23,7 +23,7 @@ struct AddFriendsSheet: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 14) {
                 HStack {
-                    Text("Add friends").font(.fig(24, .bold))
+                    Text(L("Add friends")).font(.fig(24, .bold))
                     Spacer()
                     BackButton(systemName: "xmark") { dismiss() }
                 }
@@ -31,7 +31,7 @@ struct AddFriendsSheet: View {
 
                 HStack(spacing: 10) {
                     Image(systemName: "magnifyingglass").foregroundStyle(theme.muted)
-                    TextField("Search by username", text: $query)
+                    TextField(L("Search by username"), text: $query)
                         .font(.fig(16)).textInputAutocapitalization(.never).autocorrectionDisabled()
                 }
                 .padding(.horizontal, 16).frame(height: 52)
@@ -45,10 +45,10 @@ struct AddFriendsSheet: View {
                             Avatar(initial: String(p.name.prefix(1)), hue: Hue(h: p.hue), size: 40)
                             VStack(alignment: .leading, spacing: 1) {
                                 Text(p.name).font(.fig(15, .semibold))
-                                Text("\(p.handle) · \(p.sub)").font(.fig(13)).foregroundStyle(theme.muted)
+                                Text(verbatim: "\(p.handle) · \(p.sub)").font(.fig(13)).foregroundStyle(theme.muted)
                             }
                             Spacer()
-                            PillButton(title: added ? "Requested" : "Add", bg: added ? theme.at : theme.a,
+                            PillButton(title: added ? L("Requested") : L("Add"), bg: added ? theme.at : theme.a,
                                        fg: added ? theme.ad : .white, height: 34) {
                                 if !added { model.toggle(\.addedFriends, p.id) }
                             }
@@ -57,7 +57,7 @@ struct AddFriendsSheet: View {
                         .overlay(alignment: .top) { if i > 0 { Rectangle().fill(theme.line).frame(height: 1) } }
                     }
                     if results.isEmpty {
-                        Text("No one found. Share your link instead.").font(.fig(14)).foregroundStyle(theme.muted).padding(16)
+                        Text(L("No one found. Share your link instead.")).font(.fig(14)).foregroundStyle(theme.muted).padding(16)
                     }
                 }
                 .card(padding: 0)
@@ -68,14 +68,14 @@ struct AddFriendsSheet: View {
                         copied = true
                         Haptics.success()
                     } label: {
-                        Label(copied ? "Link copied" : "Share invite link", systemImage: copied ? "checkmark" : "link")
+                        Label(copied ? L("Link copied") : L("Share invite link"), systemImage: copied ? "checkmark" : "link")
                     }
                     .buttonStyle(.secondary)
                     Button {
                         contactsFound = true
                         Haptics.tap()
                     } label: {
-                        Label(contactsFound ? "2 friends found" : "From contacts", systemImage: "person.crop.circle")
+                        Label(contactsFound ? L("2 friends found") : L("From contacts"), systemImage: "person.crop.circle")
                     }
                     .buttonStyle(.secondary)
                 }
@@ -86,9 +86,9 @@ struct AddFriendsSheet: View {
                             .frame(width: 170, height: 170)
                             .padding(12).background(.white, in: RoundedRectangle(cornerRadius: 16))
                     }
-                    Text("Scan to add \(handle)").font(.fig(15, .semibold))
+                    Text(L("Scan to add %@", handle)).font(.fig(15, .semibold))
                     ShareLink(item: URL(string: inviteURL)!) {
-                        Label("Share", systemImage: "square.and.arrow.up").font(.fig(14, .semibold))
+                        Label(L("Share"), systemImage: "square.and.arrow.up").font(.fig(14, .semibold))
                     }
                 }
                 .frame(maxWidth: .infinity)

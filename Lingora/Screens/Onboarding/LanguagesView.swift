@@ -9,26 +9,30 @@ struct LanguagesView: View {
     @State private var initialLearning: [String] = []
 
     private var q: String { query.trimmingCharacters(in: .whitespaces).lowercased() }
-    private var allLanguages: [Language] { Catalog.all + model.s.customLanguages.values.sorted { $0.name < $1.name } }
+    private var allLanguages: [Language] { Catalog.all.compactMap { model.language($0.key) } + model.s.customLanguages.values.sorted { $0.name < $1.name } }
 
     private var matches: [Language]? {
         guard !q.isEmpty else { return nil }
-        return allLanguages.filter { $0.name.lowercased().contains(q) || $0.native.lowercased().contains(q) }
+        return allLanguages.filter {
+            $0.name.lowercased().contains(q) || $0.native.lowercased().contains(q)
+                || (Catalog.byKey[$0.key]?.name.lowercased().contains(q) ?? false)
+        }
     }
 
     private var list: [Language] {
         if let matches { return matches }
-        let popular = Catalog.popular.compactMap { Catalog.byKey[$0] }
+        let popular = Catalog.popular.compactMap { model.language($0) }
         let custom = model.s.customLanguages.values.sorted { $0.name < $1.name }
-        let rest = Catalog.all.filter { !Catalog.popular.contains($0.key) }
+        let rest = Catalog.all.filter { !Catalog.popular.contains($0.key) }.compactMap { model.language($0.key) }
+            .sorted { $0.name.localizedCompare($1.name) == .orderedAscending }
         return popular + custom + rest
     }
 
-    private var exact: Bool { allLanguages.contains { $0.name.lowercased() == q } }
+    private var exact: Bool { allLanguages.contains { $0.name.lowercased() == q || Catalog.byKey[$0.key]?.name.lowercased() == q } }
 
     private var listLabel: String {
-        guard let m = matches else { return "Popular, then all languages" }
-        return m.isEmpty ? "Not in our list — ChatGPT can still teach it" : "\(m.count) match\(m.count > 1 ? "es" : "")"
+        guard let m = matches else { return L("Popular, then all languages") }
+        return m.isEmpty ? L("Not in our list — ChatGPT can still teach it") : L("Matches: %lld", m.count)
     }
 
     var body: some View {
@@ -36,13 +40,13 @@ struct LanguagesView: View {
             SetupHeader(step: addMode ? nil : 1)
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
-                    ScreenTitle(text: addMode ? "Add a language" : "What do you want to learn?")
-                    Text("Pick as many as you like. You can study them at the same time.")
+                    ScreenTitle(text: addMode ? L("Add a language") : L("What do you want to learn?"))
+                    Text(L("Pick as many as you like. You can study them at the same time."))
                         .font(.fig(16)).foregroundStyle(theme.muted)
 
                     HStack(spacing: 10) {
                         Image(systemName: "magnifyingglass").foregroundStyle(theme.muted)
-                        TextField("Search any language", text: $query)
+                        TextField(L("Search any language"), text: $query)
                             .font(.fig(16))
                             .autocorrectionDisabled()
                             .submitLabel(.done)
@@ -55,9 +59,9 @@ struct LanguagesView: View {
 
                     if !q.isEmpty && !exact {
                         VStack(alignment: .leading, spacing: 10) {
-                            Text("ChatGPT can teach “\(query.trimmingCharacters(in: .whitespaces))” — even if it's not in our list.")
+                            Text(L("ChatGPT can teach “%@” — even if it's not in our list.", query.trimmingCharacters(in: .whitespaces)))
                                 .font(.fig(14))
-                            Button("Add \(query.trimmingCharacters(in: .whitespaces))", action: add)
+                            Button(L("Add %@", query.trimmingCharacters(in: .whitespaces)), action: add)
                                 .buttonStyle(PrimaryButtonStyle(kind: .accent, height: 44))
                         }
                         .tintedNote(theme.at, theme.ad, radius: theme.radius)
@@ -92,7 +96,7 @@ struct LanguagesView: View {
                                     .background(h.tint, in: Capsule())
                                 }
                                 .buttonStyle(.plain)
-                                .accessibilityLabel("Remove \(l.name)")
+                                .accessibilityLabel(L("Remove %@", l.name))
                             }
                         }
                     }
@@ -114,8 +118,8 @@ struct LanguagesView: View {
 
     private var ctaLabel: String {
         let n = model.languages.count
-        if n == 0 { return "Pick at least one language" }
-        return "Continue with \(n) language\(n > 1 ? "s" : "")"
+        if n == 0 { return L("Pick at least one language") }
+        return L("Continue with %lld (languages)", n)
     }
 
     private func add() {
@@ -172,8 +176,8 @@ struct LevelsView: View {
             SetupHeader(step: addMode ? nil : 2)
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
-                    ScreenTitle(text: "Your level and goals")
-                    Text("A rough guess is fine. ChatGPT adjusts as you go.")
+                    ScreenTitle(text: L("Your level and goals"))
+                    Text(L("A rough guess is fine. ChatGPT adjusts as you go."))
                         .font(.fig(16)).foregroundStyle(theme.muted)
 
                     ForEach(model.languages) { l in
@@ -200,29 +204,29 @@ struct LevelsView: View {
                                             .background(on ? theme.a : theme.chip, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                                     }
                                     .buttonStyle(.plain)
-                                    .accessibilityLabel("\(level.code) \(level.label)")
+                                    .accessibilityLabel(Text(verbatim: "\(level.code) \(level.label)"))
                                 }
                             }
                         }
                         .card()
                     }
 
-                    SectionLabel(text: "Goals").padding(.top, 6)
+                    SectionLabel(text: L("Goals")).padding(.top, 6)
                     FlowLayout(spacing: 8) {
                         ForEach(Catalog.goals, id: \.self) { g in
                             let on = model.s.goals.contains(g)
-                            PillButton(title: g, bg: on ? theme.a : theme.chip, fg: on ? .white : theme.text, height: 38) {
+                            PillButton(title: L(g), bg: on ? theme.a : theme.chip, fg: on ? .white : theme.text, height: 38) {
                                 if on { model.s.goals.removeAll { $0 == g } } else { model.s.goals.append(g) }
                                 Haptics.tap()
                             }
                         }
                     }
 
-                    SectionLabel(text: "Daily time").padding(.top, 6)
+                    SectionLabel(text: L("Daily time")).padding(.top, 6)
                     FlowLayout(spacing: 8) {
                         ForEach(Catalog.times, id: \.self) { t in
                             let on = model.s.dailyMinutes == t
-                            PillButton(title: "\(t) min", bg: on ? theme.a : theme.chip, fg: on ? .white : theme.text, height: 38) {
+                            PillButton(title: L("%lld min", t), bg: on ? theme.a : theme.chip, fg: on ? .white : theme.text, height: 38) {
                                 model.s.dailyMinutes = t
                                 Haptics.tap()
                             }
@@ -233,7 +237,7 @@ struct LevelsView: View {
                 .padding(20)
             }
             VStack {
-                Button(model.connected ? "Build my plans with ChatGPT" : "Build my plans", action: build)
+                Button(model.aiAvailable ? L("Build my plans with ChatGPT") : L("Build my plans"), action: build)
                     .buttonStyle(.primary)
             }
             .padding(.horizontal, 20).padding(.vertical, 12)
@@ -244,8 +248,8 @@ struct LevelsView: View {
     private var splitNote: String {
         let n = model.languages.count
         return n > 1
-            ? "About \(Int((Double(model.s.dailyMinutes) / Double(n)).rounded())) min per language each day. ChatGPT balances them across the week."
-            : "ChatGPT spreads this across skills through the week."
+            ? L("About %lld min per language each day. ChatGPT balances them across the week.", Int((Double(model.s.dailyMinutes) / Double(n)).rounded()))
+            : L("ChatGPT spreads this across skills through the week.")
     }
 
     private func build() {

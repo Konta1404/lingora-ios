@@ -13,7 +13,7 @@ struct LessonView: View {
     @State private var knew = false
     @State private var choice: Int?
     @State private var written = ""
-    @State private var check: OpenAIService.WritingCheck?
+    @State private var check: AIService.WritingCheck?
     @State private var checking = false
     @State private var startedAt = Date()
     @State private var speaking = false
@@ -31,7 +31,7 @@ struct LessonView: View {
             HStack(spacing: 12) {
                 BackButton(systemName: "xmark") { dismiss() }
                 ProgressBar(value: Double(min(step + 1, 3)) / 3)
-                Text("\(min(step + 1, 3)) of 3").font(.fig(13, .semibold)).foregroundStyle(theme.muted)
+                Text(L("%lld of %lld", min(step + 1, 3), 3)).font(.fig(13, .semibold)).foregroundStyle(theme.muted)
             }
             .padding(.horizontal, 20).padding(.vertical, 8)
 
@@ -41,7 +41,7 @@ struct LessonView: View {
                         if step < 3 {
                             HStack(spacing: 8) {
                                 if let lang { CodeBadge(code: lang.code, hue: theme.colors(for: lang.hue), size: 28) }
-                                Text("\(task.type.label) · \(task.title)").font(.fig(13, .semibold)).foregroundStyle(theme.muted)
+                                Text(verbatim: "\(task.type.label) · \(task.title)").font(.fig(13, .semibold)).foregroundStyle(theme.muted)
                             }
                         }
                         switch step {
@@ -60,7 +60,7 @@ struct LessonView: View {
                 Spacer()
                 VStack(spacing: 12) {
                     ProgressView().tint(theme.a)
-                    Text(model.connected ? "ChatGPT is preparing your lesson…" : "Preparing your lesson…")
+                    Text(model.aiAvailable ? L("ChatGPT is preparing your lesson…") : L("Preparing your lesson…"))
                         .font(.fig(15)).foregroundStyle(theme.muted)
                 }
                 Spacer()
@@ -79,13 +79,13 @@ struct LessonView: View {
 
     private func flashcard(_ c: LessonContent) -> some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("New word").font(.fig(theme.titleSize, .bold)).tracking(-0.6)
+            Text(L("New word")).font(.fig(theme.titleSize, .bold)).tracking(-0.6)
             Button { withAnimation(.spring(duration: 0.35)) { flipped = true } } label: {
                 VStack(spacing: 14) {
                     HStack {
                         Spacer()
                         Button { speak(c.card.front) } label: {
-                            Label(speaking ? "Playing…" : "Listen", systemImage: "speaker.wave.2")
+                            Label(speaking ? L("Playing…") : L("Listen"), systemImage: "speaker.wave.2")
                                 .font(.fig(13, .semibold)).foregroundStyle(theme.ad)
                                 .padding(.horizontal, 12).frame(height: 32).background(theme.at, in: Capsule())
                         }
@@ -106,7 +106,7 @@ struct LessonView: View {
                 .shadow(color: Color(hex: 0x2b2a28, opacity: theme.isOpen ? 0 : 0.06), radius: 14, y: 6)
             }
             .buttonStyle(.plain)
-            Text(flipped ? "Be honest — it shapes tomorrow." : "Tap the card to see the meaning")
+            Text(flipped ? L("Be honest — it shapes tomorrow.") : L("Tap the card to see the meaning"))
                 .font(.fig(14)).foregroundStyle(theme.muted).frame(maxWidth: .infinity)
         }
     }
@@ -114,7 +114,7 @@ struct LessonView: View {
     private func gapFill(_ c: LessonContent) -> some View {
         let answered = choice != nil
         return VStack(alignment: .leading, spacing: 14) {
-            Text("Fill the gap").font(.fig(theme.titleSize, .bold)).tracking(-0.6)
+            Text(L("Fill the gap")).font(.fig(theme.titleSize, .bold)).tracking(-0.6)
             Text(c.question.prompt).font(.fig(22, .semibold)).card(padding: 18)
             LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 10) {
                 ForEach(Array(c.question.options.enumerated()), id: \.offset) { i, o in
@@ -139,7 +139,7 @@ struct LessonView: View {
             }
             if answered {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(choice == c.question.answer ? "Yes, that’s it." : "Almost.").font(.fig(15, .bold))
+                    Text(choice == c.question.answer ? L("Yes, that’s it.") : L("Almost.")).font(.fig(15, .bold))
                     Text(c.question.why)
                 }
                 .tintedNote(theme.at, theme.ad, radius: theme.radius)
@@ -150,7 +150,7 @@ struct LessonView: View {
 
     private func writing(_ c: LessonContent) -> some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("Your turn").font(.fig(theme.titleSize, .bold)).tracking(-0.6)
+            Text(L("Your turn")).font(.fig(theme.titleSize, .bold)).tracking(-0.6)
             Text(c.writing.prompt).font(.fig(17, .semibold))
             TextEditor(text: $written)
                 .font(.fig(16))
@@ -162,7 +162,7 @@ struct LessonView: View {
                 .disabled(check != nil)
             if let check {
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("Model answer").font(.fig(12, .semibold)).foregroundStyle(theme.muted)
+                    Text(L("Model answer")).font(.fig(12, .semibold)).foregroundStyle(theme.muted)
                     Text(check.modelAnswer).font(.fig(17, .semibold))
                 }
                 .card()
@@ -180,11 +180,11 @@ struct LessonView: View {
             Image(systemName: "checkmark").font(.system(size: 30, weight: .bold)).foregroundStyle(.white)
                 .frame(width: 72, height: 72).background(theme.a, in: Circle())
                 .padding(.top, 40)
-            Text("Nicely done").font(.fig(theme.titleSize, .bold))
-            Text("\(lang?.name ?? "") · \(task.title)").font(.fig(15)).foregroundStyle(theme.muted)
+            Text(L("Nicely done")).font(.fig(theme.titleSize, .bold))
+            Text(verbatim: "\(lang?.name ?? "") · \(task.title)").font(.fig(15)).foregroundStyle(theme.muted)
             HStack(spacing: 10) {
-                stat("Correct", "\(score)/3")
-                stat("Time", "\(max(1, Int(Date().timeIntervalSince(startedAt) / 60))) min")
+                stat(L("Correct"), "\(score)/3")
+                stat(L("Time"), L("%lld min", max(1, Int(Date().timeIntervalSince(startedAt) / 60))))
             }
             .padding(.top, 8)
         }
@@ -207,14 +207,14 @@ struct LessonView: View {
             switch step {
             case 0:
                 HStack(spacing: 10) {
-                    Button("Not yet") { knew = false; step = 1 }.buttonStyle(PrimaryButtonStyle(kind: .chip))
-                    Button("I knew it") { knew = true; step = 1 }.buttonStyle(.primary)
+                    Button(L("Not yet")) { knew = false; step = 1 }.buttonStyle(PrimaryButtonStyle(kind: .chip))
+                    Button(L("I knew it")) { knew = true; step = 1 }.buttonStyle(.primary)
                 }
                 .disabled(!flipped)
             case 1:
-                Button("Continue") { step = 2 }.buttonStyle(.primary).disabled(choice == nil)
+                Button(L("Continue")) { step = 2 }.buttonStyle(.primary).disabled(choice == nil)
             case 2:
-                Button(check != nil ? "Finish" : (checking ? "Checking…" : "Check my answer")) {
+                Button(check != nil ? L("Finish") : (checking ? L("Checking…") : L("Check my answer"))) {
                     if check != nil { step = 3; return }
                     checking = true
                     Task {
@@ -226,7 +226,7 @@ struct LessonView: View {
                 .buttonStyle(.primary)
                 .disabled(checking)
             default:
-                Button("Back to today") {
+                Button(L("Back to today")) {
                     model.complete(task, score: score)
                     model.tab = .today
                     dismiss()

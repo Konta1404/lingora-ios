@@ -1,0 +1,330 @@
+Today	Danas	Heute	Hoy	Aujourd’hui	Oggi	Hoje	Сегодня
+Plan	Plan	Plan	Plan	Programme	Piano	Plano	План
+Tutor	Tutor	Tutor	Tutor	Tuteur	Tutor	Tutor	Репетитор
+Friends	Prijatelji	Freunde	Amigos	Amis	Amici	Amigos	Друзья
+Me	Ja	Ich	Yo	Moi	Io	Eu	Я
+Close	Zatvori	Schließen	Cerrar	Fermer	Chiudi	Fechar	Закрыть
+Back	Nazad	Zurück	Atrás	Retour	Indietro	Voltar	Назад
+Step %lld of %lld	Korak %1$lld od %2$lld	Schritt %1$lld von %2$lld	Paso %1$lld de %2$lld	Étape %1$lld sur %2$lld	Passo %1$lld di %2$lld	Etapa %1$lld de %2$lld	Шаг %1$lld из %2$lld
+On	Uključeno	Ein	Activado	Activé	Attivo	Ativado	Вкл.
+Off	Isključeno	Aus	Desactivado	Désactivé	Disattivo	Desativado	Выкл.
+Dictate	Diktiraj	Diktieren	Dictar	Dicter	Detta	Ditar	Диктовать
+Send	Pošalji	Senden	Enviar	Envoyer	Invia	Enviar	Отправить
+%lld of %lld done	Urađeno %1$lld od %2$lld	%1$lld von %2$lld erledigt	%1$lld de %2$lld hechas	%1$lld sur %2$lld faites	%1$lld di %2$lld fatte	%1$lld de %2$lld feitas	Выполнено %1$lld из %2$lld
+Sage	Žalfija	Salbei	Salvia	Sauge	Salvia	Sálvia	Шалфей
+Dusty blue	Prašnjavo plava	Staubblau	Azul empolvado	Bleu poudré	Blu polvere	Azul empoeirado	Пыльно-голубой
+Soft terracotta	Blaga terakota	Sanftes Terrakotta	Terracota suave	Terre cuite douce	Terracotta tenue	Terracota suave	Мягкая терракота
+Muted lavender	Prigušena lavanda	Gedämpftes Lavendel	Lavanda suave	Lavande douce	Lavanda tenue	Lavanda suave	Приглушённая лаванда
+Soft cards	Meke kartice	Weiche Karten	Tarjetas suaves	Cartes douces	Schede morbide	Cartões suaves	Мягкие карточки
+Open	Otvoreno	Offen	Abierto	Ouvert	Aperto	Aberto	Открытый
+Friend	Prijatelj	Freund	Amigo	Ami	Amico	Amigo	Друг
+Apple sign-in didn't work: %@	Prijava preko Apple-a nije uspjela: %@	Die Anmeldung mit Apple hat nicht geklappt: %@	No se pudo iniciar sesión con Apple: %@	La connexion avec Apple a échoué : %@	Accesso con Apple non riuscito: %@	Não foi possível entrar com a Apple: %@	Не удалось войти через Apple: %@
+Taught by ChatGPT	Predaje ChatGPT	Unterrichtet von ChatGPT	Enseñado por ChatGPT	Enseigné par ChatGPT	Insegnato da ChatGPT	Ensinado pelo ChatGPT	Преподаёт ChatGPT
+ChatGPT couldn't be reached for some plans, so we used a standard plan for now.	ChatGPT nije bio dostupan za neke planove, pa smo za sada koristili standardni plan.	ChatGPT war für einige Pläne nicht erreichbar, daher nutzen wir vorerst einen Standardplan.	No se pudo contactar con ChatGPT para algunos planes, así que por ahora usamos un plan estándar.	ChatGPT n’a pas pu être joint pour certains programmes, nous utilisons donc un programme standard pour l’instant.	ChatGPT non era raggiungibile per alcuni piani, quindi per ora usiamo un piano standard.	Não foi possível contatar o ChatGPT para alguns planos, então usamos um plano padrão por enquanto.	ChatGPT недоступен для некоторых планов, поэтому пока используется стандартный план.
+Rest & review	Odmor i ponavljanje	Pause & Wiederholung	Descanso y repaso	Repos et révision	Riposo e ripasso	Descanso e revisão	Отдых и повторение
+ChatGPT couldn't prepare this lesson, so here's a standard one.	ChatGPT nije mogao pripremiti ovu lekciju, pa evo standardne.	ChatGPT konnte diese Lektion nicht vorbereiten, hier ist eine Standardlektion.	ChatGPT no pudo preparar esta lección, así que aquí tienes una estándar.	ChatGPT n’a pas pu préparer cette leçon, voici une leçon standard.	ChatGPT non è riuscito a preparare questa lezione, ecco una lezione standard.	O ChatGPT não conseguiu preparar esta lição, então aqui está uma padrão.	ChatGPT не смог подготовить этот урок, вот стандартный.
+No worries — try saying it out loud once before moving on.	Ne brini — probaj to jednom izgovoriti naglas prije nego što nastaviš.	Kein Problem – sag es einmal laut, bevor du weitermachst.	No pasa nada: intenta decirlo en voz alta una vez antes de seguir.	Pas de souci — essaie de le dire à voix haute une fois avant de continuer.	Nessun problema: prova a dirlo ad alta voce una volta prima di andare avanti.	Tudo bem — tente dizer em voz alta uma vez antes de continuar.	Ничего страшного — произнесите это вслух один раз, прежде чем продолжить.
+Nice work. Compare word order with the model answer.	Odlično. Uporedi red riječi s primjerom odgovora.	Gut gemacht. Vergleiche die Wortstellung mit der Musterlösung.	Buen trabajo. Compara el orden de las palabras con la respuesta modelo.	Bien joué. Compare l’ordre des mots avec la réponse modèle.	Ottimo lavoro. Confronta l’ordine delle parole con la risposta modello.	Bom trabalho. Compare a ordem das palavras com a resposta modelo.	Отлично. Сравните порядок слов с образцом ответа.
+ChatGPT didn't answer — %@	ChatGPT nije odgovorio — %@	ChatGPT hat nicht geantwortet – %@	ChatGPT no respondió: %@	ChatGPT n’a pas répondu — %@	ChatGPT non ha risposto — %@	O ChatGPT não respondeu — %@	ChatGPT не ответил — %@
+Roleplay done — nicely handled.	Igra uloga završena — odlično si se snašao.	Rollenspiel geschafft – gut gemacht.	Juego de rol completado: ¡bien hecho!	Jeu de rôle terminé — bien joué.	Gioco di ruolo completato: ben fatto.	Role-play concluído — muito bem.	Ролевая игра пройдена — отлично справились.
+Couldn't load translations — %@	Prevodi se nisu mogli učitati — %@	Übersetzungen konnten nicht geladen werden – %@	No se pudieron cargar las traducciones: %@	Impossible de charger les traductions — %@	Impossibile caricare le traduzioni — %@	Não foi possível carregar as traduções — %@	Не удалось загрузить переводы — %@
+A calm ten minutes?	Mirnih deset minuta?	Zehn ruhige Minuten?	¿Diez minutos tranquilos?	Dix minutes au calme ?	Dieci minuti tranquilli?	Dez minutos tranquilos?	Спокойные десять минут?
+Today's tasks are ready whenever you are.	Današnji zadaci te čekaju kad god budeš spreman.	Die heutigen Aufgaben warten auf dich, wann immer du bereit bist.	Las tareas de hoy te esperan cuando quieras.	Les tâches du jour t’attendent quand tu veux.	Le attività di oggi ti aspettano quando vuoi.	As tarefas de hoje estão prontas quando você quiser.	Сегодняшние задания ждут вас, когда будете готовы.
+Email & password	E-pošta i lozinka	E-Mail & Passwort	Correo y contraseña	E-mail et mot de passe	Email e password	E-mail e senha	Эл. почта и пароль
+This iPhone only	Samo ovaj iPhone	Nur dieses iPhone	Solo este iPhone	Cet iPhone uniquement	Solo questo iPhone	Somente este iPhone	Только этот iPhone
+Beginner	Početnik	Anfänger	Principiante	Débutant	Principiante	Iniciante	Начальный
+Elementary	Osnovni	Grundstufe	Elemental	Élémentaire	Elementare	Básico	Элементарный
+Intermediate	Srednji	Mittelstufe	Intermedio	Intermédiaire	Intermedio	Intermediário	Средний
+Upper-intermediate	Viši srednji	Obere Mittelstufe	Intermedio alto	Intermédiaire supérieur	Intermedio superiore	Intermediário superior	Выше среднего
+Advanced	Napredni	Fortgeschritten	Avanzado	Avancé	Avanzato	Avançado	Продвинутый
+Vocabulary	Vokabular	Wortschatz	Vocabulario	Vocabulaire	Lessico	Vocabulário	Лексика
+Listening	Slušanje	Hören	Comprensión auditiva	Écoute	Ascolto	Compreensão auditiva	Аудирование
+Speaking	Govor	Sprechen	Expresión oral	Expression orale	Parlato	Fala	Говорение
+Reading	Čitanje	Lesen	Lectura	Lecture	Lettura	Leitura	Чтение
+Writing	Pisanje	Schreiben	Escritura	Écriture	Scrittura	Escrita	Письмо
+Grammar	Gramatika	Grammatik	Gramática	Grammaire	Grammatica	Gramática	Грамматика
+Roleplay	Igra uloga	Rollenspiel	Juego de rol	Jeu de rôle	Gioco di ruolo	Role-play	Ролевая игра
+Ordering tapas in Madrid	Naručivanje tapasa u Madridu	Tapas bestellen in Madrid	Pedir tapas en Madrid	Commander des tapas à Madrid	Ordinare tapas a Madrid	Pedindo tapas em Madri	Заказ тапас в Мадриде
+the bill	račun	die Rechnung	la cuenta	l’addition	il conto	a conta	счёт
+Temporary states use estar.	Za privremena stanja koristi se estar.	Für vorübergehende Zustände verwendet man estar.	Los estados temporales usan estar.	Les états temporaires utilisent estar.	Gli stati temporanei usano estar.	Estados temporários usam estar.	Для временных состояний используется estar.
+Translate: “I would like a coffee, please.”	Prevedi: „Želio bih kafu, molim.“	Übersetze: „Ich hätte gern einen Kaffee, bitte.“	Traduce: «Quisiera un café, por favor.»	Traduis : « Je voudrais un café, s’il vous plaît. »	Traduci: «Vorrei un caffè, per favore.»	Traduza: “Eu gostaria de um café, por favor.”	Переведите: «Я бы хотел кофе, пожалуйста».
+Ordering at a bar in Rome	Naručivanje u baru u Rimu	Bestellen in einer Bar in Rom	Pedir en un bar de Roma	Commander dans un bar à Rome	Ordinare al bar a Roma	Pedindo em um bar em Roma	Заказ в баре в Риме
+Pane is masculine and starts with a consonant, so del.	Pane je muškog roda i počinje suglasnikom, pa ide del.	Pane ist männlich und beginnt mit einem Konsonanten, also del.	Pane es masculino y empieza por consonante, así que del.	Pane est masculin et commence par une consonne, donc del.	Pane è maschile e inizia per consonante, quindi del.	Pane é masculino e começa com consoante, então del.	Pane мужского рода и начинается с согласной, поэтому del.
+Ordering at a Tokyo café	Naručivanje u kafiću u Tokiju	Bestellen in einem Café in Tokio	Pedir en una cafetería de Tokio	Commander dans un café à Tokyo	Ordinare in un caffè a Tokyo	Pedindo em um café em Tóquio	Заказ в кафе в Токио
+を marks the thing you are asking for.	を označava ono što tražiš.	を markiert das, worum du bittest.	を marca lo que pides.	を marque ce que tu demandes.	を indica ciò che chiedi.	を marca o que você está pedindo.	を обозначает то, что вы просите.
+Translate: “A coffee, please.”	Prevedi: „Kafu, molim.“	Übersetze: „Einen Kaffee, bitte.“	Traduce: «Un café, por favor.»	Traduis : « Un café, s’il vous plaît. »	Traduci: «Un caffè, per favore.»	Traduza: “Um café, por favor.”	Переведите: «Кофе, пожалуйста».
+Ordering at a café in Berlin	Naručivanje u kafiću u Berlinu	Bestellen in einem Café in Berlin	Pedir en una cafetería de Berlín	Commander dans un café à Berlin	Ordinare in un caffè a Berlino	Pedindo em um café em Berlim	Заказ в кафе в Берлине
+“geben” takes the dative: der Kellner → dem Kellner.	„geben“ traži dativ: der Kellner → dem Kellner.	„geben“ verlangt den Dativ: der Kellner → dem Kellner.	«geben» rige dativo: der Kellner → dem Kellner.	« geben » demande le datif : der Kellner → dem Kellner.	«geben» regge il dativo: der Kellner → dem Kellner.	“geben” pede o dativo: der Kellner → dem Kellner.	«geben» требует дательного падежа: der Kellner → dem Kellner.
+Basic sentence order	Osnovni red riječi	Grundlegende Satzstellung	Orden básico de la oración	Ordre de base de la phrase	Ordine base della frase	Ordem básica da frase	Базовый порядок слов
+Introducing yourself	Predstavljanje	Sich vorstellen	Presentarse	Se présenter	Presentarsi	Apresentar-se	Знакомство
+hello	zdravo	hallo	hola	bonjour	ciao	olá	привет
+%@! — the everyday greeting.	%@! — svakodnevni pozdrav.	%@! – der alltägliche Gruß.	¡%@! — el saludo de todos los días.	%@ ! — la salutation de tous les jours.	%@! — il saluto di tutti i giorni.	%@! — o cumprimento do dia a dia.	%@! — повседневное приветствие.
+How do you say “thank you” in %@?	Kako se kaže „hvala“ na jeziku: %@?	Wie sagt man „danke“ auf %@?	¿Cómo se dice «gracias» en %@?	Comment dit-on « merci » en %@ ?	Come si dice «grazie» in %@?	Como se diz “obrigado” em %@?	Как сказать «спасибо» (%@)?
+%@ is the everyday way to say thanks.	%@ je svakodnevni način da se zahvališ.	%@ ist die alltägliche Art, danke zu sagen.	%@ es la forma cotidiana de dar las gracias.	%@ est la façon courante de dire merci.	%@ è il modo comune per dire grazie.	%@ é a forma comum de agradecer.	%@ — обычный способ сказать «спасибо».
+Write “Good morning, how are you?” in %@.	Napiši „Dobro jutro, kako si?“ (%@).	Schreib „Guten Morgen, wie geht’s?“ auf %@.	Escribe «Buenos días, ¿cómo estás?» en %@.	Écris « Bonjour, comment ça va ? » en %@.	Scrivi «Buongiorno, come stai?» in %@.	Escreva “Bom dia, como vai?” em %@.	Напишите «Доброе утро, как дела?» (%@).
+ChatGPT checks your answer and suggests a natural version.	ChatGPT provjerava tvoj odgovor i predlaže prirodniju verziju.	ChatGPT prüft deine Antwort und schlägt eine natürliche Version vor.	ChatGPT revisa tu respuesta y sugiere una versión natural.	ChatGPT vérifie ta réponse et propose une version naturelle.	ChatGPT controlla la tua risposta e suggerisce una versione naturale.	O ChatGPT verifica sua resposta e sugere uma versão natural.	ChatGPT проверит ответ и предложит естественный вариант.
+%@! Let’s practise %@. Tell me a little about yourself.	%1$@! Hajde da vježbamo (%2$@). Reci mi nešto o sebi.	%1$@! Lass uns %2$@ üben. Erzähl mir ein bisschen von dir.	¡%1$@! Practiquemos %2$@. Cuéntame un poco sobre ti.	%1$@ ! Pratiquons le %2$@. Parle-moi un peu de toi.	%1$@! Facciamo pratica di %2$@. Parlami un po’ di te.	%1$@! Vamos praticar %2$@. Conte um pouco sobre você.	%1$@! Давайте практиковаться (%2$@). Расскажите немного о себе.
+Great start — tell me more.	Odličan početak — reci mi još.	Toller Anfang – erzähl mir mehr.	Buen comienzo: cuéntame más.	Bon début — dis-m’en plus.	Ottimo inizio: raccontami di più.	Ótimo começo — conte mais.	Отличное начало — расскажите ещё.
+Nice! What do you do for work?	Super! Čime se baviš?	Schön! Was machst du beruflich?	¡Genial! ¿A qué te dedicas?	Super ! Que fais-tu dans la vie ?	Bene! Che lavoro fai?	Legal! Com o que você trabalha?	Здорово! Кем вы работаете?
+Lovely. Let’s keep going tomorrow.	Divno. Nastavljamo sutra.	Schön. Morgen machen wir weiter.	Genial. Seguimos mañana.	Parfait. On continue demain.	Bellissimo. Continuiamo domani.	Ótimo. Vamos continuar amanhã.	Прекрасно. Продолжим завтра.
+How do I say…?	Kako se kaže…?	Wie sagt man …?	¿Cómo se dice…?	Comment dit-on… ?	Come si dice…?	Como se diz…?	Как сказать…?
+learning Spanish	uči španski	lernt Spanisch	aprende español	apprend l’espagnol	impara lo spagnolo	aprende espanhol	учит испанский
+3 mutual friends	3 zajednička prijatelja	3 gemeinsame Freunde	3 amigos en común	3 amis en commun	3 amici in comune	3 amigos em comum	3 общих друга
+learning Japanese	uči japanski	lernt Japanisch	aprende japonés	apprend le japonais	impara il giapponese	aprende japonês	учит японский
+finished a roleplay in Italian: “Ordering at a bar in Rome”	je završila igru uloga na italijanskom: „Naručivanje u baru u Rimu“	hat ein Rollenspiel auf Italienisch beendet: „Bestellen in einer Bar in Rom“	terminó un juego de rol en italiano: «Pedir en un bar de Roma»	a terminé un jeu de rôle en italien : « Commander dans un bar à Rome »	ha finito un gioco di ruolo in italiano: «Ordinare al bar a Roma»	concluiu um role-play em italiano: “Pedindo em um bar em Roma”	завершила ролевую игру на итальянском: «Заказ в баре в Риме»
+12 min ago	prije 12 min	vor 12 Min.	hace 12 min	il y a 12 min	12 min fa	há 12 min	12 мин назад
+reached a 54-day streak	dostigla je niz od 54 dana	hat eine Serie von 54 Tagen erreicht	alcanzó una racha de 54 días	a atteint une série de 54 jours	ha raggiunto una serie di 54 giorni	alcançou uma sequência de 54 dias	достигла серии в 54 дня
+1 h ago	prije 1 h	vor 1 Std.	hace 1 h	il y a 1 h	1 h fa	há 1 h	1 ч назад
+shared a plan: Spanish for travel · 4 weeks	je podijelio plan: Španski za putovanja · 4 sedmice	hat einen Plan geteilt: Spanisch für die Reise · 4 Wochen	compartió un plan: Español para viajar · 4 semanas	a partagé un programme : Espagnol pour voyager · 4 semaines	ha condiviso un piano: Spagnolo per viaggiare · 4 settimane	compartilhou um plano: Espanhol para viagem · 4 semanas	поделился планом: Испанский для путешествий · 4 недели
+3 h ago	prije 3 h	vor 3 Std.	hace 3 h	il y a 3 h	3 h fa	há 3 h	3 ч назад
+completed 3 ser vs. estar drills	je uradio 3 vježbe ser vs. estar	hat 3 Übungen zu ser vs. estar gemacht	completó 3 ejercicios de ser vs. estar	a fait 3 exercices ser vs. estar	ha completato 3 esercizi su ser vs. estar	concluiu 3 exercícios de ser vs. estar	выполнил 3 упражнения на ser и estar
+Yesterday	Juče	Gestern	Ayer	Hier	Ieri	Ontem	Вчера
+“Andare” fits better for how a day went.	„Andare“ bolje odgovara kad pričaš kako je prošao dan.	„Andare“ passt besser, wenn es darum geht, wie der Tag war.	«Andare» encaja mejor para contar cómo fue el día.	« Andare » convient mieux pour dire comment s’est passée la journée.	«Andare» è più adatto per dire com’è andata la giornata.	“Andare” combina melhor para dizer como foi o dia.	«Andare» лучше подходит, чтобы сказать, как прошёл день.
+Use the present perfect continuous + “for”.	Koristi present perfect continuous + „for“.	Verwende das Present Perfect Continuous + „for“.	Usa el present perfect continuous + «for».	Utilise le present perfect continuous + « for ».	Usa il present perfect continuous + «for».	Use o present perfect continuous + “for”.	Используйте present perfect continuous + «for».
+The participle agrees with a female subject.	Particip se slaže sa subjektom ženskog roda.	Das Partizip richtet sich nach dem weiblichen Subjekt.	El participio concuerda con un sujeto femenino.	Le participe s’accorde avec un sujet féminin.	Il participio concorda con un soggetto femminile.	O particípio concorda com um sujeito feminino.	Причастие согласуется с подлежащим женского рода.
+Café & restaurant words	Riječi za kafić i restoran	Wörter für Café & Restaurant	Palabras de cafetería y restaurante	Mots du café et du restaurant	Parole da bar e ristorante	Palavras de café e restaurante	Слова для кафе и ресторана
+Short dialogue at the counter	Kratak dijalog za šankom	Kurzer Dialog an der Theke	Diálogo corto en la barra	Court dialogue au comptoir	Breve dialogo al bancone	Diálogo curto no balcão	Короткий диалог у стойки
+Vocabulary & listening	Vokabular i slušanje	Wortschatz & Hören	Vocabulario y comprensión auditiva	Vocabulaire et écoute	Lessico e ascolto	Vocabulário e compreensão auditiva	Лексика и аудирование
+Everyday phrases	Svakodnevne fraze	Alltagsphrasen	Frases cotidianas	Expressions du quotidien	Frasi quotidiane	Frases do dia a dia	Повседневные фразы
+Ordering at the counter	Naručivanje za šankom	Bestellen an der Theke	Pedir en la barra	Commander au comptoir	Ordinare al bancone	Pedindo no balcão	Заказ у стойки
+Grammar & writing	Gramatika i pisanje	Grammatik & Schreiben	Gramática y escritura	Grammaire et écriture	Grammatica e scrittura	Gramática e escrita	Грамматика и письмо
+Describe your usual order	Opiši šta obično naručuješ	Beschreib deine übliche Bestellung	Describe lo que sueles pedir	Décris ta commande habituelle	Descrivi la tua ordinazione abituale	Descreva seu pedido de sempre	Опишите свой обычный заказ
+Reading & speaking	Čitanje i govor	Lesen & Sprechen	Lectura y expresión oral	Lecture et expression orale	Lettura e parlato	Leitura e fala	Чтение и говорение
+A neighbourhood café	Kafić u komšiluku	Ein Café im Viertel	Una cafetería del barrio	Un café de quartier	Un caffè di quartiere	Um café do bairro	Кафе по соседству
+Shadow a native speaker	Ponavljaj za izvornim govornikom	Sprich einem Muttersprachler nach	Repite tras un hablante nativo	Répète après un locuteur natif	Ripeti dopo un madrelingua	Repita após um falante nativo	Повторяйте за носителем языка
+Asking for directions	Pitanje za put	Nach dem Weg fragen	Pedir indicaciones	Demander son chemin	Chiedere indicazioni	Pedindo informações	Спросить дорогу
+Mixed practice · adjusted	Mješovita vježba · prilagođeno	Gemischte Übung · angepasst	Práctica mixta · ajustada	Pratique variée · ajustée	Pratica mista · adattata	Prática mista · ajustada	Смешанная практика · скорректировано
+Reading & culture	Čitanje i kultura	Lesen & Kultur	Lectura y cultura	Lecture et culture	Lettura e cultura	Leitura e cultura	Чтение и культура
+Local food markets	Lokalne pijace	Lokale Lebensmittelmärkte	Mercados locales	Marchés locaux	Mercati locali	Mercados locais	Местные рынки
+New verbs · 10 cards	Novi glagoli · 10 kartica	Neue Verben · 10 Karten	Verbos nuevos · 10 tarjetas	Nouveaux verbes · 10 cartes	Nuovi verbi · 10 schede	Verbos novos · 10 cartões	Новые глаголы · 10 карточек
+Weekly check-in	Sedmična provjera	Wochencheck	Repaso semanal	Bilan de la semaine	Verifica settimanale	Revisão semanal	Итоги недели
+Mixed quiz	Mješoviti kviz	Gemischtes Quiz	Prueba mixta	Quiz varié	Quiz misto	Quiz misto	Смешанный тест
+Free conversation with a friend	Slobodan razgovor s prijateljem	Freies Gespräch mit einem Freund	Conversación libre con un amigo	Conversation libre avec un ami	Conversazione libera con un amico	Conversa livre com um amigo	Свободный разговор с другом
+ and 	 i 	 und 	 y 	 et 	 e 	 e 	 и
+You chose %@, so most of your %@ time goes to listening and speaking. %@ is spaced out so it sticks.	Izabrao si: %1$@, pa većina vremena za %2$@ ide na slušanje i govor. %3$@ je raspoređeno kroz sedmicu da bolje zapamtiš.	Du hast %1$@ gewählt, deshalb geht der Großteil deiner Zeit für %2$@ ins Hören und Sprechen. %3$@ wird verteilt, damit es hängen bleibt.	Elegiste %1$@, así que la mayor parte de tu tiempo de %2$@ va a escuchar y hablar. %3$@ se reparte para que se quede.	Tu as choisi %1$@, donc l’essentiel de ton temps de %2$@ va à l’écoute et à l’oral. %3$@ est réparti pour bien s’ancrer.	Hai scelto %1$@, quindi gran parte del tempo di %2$@ va ad ascolto e parlato. %3$@ è distribuito perché resti.	Você escolheu %1$@, então a maior parte do seu tempo de %2$@ vai para ouvir e falar. %3$@ é espaçado para fixar.	Вы выбрали %1$@, поэтому большая часть времени (%2$@) уходит на аудирование и говорение. %3$@ распределено, чтобы лучше запомнилось.
+general practice	opštu vježbu	allgemeines Üben	práctica general	la pratique générale	pratica generale	prática geral	общую практику
+no plural	nema množinu	kein Plural	sin plural	pas de pluriel	nessun plurale	sem plural	нет мн. ч.
+Add	Dodaj	Hinzufügen	Añadir	Ajouter	Aggiungi	Adicionar	Добавить
+Activity	Aktivnost	Aktivität	Actividad	Activité	Attività	Atividade	Активность
+This week	Ova sedmica	Diese Woche	Esta semana	Cette semaine	Questa settimana	Esta semana	Эта неделя
+Challenges	Izazovi	Challenges	Retos	Défis	Sfide	Desafios	Испытания
+Cheer · %lld	Bravo · %lld	Anfeuern · %lld	Ánimo · %lld	Bravo · %lld	Applauso · %lld	Torcer · %lld	Поддержать · %lld
+Joined	Pridružen	Beigetreten	Unido	Rejoint	Iscritto	Participando	Вы участвуете
+Join plan	Pridruži se planu	Plan beitreten	Unirse al plan	Rejoindre le programme	Unisciti al piano	Entrar no plano	Присоединиться
+You	Ti	Du	Tú	Toi	Tu	Você	Вы
+%lld-day streak · %@	Niz: %1$lld d. · %2$@	%1$lld Tage in Folge · %2$@	Racha de %1$lld días · %2$@	Série de %1$lld jours · %2$@	Serie di %1$lld giorni · %2$@	Sequência de %1$lld dias · %2$@	Серия: %1$lld дн. · %2$@
+practised today	vježbao/la danas	heute geübt	practicó hoy	a pratiqué aujourd’hui	si è esercitato oggi	praticou hoje	занимался сегодня
+not yet today	danas još nije	heute noch nicht	hoy aún no	pas encore aujourd’hui	oggi non ancora	ainda não hoje	сегодня ещё нет
+Nudged	Podsjetio si	Angestupst	Avisado	Relancé	Sollecitato	Lembrado	Напомнили
+Nudge	Podsjeti	Anstupsen	Avisar	Relancer	Sollecita	Lembrar	Напомнить
+%lld min	%lld min	%lld Min.	%lld min	%lld min	%lld min	%lld min	%lld мин
+7-day streak duel	Duel od 7 dana	7-Tage-Serien-Duell	Duelo de racha de 7 días	Duel de série sur 7 jours	Sfida di 7 giorni di fila	Duelo de sequência de 7 dias	Дуэль на 7 дней
+You and Marco	Ti i Marko	Du und Marco	Tú y Marco	Toi et Marco	Tu e Marco	Você e Marco	Вы и Марко
+2 days left	još 2 dana	noch 2 Tage	quedan 2 días	encore 2 jours	mancano 2 giorni	faltam 2 dias	осталось 2 дня
+Day 5 of 7 — you’re both still in.	Dan 5 od 7 — oboje ste još u igri.	Tag 5 von 7 – ihr seid beide noch dabei.	Día 5 de 7: los dos seguís en juego.	Jour 5 sur 7 — vous êtes encore tous les deux en lice.	Giorno 5 di 7: siete ancora entrambi in gara.	Dia 5 de 7 — vocês dois continuam no jogo.	День 5 из 7 — вы оба ещё в игре.
+Weekend sprint	Vikend sprint	Wochenend-Sprint	Sprint de fin de semana	Sprint du week-end	Sprint del weekend	Sprint de fim de semana	Спринт выходного дня
+You, Lena and Priya	Ti, Lena i Prija	Du, Lena und Priya	Tú, Lena y Priya	Toi, Lena et Priya	Tu, Lena e Priya	Você, Lena e Priya	Вы, Лена и Прия
+Ends Sunday	Završava se u nedjelju	Endet am Sonntag	Termina el domingo	Se termine dimanche	Finisce domenica	Termina no domingo	Заканчивается в воскресенье
+Everyone aims for 60 min — finish together, celebrate together.	Svi ciljaju na 60 min — zajedno završite, zajedno slavite.	Alle peilen 60 Min. an – gemeinsam fertig werden, gemeinsam feiern.	Todos apuntan a 60 min: terminad juntos, celebrad juntos.	Objectif 60 min pour tous — on finit ensemble, on fête ensemble.	Tutti puntano a 60 min: finite insieme, festeggiate insieme.	Todos miram 60 min — terminem juntos, comemorem juntos.	Цель у всех — 60 мин: закончите вместе, празднуйте вместе.
+Streak duel	Duel nizova	Serien-Duell	Duelo de rachas	Duel de séries	Sfida di serie	Duelo de sequências	Дуэль серий
+Keep a streak going with a friend	Održavaj niz s prijateljem	Halte mit einem Freund eine Serie am Laufen	Mantén una racha con un amigo	Garde une série avec un ami	Mantieni una serie con un amico	Mantenha uma sequência com um amigo	Поддерживайте серию вместе с другом
+Minutes sprint	Sprint minuta	Minuten-Sprint	Sprint de minutos	Sprint de minutes	Sprint di minuti	Sprint de minutos	Спринт минут
+A shared goal for the weekend	Zajednički cilj za vikend	Ein gemeinsames Ziel fürs Wochenende	Un objetivo común para el fin de semana	Un objectif commun pour le week-end	Un obiettivo comune per il weekend	Uma meta em comum para o fim de semana	Общая цель на выходные
+Learn the same plan	Učite po istom planu	Den gleichen Plan lernen	Aprender el mismo plan	Suivre le même programme	Studiate lo stesso piano	Aprender o mesmo plano	Учиться по одному плану
+ChatGPT builds one plan for both of you	ChatGPT pravi jedan plan za oboje	ChatGPT erstellt einen Plan für euch beide	ChatGPT crea un plan para los dos	ChatGPT crée un programme pour vous deux	ChatGPT crea un piano per entrambi	O ChatGPT cria um plano para vocês dois	ChatGPT составит один план на двоих
+Start something new	Započni nešto novo	Etwas Neues starten	Empieza algo nuevo	Lancer quelque chose de nouveau	Inizia qualcosa di nuovo	Comece algo novo	Начать что-то новое
+Invite sent	Poziv poslat	Einladung gesendet	Invitación enviada	Invitation envoyée	Invito inviato	Convite enviado	Приглашение отправлено
+Start	Započni	Starten	Empezar	Commencer	Inizia	Começar	Начать
+Practising %@ together	Zajedno vježbate (%@)	Gemeinsam %@ üben	Practicando %@ juntos	On pratique le %@ ensemble	Pratica di %@ insieme	Praticando %@ juntos	Практикуемся вместе (%@)
+ChatGPT · only you see this	ChatGPT · samo ti ovo vidiš	ChatGPT · nur du siehst das	ChatGPT · solo tú lo ves	ChatGPT · toi seul le vois	ChatGPT · lo vedi solo tu	ChatGPT · só você vê isto	ChatGPT · видите только вы
+%@ is typing…	%@ kuca…	%@ schreibt …	%@ está escribiendo…	%@ écrit…	%@ sta scrivendo…	%@ está digitando…	%@ печатает…
+Suggest a reply	Predloži odgovor	Antwort vorschlagen	Sugerir respuesta	Suggérer une réponse	Suggerisci una risposta	Sugerir resposta	Предложить ответ
+Write in %@…	Piši (%@)…	Auf %@ schreiben …	Escribe en %@…	Écris en %@…	Scrivi in %@…	Escreva em %@…	Пишите (%@)…
+%lld of %lld	%1$lld od %2$lld	%1$lld von %2$lld	%1$lld de %2$lld	%1$lld sur %2$lld	%1$lld di %2$lld	%1$lld de %2$lld	%1$lld из %2$lld
+ChatGPT is preparing your lesson…	ChatGPT priprema tvoju lekciju…	ChatGPT bereitet deine Lektion vor …	ChatGPT está preparando tu lección…	ChatGPT prépare ta leçon…	ChatGPT sta preparando la tua lezione…	O ChatGPT está preparando sua lição…	ChatGPT готовит урок…
+Preparing your lesson…	Pripremamo tvoju lekciju…	Deine Lektion wird vorbereitet …	Preparando tu lección…	Préparation de ta leçon…	Preparazione della lezione…	Preparando sua lição…	Готовим урок…
+New word	Nova riječ	Neues Wort	Palabra nueva	Nouveau mot	Parola nuova	Palavra nova	Новое слово
+Playing…	Reprodukuje se…	Wird abgespielt …	Reproduciendo…	Lecture…	Riproduzione…	Reproduzindo…	Воспроизведение…
+Listen	Slušaj	Anhören	Escuchar	Écouter	Ascolta	Ouvir	Слушать
+Be honest — it shapes tomorrow.	Budi iskren — to oblikuje sutrašnji plan.	Sei ehrlich – das prägt den morgigen Tag.	Sé sincero: esto define lo de mañana.	Sois honnête — cela façonne demain.	Sii sincero: influisce su domani.	Seja sincero — isso molda o amanhã.	Будьте честны — от этого зависит завтра.
+Tap the card to see the meaning	Dodirni karticu da vidiš značenje	Tippe auf die Karte, um die Bedeutung zu sehen	Toca la tarjeta para ver el significado	Touche la carte pour voir le sens	Tocca la scheda per vedere il significato	Toque no cartão para ver o significado	Нажмите на карточку, чтобы увидеть значение
+Fill the gap	Popuni prazninu	Fülle die Lücke	Completa el hueco	Complète le trou	Completa lo spazio	Preencha a lacuna	Заполните пропуск
+Yes, that’s it.	Da, tako je.	Ja, genau.	Sí, eso es.	Oui, c’est ça.	Sì, esatto.	Isso mesmo.	Да, верно.
+Almost.	Skoro.	Fast.	Casi.	Presque.	Quasi.	Quase.	Почти.
+Your turn	Tvoj red	Du bist dran	Tu turno	À toi	Tocca a te	Sua vez	Ваша очередь
+Model answer	Primjer odgovora	Musterlösung	Respuesta modelo	Réponse modèle	Risposta modello	Resposta modelo	Образец ответа
+Nicely done	Odlično urađeno	Gut gemacht	Muy bien hecho	Bien joué	Ben fatto	Muito bem	Отлично сделано
+Correct	Tačno	Richtig	Correctas	Correct	Corrette	Corretas	Верно
+Time	Vrijeme	Zeit	Tiempo	Temps	Tempo	Tempo	Время
+Not yet	Još ne	Noch nicht	Todavía no	Pas encore	Non ancora	Ainda não	Пока нет
+I knew it	Znao sam	Wusste ich	Lo sabía	Je savais	Lo sapevo	Eu sabia	Я знал
+Continue	Nastavi	Weiter	Continuar	Continuer	Continua	Continuar	Продолжить
+Finish	Završi	Fertig	Terminar	Terminer	Fine	Concluir	Завершить
+Checking…	Provjeravam…	Wird geprüft …	Comprobando…	Vérification…	Verifica…	Verificando…	Проверка…
+Check my answer	Provjeri moj odgovor	Antwort prüfen	Comprobar mi respuesta	Vérifier ma réponse	Controlla la mia risposta	Verificar minha resposta	Проверить ответ
+Back to today	Nazad na danas	Zurück zu heute	Volver a hoy	Retour à aujourd’hui	Torna a oggi	Voltar para hoje	Вернуться к сегодня
+day streak	dana zaredom	Tage in Folge	días seguidos	jours d’affilée	giorni di fila	dias seguidos	дней подряд
+min this week	min ove sedmice	Min. diese Woche	min esta semana	min cette semaine	min questa settimana	min nesta semana	мин за неделю
+friends	prijatelja	Freunde	amigos	amis	amici	amigos	друзей
+My languages	Moji jezici	Meine Sprachen	Mis idiomas	Mes langues	Le mie lingue	Meus idiomas	Мои языки
+Add a language	Dodaj jezik	Sprache hinzufügen	Añadir un idioma	Ajouter une langue	Aggiungi una lingua	Adicionar idioma	Добавить язык
+Settings	Podešavanja	Einstellungen	Ajustes	Réglages	Impostazioni	Ajustes	Настройки
+ChatGPT	ChatGPT	ChatGPT	ChatGPT	ChatGPT	ChatGPT	ChatGPT	ChatGPT
+Adapt tasks daily	Prilagođavaj zadatke svaki dan	Aufgaben täglich anpassen	Adaptar las tareas cada día	Adapter les tâches chaque jour	Adatta le attività ogni giorno	Adaptar tarefas diariamente	Подстраивать задания каждый день
+ChatGPT adjusts today from your results	ChatGPT prilagođava današnji dan prema tvojim rezultatima	ChatGPT passt den heutigen Tag an deine Ergebnisse an	ChatGPT ajusta el día según tus resultados	ChatGPT ajuste la journée selon tes résultats	ChatGPT adatta la giornata ai tuoi risultati	O ChatGPT ajusta o dia com base nos seus resultados	ChatGPT подстраивает день под ваши результаты
+Daily reminder	Dnevni podsjetnik	Tägliche Erinnerung	Recordatorio diario	Rappel quotidien	Promemoria giornaliero	Lembrete diário	Ежедневное напоминание
+A gentle nudge at 19:00	Blag podsjetnik u 19:00	Ein sanfter Hinweis um 19:00	Un recordatorio suave a las 19:00	Un petit rappel à 19 h	Un piccolo promemoria alle 19:00	Um lembrete gentil às 19:00	Мягкое напоминание в 19:00
+App language	Jezik aplikacije	App-Sprache	Idioma de la app	Langue de l’app	Lingua dell’app	Idioma do app	Язык приложения
+Lingora follows your iPhone's language. ChatGPT answers in it too.	Lingora prati jezik tvog iPhone-a. ChatGPT i odgovara na njemu.	Lingora folgt der Sprache deines iPhones. ChatGPT antwortet auch darin.	Lingora usa el idioma de tu iPhone. ChatGPT también responde en él.	Lingora suit la langue de ton iPhone. ChatGPT répond aussi dans cette langue.	Lingora segue la lingua del tuo iPhone. Anche ChatGPT risponde in quella lingua.	O Lingora segue o idioma do seu iPhone. O ChatGPT também responde nele.	Lingora использует язык вашего iPhone. ChatGPT отвечает на нём же.
+Change	Promijeni	Ändern	Cambiar	Modifier	Cambia	Alterar	Изменить
+Appearance	Izgled	Darstellung	Apariencia	Apparence	Aspetto	Aparência	Оформление
+Accent	Akcenat	Akzent	Acento	Accent	Accento	Destaque	Акцент
+Style	Stil	Stil	Estilo	Style	Stile	Estilo	Стиль
+Per-language colours	Boje po jeziku	Farben pro Sprache	Colores por idioma	Couleurs par langue	Colori per lingua	Cores por idioma	Цвета для языков
+Account	Nalog	Konto	Cuenta	Compte	Account	Conta	Аккаунт
+Signed in with	Prijavljen preko	Angemeldet mit	Sesión iniciada con	Connecté avec	Accesso con	Conectado com	Вход через
+Sync	Sinhronizacija	Synchronisierung	Sincronización	Synchronisation	Sincronizzazione	Sincronização	Синхронизация
+Your progress syncs to your account.	Tvoj napredak se sinhronizuje s nalogom.	Dein Fortschritt wird mit deinem Konto synchronisiert.	Tu progreso se sincroniza con tu cuenta.	Ta progression est synchronisée avec ton compte.	I tuoi progressi si sincronizzano con il tuo account.	Seu progresso é sincronizado com sua conta.	Прогресс синхронизируется с аккаунтом.
+Progress is saved on this iPhone only.	Napredak se čuva samo na ovom iPhone-u.	Der Fortschritt wird nur auf diesem iPhone gespeichert.	El progreso solo se guarda en este iPhone.	La progression est enregistrée sur cet iPhone uniquement.	I progressi sono salvati solo su questo iPhone.	O progresso fica salvo só neste iPhone.	Прогресс сохраняется только на этом iPhone.
+Log out	Odjavi se	Abmelden	Cerrar sesión	Se déconnecter	Esci	Sair	Выйти
+Delete account	Obriši nalog	Konto löschen	Eliminar cuenta	Supprimer le compte	Elimina account	Excluir conta	Удалить аккаунт
+Log out of Lingora?	Odjaviti se iz Lingore?	Von Lingora abmelden?	¿Cerrar sesión en Lingora?	Se déconnecter de Lingora ?	Uscire da Lingora?	Sair do Lingora?	Выйти из Lingora?
+Your progress stays in your account.	Tvoj napredak ostaje na nalogu.	Dein Fortschritt bleibt in deinem Konto.	Tu progreso se queda en tu cuenta.	Ta progression reste dans ton compte.	I tuoi progressi restano nel tuo account.	Seu progresso fica na sua conta.	Прогресс останется в аккаунте.
+Your plans and progress on this iPhone will be cleared.	Tvoji planovi i napredak na ovom iPhone-u biće obrisani.	Deine Pläne und dein Fortschritt auf diesem iPhone werden gelöscht.	Se borrarán tus planes y tu progreso en este iPhone.	Tes programmes et ta progression sur cet iPhone seront effacés.	I tuoi piani e progressi su questo iPhone verranno cancellati.	Seus planos e progresso neste iPhone serão apagados.	Планы и прогресс на этом iPhone будут удалены.
+Delete your account?	Obrisati nalog?	Konto löschen?	¿Eliminar tu cuenta?	Supprimer ton compte ?	Eliminare il tuo account?	Excluir sua conta?	Удалить аккаунт?
+For security, log out and sign in again, then delete your account.	Iz bezbjednosnih razloga se odjavi i ponovo prijavi, pa onda obriši nalog.	Aus Sicherheitsgründen melde dich ab und wieder an und lösche dann dein Konto.	Por seguridad, cierra sesión, vuelve a entrar y luego elimina tu cuenta.	Par sécurité, déconnecte-toi, reconnecte-toi, puis supprime ton compte.	Per sicurezza, esci e accedi di nuovo, poi elimina l’account.	Por segurança, saia e entre novamente, depois exclua sua conta.	В целях безопасности выйдите и войдите снова, затем удалите аккаунт.
+This removes your account and synced progress. It can't be undone.	Ovo briše tvoj nalog i sinhronizovani napredak. Ne može se poništiti.	Dadurch werden dein Konto und dein synchronisierter Fortschritt entfernt. Das kann nicht rückgängig gemacht werden.	Esto elimina tu cuenta y el progreso sincronizado. No se puede deshacer.	Cela supprime ton compte et ta progression synchronisée. C’est irréversible.	Questo rimuove l’account e i progressi sincronizzati. Non si può annullare.	Isso remove sua conta e o progresso sincronizado. Não pode ser desfeito.	Аккаунт и синхронизированный прогресс будут удалены. Это нельзя отменить.
+Offline mode · using standard plans	Offline režim · standardni planovi	Offline-Modus · Standardpläne	Modo sin conexión · planes estándar	Mode hors ligne · programmes standard	Modalità offline · piani standard	Modo offline · planos padrão	Офлайн-режим · стандартные планы
+On · plans, lessons and tutor run on the Lingora server	Uključeno · planovi, lekcije i tutor rade na Lingora serveru	An · Pläne, Lektionen und Tutor laufen auf dem Lingora-Server	Activado · planes, lecciones y tutor funcionan en el servidor de Lingora	Activé · programmes, leçons et tuteur tournent sur le serveur Lingora	Attivo · piani, lezioni e tutor girano sul server Lingora	Ativado · planos, lições e tutor rodam no servidor do Lingora	Вкл. · планы, уроки и репетитор работают на сервере Lingora
+Sign in to turn it on	Prijavi se da ga uključiš	Melde dich an, um es einzuschalten	Inicia sesión para activarlo	Connecte-toi pour l’activer	Accedi per attivarlo	Entre para ativar	Войдите, чтобы включить
+Reading your goals	Čitamo tvoje ciljeve	Deine Ziele werden gelesen	Leyendo tus objetivos	Lecture de tes objectifs	Leggiamo i tuoi obiettivi	Lendo seus objetivos	Изучаем ваши цели
+Placing you: %@	Određujemo nivo: %@	Einstufung: %@	Nivel: %@	Ton niveau : %@	Livello: %@	Seu nível: %@	Ваш уровень: %@
+Splitting %lld min across %lld (languages)	Dijelimo %1$lld min dnevno na tvoje jezike	%1$lld Min. täglich werden auf deine Sprachen verteilt	Repartiendo %1$lld min al día entre tus idiomas	Répartition de %1$lld min par jour entre tes langues	Dividiamo %1$lld min al giorno tra le tue lingue	Dividindo %1$lld min por dia entre seus idiomas	Распределяем %1$lld мин в день между языками
+Writing today's tasks	Pišemo današnje zadatke	Die heutigen Aufgaben werden geschrieben	Escribiendo las tareas de hoy	Rédaction des tâches du jour	Scriviamo le attività di oggi	Escrevendo as tarefas de hoje	Составляем задания на сегодня
+ChatGPT is building your week	ChatGPT pravi tvoju sedmicu	ChatGPT plant deine Woche	ChatGPT está creando tu semana	ChatGPT prépare ta semaine	ChatGPT sta creando la tua settimana	O ChatGPT está montando sua semana	ChatGPT составляет вашу неделю
+Building your week	Pravimo tvoju sedmicu	Deine Woche wird geplant	Creando tu semana	Préparation de ta semaine	Creiamo la tua settimana	Montando sua semana	Составляем вашу неделю
+Your week is ready	Tvoja sedmica je spremna	Deine Woche ist fertig	Tu semana está lista	Ta semaine est prête	La tua settimana è pronta	Sua semana está pronta	Ваша неделя готова
+A rest day. Nothing planned.	Dan za odmor. Ništa nije planirano.	Ein Ruhetag. Nichts geplant.	Día de descanso. Nada previsto.	Jour de repos. Rien de prévu.	Giorno di riposo. Niente in programma.	Dia de descanso. Nada planejado.	День отдыха. Ничего не запланировано.
+**Why this plan.** %@	**Zašto ovaj plan.** %@	**Warum dieser Plan.** %@	**Por qué este plan.** %@	**Pourquoi ce programme.** %@	**Perché questo piano.** %@	**Por que este plano.** %@	**Почему такой план.** %@
+Redo	Ponovo	Neu	Rehacer	Refaire	Rifai	Refazer	Заново
+Start my week	Započni sedmicu	Woche starten	Empezar mi semana	Commencer ma semaine	Inizia la settimana	Começar minha semana	Начать неделю
+Ask ChatGPT to re-plan	Zamoli ChatGPT da ponovo isplanira	ChatGPT neu planen lassen	Pedir a ChatGPT que replanifique	Demander à ChatGPT de replanifier	Chiedi a ChatGPT di ripianificare	Pedir ao ChatGPT para replanejar	Попросить ChatGPT перепланировать
+Re-plan my week	Ponovo isplaniraj sedmicu	Woche neu planen	Replanificar mi semana	Replanifier ma semaine	Ripianifica la settimana	Replanejar minha semana	Перепланировать неделю
+Good morning	Dobro jutro	Guten Morgen	Buenos días	Bonjour	Buongiorno	Bom dia	Доброе утро
+%lld min left	još %lld min	noch %lld Min.	quedan %lld min	encore %lld min	mancano %lld min	faltam %lld min	осталось %lld мин
+All done for today	Sve je gotovo za danas	Für heute alles erledigt	Todo listo por hoy	Tout est fait pour aujourd’hui	Tutto fatto per oggi	Tudo feito por hoje	На сегодня всё
+**A new week.** Let %@ plan it around how last week went.	**Nova sedmica.** Neka je %@ isplanira prema tome kako je prošla prošla sedmica.	**Eine neue Woche.** Lass %@ sie passend zur letzten Woche planen.	**Una nueva semana.** Deja que %@ la planifique según cómo fue la anterior.	**Une nouvelle semaine.** Laisse %@ la planifier selon la semaine passée.	**Una nuova settimana.** Lascia che %@ la pianifichi in base a quella passata.	**Uma nova semana.** Deixe o %@ planejá-la com base na anterior.	**Новая неделя.** Пусть %@ спланирует её с учётом прошлой.
+Plan my week	Isplaniraj moju sedmicu	Meine Woche planen	Planificar mi semana	Planifier ma semaine	Pianifica la mia settimana	Planejar minha semana	Спланировать неделю
+**Adjusted for today.** %@	**Prilagođeno za danas.** %@	**Für heute angepasst.** %@	**Ajustado para hoy.** %@	**Ajusté pour aujourd’hui.** %@	**Adattato per oggi.** %@	**Ajustado para hoje.** %@	**Скорректировано на сегодня.** %@
+Today's tasks	Današnji zadaci	Heutige Aufgaben	Tareas de hoy	Tâches du jour	Attività di oggi	Tarefas de hoje	Задания на сегодня
+No tasks today. Enjoy the rest.	Danas nema zadataka. Uživaj u odmoru.	Heute keine Aufgaben. Genieß die Pause.	Hoy no hay tareas. Disfruta del descanso.	Pas de tâches aujourd’hui. Profite du repos.	Nessuna attività oggi. Goditi il riposo.	Sem tarefas hoje. Aproveite o descanso.	Сегодня заданий нет. Отдыхайте.
+Continue: %@ · %@	Nastavi: %1$@ · %2$@	Weiter: %1$@ · %2$@	Continuar: %1$@ · %2$@	Continuer : %1$@ · %2$@	Continua: %1$@ · %2$@	Continuar: %1$@ · %2$@	Продолжить: %1$@ · %2$@
+All done — see you tomorrow	Sve je gotovo — vidimo se sutra	Alles erledigt – bis morgen	Todo listo: hasta mañana	Tout est fait — à demain	Tutto fatto: a domani	Tudo feito — até amanhã	Всё готово — до завтра
+Invite friends to learn together	Pozovi prijatelje da učite zajedno	Lade Freunde zum gemeinsamen Lernen ein	Invita a amigos a aprender juntos	Invite des amis à apprendre ensemble	Invita gli amici a imparare insieme	Convide amigos para aprender juntos	Пригласите друзей учиться вместе
+%@ practised today	%@ je danas vježbao/la	%@ hat heute geübt	%@ practicó hoy	%@ a pratiqué aujourd’hui	%@ si è esercitato oggi	%@ praticou hoje	%@ занимается сегодня
+%@ and %@ practised today	%1$@ i %2$@ su danas vježbali	%1$@ und %2$@ haben heute geübt	%1$@ y %2$@ practicaron hoy	%1$@ et %2$@ ont pratiqué aujourd’hui	%1$@ e %2$@ si sono esercitati oggi	%1$@ e %2$@ praticaram hoje	%1$@ и %2$@ занимались сегодня
+adjusted	prilagođeno	angepasst	ajustada	ajustée	adattata	ajustada	изменено
+Mark not done	Označi kao neurađeno	Als nicht erledigt markieren	Marcar como no hecha	Marquer comme non faite	Segna come non fatta	Marcar como não feita	Отметить как невыполненное
+Mark done	Označi kao urađeno	Als erledigt markieren	Marcar como hecha	Marquer comme faite	Segna come fatta	Marcar como feita	Отметить как выполненное
+Start a fresh conversation	Započni novi razgovor	Neues Gespräch beginnen	Empezar una conversación nueva	Démarrer une nouvelle conversation	Inizia una nuova conversazione	Começar uma nova conversa	Начать новый разговор
+More	Više	Mehr	Más	Plus	Altro	Mais	Ещё
+**Roleplay:** %@	**Igra uloga:** %@	**Rollenspiel:** %@	**Juego de rol:** %@	**Jeu de rôle :** %@	**Gioco di ruolo:** %@	**Role-play:** %@	**Ролевая игра:** %@
+Tutor is typing…	Tutor kuca…	Der Tutor schreibt …	El tutor está escribiendo…	Le tuteur écrit…	Il tutor sta scrivendo…	O tutor está digitando…	Репетитор печатает…
+Reply in %@…	Odgovori (%@)…	Auf %@ antworten …	Responde en %@…	Réponds en %@…	Rispondi in %@…	Responda em %@…	Ответьте (%@)…
+German words	Njemačke riječi	Deutsche Wörter	Palabras en alemán	Mots allemands	Parole tedesche	Palavras em alemão	Немецкие слова
+%@ · %lld/%lld mastered	%1$@ · savladano %2$lld/%3$lld	%1$@ · %2$lld/%3$lld gelernt	%1$@ · %2$lld/%3$lld dominadas	%1$@ · %2$lld/%3$lld maîtrisés	%1$@ · %2$lld/%3$lld padroneggiate	%1$@ · %2$lld/%3$lld dominadas	%1$@ · выучено %2$lld/%3$lld
+Goethe-Institut word lists, A1 → A2 → B1. Words come in random order. Nouns need their article and plural, verbs their Perfekt.	Liste riječi Goethe-Instituta, A1 → A2 → B1. Riječi dolaze nasumičnim redom. Uz imenice ide član i množina, uz glagole Perfekt.	Wortlisten des Goethe-Instituts, A1 → A2 → B1. Die Wörter kommen in zufälliger Reihenfolge. Nomen brauchen Artikel und Plural, Verben ihr Perfekt.	Listas de vocabulario del Goethe-Institut, A1 → A2 → B1. Las palabras salen en orden aleatorio. Los sustantivos necesitan artículo y plural; los verbos, su Perfekt.	Listes de mots du Goethe-Institut, A1 → A2 → B1. Les mots arrivent dans un ordre aléatoire. Les noms demandent l’article et le pluriel, les verbes leur Perfekt.	Liste di parole del Goethe-Institut, A1 → A2 → B1. Le parole arrivano in ordine casuale. I sostantivi vogliono articolo e plurale, i verbi il Perfekt.	Listas de palavras do Goethe-Institut, A1 → A2 → B1. As palavras vêm em ordem aleatória. Substantivos pedem artigo e plural; verbos, o Perfekt.	Списки слов Гёте-института, A1 → A2 → B1. Слова идут в случайном порядке. Для существительных нужен артикль и множественное число, для глаголов — Perfekt.
+%lld of %lld mastered	Savladano %1$lld od %2$lld	%1$lld von %2$lld gelernt	%1$lld de %2$lld dominadas	%1$lld sur %2$lld maîtrisés	%1$lld di %2$lld padroneggiate	%1$lld de %2$lld dominadas	Выучено %1$lld из %2$lld
+now	sada	jetzt	ahora	en cours	ora	agora	сейчас
+New words only come from %@ until you've mastered every %@ word. A word is mastered after 3 right answers in a row, spread over at least two days.	Nove riječi dolaze samo iz %1$@ dok ne savladaš svaku riječ iz %2$@. Riječ je savladana poslije 3 tačna odgovora zaredom, raspoređena na najmanje dva dana.	Neue Wörter kommen nur aus %1$@, bis du jedes %2$@-Wort gelernt hast. Ein Wort gilt als gelernt nach 3 richtigen Antworten in Folge, verteilt auf mindestens zwei Tage.	Las palabras nuevas solo vienen de %1$@ hasta que domines todas las de %2$@. Una palabra se domina tras 3 aciertos seguidos repartidos en al menos dos días.	Les nouveaux mots viennent uniquement de %1$@ jusqu’à ce que tu maîtrises tous les mots de %2$@. Un mot est maîtrisé après 3 bonnes réponses d’affilée, sur au moins deux jours.	Le parole nuove arrivano solo da %1$@ finché non padroneggi ogni parola di %2$@. Una parola è padroneggiata dopo 3 risposte giuste di fila, distribuite su almeno due giorni.	Palavras novas só vêm de %1$@ até você dominar todas as de %2$@. Uma palavra é dominada após 3 acertos seguidos, em pelo menos dois dias.	Новые слова берутся только из %1$@, пока вы не выучите все слова %2$@. Слово считается выученным после 3 верных ответов подряд минимум за два дня.
+Without ChatGPT, you check your own translations. Sign in to have them checked for you.	Bez ChatGPT-a sam provjeravaš svoje prevode. Prijavi se da ih on provjerava umjesto tebe.	Ohne ChatGPT prüfst du deine Übersetzungen selbst. Melde dich an, damit sie für dich geprüft werden.	Sin ChatGPT, compruebas tú mismo tus traducciones. Inicia sesión para que las revise por ti.	Sans ChatGPT, tu vérifies toi-même tes traductions. Connecte-toi pour qu’elles soient vérifiées pour toi.	Senza ChatGPT controlli da solo le traduzioni. Accedi per farle controllare.	Sem o ChatGPT, você mesmo confere suas traduções. Entre para que elas sejam verificadas para você.	Без ChatGPT вы проверяете переводы сами. Войдите, чтобы их проверяли за вас.
+Meaning in %@	Značenje (%@)	Bedeutung auf %@	Significado en %@	Sens en %@	Significato in %@	Significado em %@	Значение (%@)
+Article	Član	Artikel	Artículo	Article	Articolo	Artigo	Артикль
+This noun is only used in the plural.	Ova imenica se koristi samo u množini.	Dieses Nomen gibt es nur im Plural.	Este sustantivo solo se usa en plural.	Ce nom ne s’emploie qu’au pluriel.	Questo sostantivo si usa solo al plurale.	Este substantivo só é usado no plural.	Это существительное употребляется только во множественном числе.
+Plural	Množina	Plural	Plural	Pluriel	Plurale	Plural	Мн. число
+Plural: %@	Množina: %@	Plural: %@	Plural: %@	Pluriel : %@	Plurale: %@	Plural: %@	Мн. число: %@
+No plural	Nema množinu	Kein Plural	Sin plural	Pas de pluriel	Nessun plurale	Sem plural	Нет мн. числа
+Perfekt (e.g. hat gemacht, ist gefahren)	Perfekt (npr. hat gemacht, ist gefahren)	Perfekt (z. B. hat gemacht, ist gefahren)	Perfekt (p. ej. hat gemacht, ist gefahren)	Perfekt (ex. : hat gemacht, ist gefahren)	Perfekt (es. hat gemacht, ist gefahren)	Perfekt (ex.: hat gemacht, ist gefahren)	Perfekt (напр. hat gemacht, ist gefahren)
+Perfekt: %@	Perfekt: %@	Perfekt: %@	Perfekt: %@	Perfekt : %@	Perfekt: %@	Perfekt: %@	Perfekt: %@
+ChatGPT is checking…	ChatGPT provjerava…	ChatGPT prüft …	ChatGPT está comprobando…	ChatGPT vérifie…	ChatGPT sta controllando…	O ChatGPT está verificando…	ChatGPT проверяет…
+Right	Tačno	Richtig	Correcto	Juste	Giusto	Certo	Верно
+Not quite	Ne baš	Nicht ganz	No del todo	Pas tout à fait	Non proprio	Não exatamente	Не совсем
+Did you know the meaning?	Jesi li znao značenje?	Kanntest du die Bedeutung?	¿Sabías el significado?	Connaissais-tu le sens ?	Sapevi il significato?	Você sabia o significado?	Вы знали значение?
+I didn't	Nisam	Nein	No	Non	No	Não	Нет
+Hint from the example: %@	Nagovještaj iz primjera: %@	Hinweis aus dem Beispiel: %@	Pista del ejemplo: %@	Indice tiré de l’exemple : %@	Suggerimento dall’esempio: %@	Dica do exemplo: %@	Подсказка из примера: %@
+Round done	Krug završen	Runde geschafft	Ronda terminada	Manche terminée	Round finito	Rodada concluída	Раунд завершён
+%lld of %lld right	Tačno %1$lld od %2$lld	%1$lld von %2$lld richtig	%1$lld de %2$lld correctas	%1$lld sur %2$lld justes	%1$lld di %2$lld giuste	%1$lld de %2$lld certas	Верно %1$lld из %2$lld
+Getting words ready…	Spremamo riječi…	Wörter werden vorbereitet …	Preparando palabras…	Préparation des mots…	Prepariamo le parole…	Preparando palavras…	Готовим слова…
+Start practice	Započni vježbu	Üben starten	Empezar práctica	Commencer l’entraînement	Inizia la pratica	Começar a praticar	Начать практику
+Check	Provjeri	Prüfen	Comprobar	Vérifier	Controlla	Verificar	Проверить
+Done	Gotovo	Fertig	Listo	Terminé	Fatto	Concluído	Готово
+Another round	Još jedan krug	Noch eine Runde	Otra ronda	Une autre manche	Un altro round	Outra rodada	Ещё раунд
+Noun	Imenica	Nomen	Sustantivo	Nom	Sostantivo	Substantivo	Существительное
+Verb	Glagol	Verb	Verbo	Verbe	Verbo	Verbo	Глагол
+Word	Riječ	Wort	Palabra	Mot	Parola	Palavra	Слово
+Popular, then all languages	Popularni, pa svi jezici	Beliebt, dann alle Sprachen	Populares y luego todos	Populaires, puis toutes les langues	Più popolari, poi tutte	Populares e depois todos	Популярные, затем все языки
+Not in our list — ChatGPT can still teach it	Nije na našoj listi — ChatGPT ga ipak može predavati	Nicht in unserer Liste – ChatGPT kann sie trotzdem unterrichten	No está en la lista, pero ChatGPT puede enseñarlo	Absente de la liste — ChatGPT peut quand même l’enseigner	Non è nella lista, ma ChatGPT può insegnarla	Não está na lista — o ChatGPT ainda pode ensinar	Нет в списке — ChatGPT всё равно может научить
+Matches: %lld	Rezultata: %lld	Treffer: %lld	Coincidencias: %lld	Résultats : %lld	Risultati: %lld	Resultados: %lld	Найдено: %lld
+What do you want to learn?	Šta želiš da učiš?	Was möchtest du lernen?	¿Qué quieres aprender?	Que veux-tu apprendre ?	Cosa vuoi imparare?	O que você quer aprender?	Что вы хотите изучать?
+Pick as many as you like. You can study them at the same time.	Izaberi koliko god želiš. Možeš ih učiti istovremeno.	Wähle so viele du willst. Du kannst sie gleichzeitig lernen.	Elige todos los que quieras. Puedes estudiarlos a la vez.	Choisis-en autant que tu veux. Tu peux les étudier en même temps.	Scegline quante vuoi. Puoi studiarle contemporaneamente.	Escolha quantos quiser. Você pode estudá-los ao mesmo tempo.	Выберите сколько угодно. Их можно изучать одновременно.
+Search any language	Pretraži bilo koji jezik	Beliebige Sprache suchen	Busca cualquier idioma	Cherche une langue	Cerca una lingua	Pesquise qualquer idioma	Найти любой язык
+ChatGPT can teach “%@” — even if it's not in our list.	ChatGPT može predavati „%@“ — čak i ako nije na našoj listi.	ChatGPT kann „%@“ unterrichten – auch wenn es nicht in unserer Liste steht.	ChatGPT puede enseñar «%@», aunque no esté en nuestra lista.	ChatGPT peut enseigner « %@ » — même s’il n’est pas dans notre liste.	ChatGPT può insegnare «%@», anche se non è nella nostra lista.	O ChatGPT pode ensinar “%@” — mesmo que não esteja na lista.	ChatGPT может учить «%@», даже если его нет в нашем списке.
+Add %@	Dodaj %@	%@ hinzufügen	Añadir %@	Ajouter %@	Aggiungi %@	Adicionar %@	Добавить %@
+Remove %@	Ukloni %@	%@ entfernen	Quitar %@	Retirer %@	Rimuovi %@	Remover %@	Удалить %@
+Pick at least one language	Izaberi bar jedan jezik	Wähle mindestens eine Sprache	Elige al menos un idioma	Choisis au moins une langue	Scegli almeno una lingua	Escolha pelo menos um idioma	Выберите хотя бы один язык
+Your level and goals	Tvoj nivo i ciljevi	Dein Niveau und deine Ziele	Tu nivel y tus objetivos	Ton niveau et tes objectifs	Il tuo livello e i tuoi obiettivi	Seu nível e seus objetivos	Ваш уровень и цели
+A rough guess is fine. ChatGPT adjusts as you go.	Gruba procjena je dovoljna. ChatGPT se prilagođava usput.	Eine grobe Schätzung reicht. ChatGPT passt sich unterwegs an.	Basta con una estimación. ChatGPT se ajusta sobre la marcha.	Une estimation suffit. ChatGPT s’adapte au fur et à mesure.	Basta una stima. ChatGPT si adatta strada facendo.	Uma estimativa basta. O ChatGPT se ajusta ao longo do caminho.	Достаточно примерной оценки. ChatGPT подстроится по ходу.
+Goals	Ciljevi	Ziele	Objetivos	Objectifs	Obiettivi	Objetivos	Цели
+Daily time	Dnevno vrijeme	Tägliche Zeit	Tiempo diario	Temps quotidien	Tempo giornaliero	Tempo diário	Время в день
+Build my plans with ChatGPT	Napravi moje planove uz ChatGPT	Pläne mit ChatGPT erstellen	Crear mis planes con ChatGPT	Créer mes programmes avec ChatGPT	Crea i miei piani con ChatGPT	Criar meus planos com o ChatGPT	Составить планы с ChatGPT
+Build my plans	Napravi moje planove	Pläne erstellen	Crear mis planes	Créer mes programmes	Crea i miei piani	Criar meus planos	Составить планы
+About %lld min per language each day. ChatGPT balances them across the week.	Oko %lld min po jeziku dnevno. ChatGPT ih raspoređuje kroz sedmicu.	Etwa %lld Min. pro Sprache am Tag. ChatGPT verteilt sie über die Woche.	Unos %lld min por idioma al día. ChatGPT los equilibra durante la semana.	Environ %lld min par langue et par jour. ChatGPT les équilibre sur la semaine.	Circa %lld min per lingua al giorno. ChatGPT le bilancia nella settimana.	Cerca de %lld min por idioma por dia. O ChatGPT equilibra ao longo da semana.	Около %lld мин на язык в день. ChatGPT распределит их по неделе.
+ChatGPT spreads this across skills through the week.	ChatGPT ovo raspoređuje na vještine kroz sedmicu.	ChatGPT verteilt das über die Woche auf alle Fertigkeiten.	ChatGPT lo reparte entre habilidades durante la semana.	ChatGPT le répartit entre les compétences sur la semaine.	ChatGPT lo distribuisce tra le abilità nella settimana.	O ChatGPT distribui isso entre as habilidades ao longo da semana.	ChatGPT распределит это по навыкам в течение недели.
+Continue with OpenAI	Nastavi preko OpenAI-ja	Weiter mit OpenAI	Continuar con OpenAI	Continuer avec OpenAI	Continua con OpenAI	Continuar com a OpenAI	Продолжить с OpenAI
+Continue with Google	Nastavi preko Google-a	Weiter mit Google	Continuar con Google	Continuer avec Google	Continua con Google	Continuar com o Google	Продолжить с Google
+Learn any language, at your own pace.	Uči bilo koji jezik, svojim tempom.	Lerne jede Sprache in deinem Tempo.	Aprende cualquier idioma a tu ritmo.	Apprends n’importe quelle langue, à ton rythme.	Impara qualsiasi lingua, al tuo ritmo.	Aprenda qualquer idioma no seu ritmo.	Учите любой язык в своём темпе.
+ChatGPT plans your week, adapts it every day and practises with you. Learn with friends, on every device.	ChatGPT planira tvoju sedmicu, prilagođava je svaki dan i vježba s tobom. Uči s prijateljima, na svakom uređaju.	ChatGPT plant deine Woche, passt sie täglich an und übt mit dir. Lerne mit Freunden, auf jedem Gerät.	ChatGPT planifica tu semana, la adapta cada día y practica contigo. Aprende con amigos, en cualquier dispositivo.	ChatGPT planifie ta semaine, l’adapte chaque jour et pratique avec toi. Apprends avec des amis, sur tous tes appareils.	ChatGPT pianifica la tua settimana, la adatta ogni giorno e si esercita con te. Impara con gli amici, su ogni dispositivo.	O ChatGPT planeja sua semana, ajusta todo dia e pratica com você. Aprenda com amigos, em qualquer dispositivo.	ChatGPT планирует вашу неделю, подстраивает её каждый день и практикуется с вами. Учитесь с друзьями на любом устройстве.
+Offline mode: add GoogleService-Info.plist to turn on accounts and ChatGPT.	Offline režim: dodaj GoogleService-Info.plist da uključiš naloge i ChatGPT.	Offline-Modus: Füge GoogleService-Info.plist hinzu, um Konten und ChatGPT zu aktivieren.	Modo sin conexión: añade GoogleService-Info.plist para activar cuentas y ChatGPT.	Mode hors ligne : ajoute GoogleService-Info.plist pour activer les comptes et ChatGPT.	Modalità offline: aggiungi GoogleService-Info.plist per attivare account e ChatGPT.	Modo offline: adicione o GoogleService-Info.plist para ativar contas e o ChatGPT.	Офлайн-режим: добавьте GoogleService-Info.plist, чтобы включить аккаунты и ChatGPT.
+Continue with email	Nastavi preko e-pošte	Weiter mit E-Mail	Continuar con correo	Continuer avec l’e-mail	Continua con l’email	Continuar com e-mail	Продолжить с эл. почтой
+Have an account?	Imaš nalog?	Schon ein Konto?	¿Tienes cuenta?	Tu as un compte ?	Hai un account?	Já tem conta?	Уже есть аккаунт?
+Log in	Prijavi se	Anmelden	Iniciar sesión	Se connecter	Accedi	Entrar	Войти
+Create your account	Napravi nalog	Konto erstellen	Crea tu cuenta	Crée ton compte	Crea il tuo account	Crie sua conta	Создайте аккаунт
+Welcome back	Dobro došao nazad	Willkommen zurück	Bienvenido de nuevo	Bon retour	Bentornato	Bem-vindo de volta	С возвращением
+Name	Ime	Name	Nombre	Nom	Nome	Nome	Имя
+Email	E-pošta	E-Mail	Correo	E-mail	Email	E-mail	Эл. почта
+Password	Lozinka	Passwort	Contraseña	Mot de passe	Password	Senha	Пароль
+One moment…	Samo trenutak…	Einen Moment …	Un momento…	Un instant…	Un momento…	Um momento…	Минутку…
+Create account	Napravi nalog	Konto erstellen	Crear cuenta	Créer un compte	Crea account	Criar conta	Создать аккаунт
+Forgot password?	Zaboravljena lozinka?	Passwort vergessen?	¿Olvidaste la contraseña?	Mot de passe oublié ?	Password dimenticata?	Esqueceu a senha?	Забыли пароль?
+Check your inbox for a reset link.	Provjeri inbox — poslali smo link za resetovanje.	Sieh in deinem Postfach nach dem Link zum Zurücksetzen.	Revisa tu bandeja de entrada para el enlace de restablecimiento.	Consulte ta boîte mail pour le lien de réinitialisation.	Controlla la posta per il link di reimpostazione.	Confira sua caixa de entrada para o link de redefinição.	Проверьте почту — там ссылка для сброса.
+Already have an account?	Već imaš nalog?	Du hast schon ein Konto?	¿Ya tienes cuenta?	Tu as déjà un compte ?	Hai già un account?	Já tem uma conta?	Уже есть аккаунт?
+New here?	Nov si ovdje?	Neu hier?	¿Eres nuevo?	Nouveau ici ?	Sei nuovo?	Novo por aqui?	Впервые здесь?
+or	ili	oder	o	ou	oppure	ou	или
+Please add your name	Dodaj svoje ime	Bitte gib deinen Namen ein	Añade tu nombre	Ajoute ton nom	Aggiungi il tuo nome	Adicione seu nome	Укажите имя
+That email doesn’t look right	Ta e-pošta ne izgleda ispravno	Diese E-Mail sieht nicht richtig aus	Ese correo no parece correcto	Cet e-mail ne semble pas correct	Questa email non sembra corretta	Esse e-mail não parece correto	Похоже, адрес почты неверный
+Use at least 8 characters	Koristi najmanje 8 znakova	Mindestens 8 Zeichen verwenden	Usa al menos 8 caracteres	Utilise au moins 8 caractères	Usa almeno 8 caratteri	Use pelo menos 8 caracteres	Не меньше 8 символов
+Add friends	Dodaj prijatelje	Freunde hinzufügen	Añadir amigos	Ajouter des amis	Aggiungi amici	Adicionar amigos	Добавить друзей
+Search by username	Pretraži po korisničkom imenu	Nach Benutzername suchen	Buscar por nombre de usuario	Rechercher par nom d’utilisateur	Cerca per nome utente	Buscar por nome de usuário	Поиск по имени пользователя
+Requested	Zatraženo	Angefragt	Solicitado	Demandé	Richiesto	Solicitado	Запрос отправлен
+No one found. Share your link instead.	Niko nije pronađen. Podijeli svoj link.	Niemand gefunden. Teile stattdessen deinen Link.	No se encontró a nadie. Comparte tu enlace.	Personne trouvé. Partage plutôt ton lien.	Nessuno trovato. Condividi il tuo link.	Ninguém encontrado. Compartilhe seu link.	Никого не найдено. Поделитесь ссылкой.
+Link copied	Link kopiran	Link kopiert	Enlace copiado	Lien copié	Link copiato	Link copiado	Ссылка скопирована
+Share invite link	Podijeli link za poziv	Einladungslink teilen	Compartir enlace de invitación	Partager le lien d’invitation	Condividi link di invito	Compartilhar link de convite	Поделиться ссылкой-приглашением
+2 friends found	Pronađena 2 prijatelja	2 Freunde gefunden	2 amigos encontrados	2 amis trouvés	2 amici trovati	2 amigos encontrados	Найдено 2 друга
+From contacts	Iz kontakata	Aus Kontakten	De contactos	Depuis les contacts	Dai contatti	Dos contatos	Из контактов
+Scan to add %@	Skeniraj da dodaš %@	Scannen, um %@ hinzuzufügen	Escanea para añadir a %@	Scanne pour ajouter %@	Scansiona per aggiungere %@	Escaneie para adicionar %@	Сканируйте, чтобы добавить %@
+Share	Podijeli	Teilen	Compartir	Partager	Condividi	Compartilhar	Поделиться
+The Lingora server isn't set up in this build.	Lingora server nije podešen u ovoj verziji.	Der Lingora-Server ist in diesem Build nicht eingerichtet.	El servidor de Lingora no está configurado en esta versión.	Le serveur Lingora n’est pas configuré dans cette version.	Il server Lingora non è configurato in questa build.	O servidor do Lingora não está configurado nesta versão.	Сервер Lingora не настроен в этой сборке.
+Sign-in didn't return a token. Please try again.	Prijava nije vratila token. Pokušaj ponovo.	Die Anmeldung hat kein Token geliefert. Bitte versuche es erneut.	El inicio de sesión no devolvió un token. Inténtalo de nuevo.	La connexion n’a pas renvoyé de jeton. Réessaie.	L’accesso non ha restituito un token. Riprova.	O login não retornou um token. Tente novamente.	Вход не вернул токен. Попробуйте ещё раз.
+Sign-in was cancelled.	Prijava je otkazana.	Die Anmeldung wurde abgebrochen.	Se canceló el inicio de sesión.	La connexion a été annulée.	Accesso annullato.	O login foi cancelado.	Вход отменён.
+Sign in with OpenAI isn't available yet: %@	Prijava preko OpenAI-ja još nije dostupna: %@	Die Anmeldung mit OpenAI ist noch nicht verfügbar: %@	Iniciar sesión con OpenAI aún no está disponible: %@	La connexion avec OpenAI n’est pas encore disponible : %@	L’accesso con OpenAI non è ancora disponibile: %@	Entrar com a OpenAI ainda não está disponível: %@	Вход через OpenAI пока недоступен: %@
+That email or password isn't right.	E-pošta ili lozinka nisu tačni.	E-Mail oder Passwort stimmt nicht.	El correo o la contraseña no son correctos.	L’e-mail ou le mot de passe est incorrect.	Email o password non corretti.	E-mail ou senha incorretos.	Неверная почта или пароль.
+An account with this email already exists. Log in instead.	Nalog s ovom e-poštom već postoji. Prijavi se.	Es gibt schon ein Konto mit dieser E-Mail. Melde dich stattdessen an.	Ya existe una cuenta con este correo. Inicia sesión.	Un compte existe déjà avec cet e-mail. Connecte-toi plutôt.	Esiste già un account con questa email. Accedi.	Já existe uma conta com este e-mail. Entre em vez disso.	Аккаунт с этой почтой уже есть. Войдите.
+No connection. Check your internet and try again.	Nema veze. Provjeri internet i pokušaj ponovo.	Keine Verbindung. Prüfe dein Internet und versuche es erneut.	Sin conexión. Revisa tu internet e inténtalo de nuevo.	Pas de connexion. Vérifie ta connexion et réessaie.	Nessuna connessione. Controlla internet e riprova.	Sem conexão. Verifique sua internet e tente novamente.	Нет соединения. Проверьте интернет и повторите попытку.
+Sign in to use ChatGPT features.	Prijavi se da koristiš ChatGPT funkcije.	Melde dich an, um ChatGPT-Funktionen zu nutzen.	Inicia sesión para usar las funciones de ChatGPT.	Connecte-toi pour utiliser les fonctions ChatGPT.	Accedi per usare le funzioni di ChatGPT.	Entre para usar os recursos do ChatGPT.	Войдите, чтобы пользоваться функциями ChatGPT.
+Travel	Putovanja	Reisen	Viajes	Voyages	Viaggi	Viagens	Путешествия
+Work	Posao	Arbeit	Trabajo	Travail	Lavoro	Trabalho	Работа
+Exams	Ispiti	Prüfungen	Exámenes	Examens	Esami	Provas	Экзамены
+Conversation	Razgovor	Gespräche	Conversación	Conversation	Conversazione	Conversação	Разговор
+Culture & media	Kultura i mediji	Kultur & Medien	Cultura y medios	Culture et médias	Cultura e media	Cultura e mídia	Культура и медиа
+Moving abroad	Selidba u inostranstvo	Umzug ins Ausland	Mudarse al extranjero	S’installer à l’étranger	Trasferirsi all’estero	Morar no exterior	Переезд за границу
+Family	Porodica	Familie	Familia	Famille	Famiglia	Família	Семья

@@ -15,22 +15,22 @@ struct TodayView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
                     HStack {
-                        Text(DateUtil.format(Date(), "EEEEdMMMM")).font(.fig(14, .semibold)).foregroundStyle(theme.muted)
+                        Text(verbatim: DateUtil.format(Date(), "EEEEdMMMM")).font(.fig(14, .semibold)).foregroundStyle(theme.muted)
                         Spacer()
-                        Label("\(model.s.streak) days", systemImage: "flame")
+                        Label(L("%lld days", model.s.streak), systemImage: "flame")
                             .font(.fig(14, .semibold))
                             .padding(.horizontal, 12).frame(height: 32)
                             .background(theme.card, in: Capsule())
                             .overlay(Capsule().strokeBorder(theme.cardBorder, lineWidth: 1))
                     }
-                    ScreenTitle(text: "\(Catalog.greeting[model.s.learning.first ?? ""] ?? "Good morning"), \(user?.firstName ?? "")")
+                    ScreenTitle(text: "\(Catalog.greeting[model.s.learning.first ?? ""] ?? L("Good morning")), \(user?.firstName ?? "")")
 
                     // Summary
                     VStack(alignment: .leading, spacing: 12) {
                         HStack {
-                            Text("\(done.count) of \(tasks.count) done").font(.fig(14, .semibold))
+                            Text(L("%lld of %lld done", done.count, tasks.count)).font(.fig(14, .semibold))
                             Spacer()
-                            Text(left > 0 ? "\(left) min left" : "All done for today").font(.fig(14)).foregroundStyle(theme.muted)
+                            Text(left > 0 ? L("%lld min left", left) : L("All done for today")).font(.fig(14)).foregroundStyle(theme.muted)
                         }
                         ProgressBar(value: tasks.isEmpty ? 0 : Double(done.count) / Double(tasks.count))
                         FlowLayout(spacing: 8) {
@@ -40,7 +40,7 @@ struct TodayView: View {
                                 HStack(spacing: 6) {
                                     Text(l.code).font(.fig(9, .bold)).foregroundStyle(.white)
                                         .frame(width: 22, height: 22).background(h.base, in: Circle())
-                                    Text("\(ts.filter(model.isDone).count)/\(ts.count)").font(.fig(13, .semibold))
+                                    Text(verbatim: "\(ts.filter(model.isDone).count)/\(ts.count)").font(.fig(13, .semibold))
                                 }
                                 .foregroundStyle(h.deep)
                                 .padding(.leading, 4).padding(.trailing, 10).frame(height: 30)
@@ -52,18 +52,18 @@ struct TodayView: View {
 
                     if model.planIsStale {
                         VStack(alignment: .leading, spacing: 10) {
-                            Text("**A new week.** Let \(model.connected ? "ChatGPT" : "Lingora") plan it around how last week went.")
-                            Button("Plan my week") {
+                            MD(L("**A new week.** Let %@ plan it around how last week went.", model.aiAvailable ? "ChatGPT" : "Lingora"))
+                            Button(L("Plan my week")) {
                                 model.tab = .plan
                                 Task { await model.buildPlans() }
                             }
                             .buttonStyle(PrimaryButtonStyle(kind: .accent, height: 44))
                         }
                         .tintedNote(theme.at, theme.ad, radius: theme.radius)
-                    } else if model.s.settings.adaptDaily, model.connected, let note = model.s.adaptNote {
+                    } else if model.s.settings.adaptDaily, model.aiAvailable, let note = model.s.adaptNote {
                         HStack(alignment: .top, spacing: 10) {
                             Image(systemName: "sparkles").padding(.top, 2)
-                            Text("**Adjusted for today.** \(note)")
+                            MD(L("**Adjusted for today.** %@", note))
                         }
                         .tintedNote(theme.at, theme.ad, radius: theme.radius)
                     }
@@ -84,14 +84,19 @@ struct TodayView: View {
                     }
                     .buttonStyle(.plain)
 
-                    SectionLabel(text: "Today's tasks").padding(.top, 4)
+                    if model.learnsGerman {
+                        Button { model.showWords = true } label: { WordsSummaryCard() }
+                            .buttonStyle(.plain)
+                    }
+
+                    SectionLabel(text: L("Today's tasks")).padding(.top, 4)
 
                     VStack(spacing: 0) {
                         ForEach(Array(tasks.enumerated()), id: \.element.id) { i, t in
                             TaskRow(task: t, showSeparator: i > 0)
                         }
                         if tasks.isEmpty {
-                            Text("No tasks today. Enjoy the rest.").font(.fig(15)).foregroundStyle(theme.muted).padding(16)
+                            Text(L("No tasks today. Enjoy the rest.")).font(.fig(15)).foregroundStyle(theme.muted).padding(16)
                         }
                     }
                     .card(padding: 0)
@@ -99,7 +104,7 @@ struct TodayView: View {
                 .padding(.horizontal, 20).padding(.top, 10).padding(.bottom, 16)
             }
 
-            Button(next.map { "Continue: \(model.language($0.langKey)?.name ?? "") \($0.type.label.lowercased())" } ?? "All done — see you tomorrow") {
+            Button(next.map { L("Continue: %@ · %@", model.language($0.langKey)?.name ?? "", $0.type.label.lowercased()) } ?? L("All done — see you tomorrow")) {
                 if let next { model.open(next) }
             }
             .buttonStyle(.primary)
@@ -112,9 +117,9 @@ struct TodayView: View {
 
     private func friendsLine(_ names: [String]) -> String {
         switch names.count {
-        case 0: return "Invite friends to learn together"
-        case 1: return "\(names[0]) practised today"
-        default: return names.dropLast().joined(separator: ", ") + " and \(names.last!) practised today"
+        case 0: return L("Invite friends to learn together")
+        case 1: return L("%@ practised today", names[0])
+        default: return L("%@ and %@ practised today", names.dropLast().joined(separator: ", "), names.last!)
         }
     }
 }
@@ -135,9 +140,9 @@ struct TaskRow: View {
                     CodeBadge(code: l?.code ?? "", hue: h, size: 36)
                     VStack(alignment: .leading, spacing: 1) {
                         HStack(spacing: 6) {
-                            Text("\(task.type.label) · \(task.minutes) min").font(.fig(12, .semibold)).foregroundStyle(theme.muted)
-                            if task.adapted && model.s.settings.adaptDaily && model.connected {
-                                Text("adjusted").font(.fig(12, .semibold)).foregroundStyle(theme.ad)
+                            Text(verbatim: "\(task.type.label) · \(L("%lld min", task.minutes))").font(.fig(12, .semibold)).foregroundStyle(theme.muted)
+                            if task.adapted && model.s.settings.adaptDaily && model.aiAvailable {
+                                Text(L("adjusted")).font(.fig(12, .semibold)).foregroundStyle(theme.ad)
                                     .padding(.horizontal, 8).padding(.vertical, 1)
                                     .background(theme.at, in: Capsule())
                             }
@@ -162,7 +167,7 @@ struct TaskRow: View {
                 .frame(width: 44, height: 44)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(done ? "Mark not done" : "Mark done")
+            .accessibilityLabel(done ? L("Mark not done") : L("Mark done"))
         }
         .padding(.leading, 16).padding(.trailing, 6).padding(.vertical, 4)
         .overlay(alignment: .top) { if showSeparator { Rectangle().fill(theme.line).frame(height: 1) } }

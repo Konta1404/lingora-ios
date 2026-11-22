@@ -29,14 +29,14 @@ struct PlanView: View {
 
     private var generatingView: some View {
         let steps = [
-            "Reading your goals",
-            "Placing you: " + model.languages.map { "\($0.code) \(model.level($0.key).code)" }.joined(separator: " · "),
-            "Splitting \(model.s.dailyMinutes) min across \(model.languages.count) language\(model.languages.count == 1 ? "" : "s")",
-            "Writing today's tasks"
+            L("Reading your goals"),
+            L("Placing you: %@", model.languages.map { "\($0.code) \(model.level($0.key).code)" }.joined(separator: " · ")),
+            L("Splitting %lld min across %lld (languages)", model.s.dailyMinutes, model.languages.count),
+            L("Writing today's tasks")
         ]
         return VStack(alignment: .leading, spacing: 18) {
             Spacer()
-            ScreenTitle(text: model.connected ? "ChatGPT is building your week" : "Building your week")
+            ScreenTitle(text: model.aiAvailable ? L("ChatGPT is building your week") : L("Building your week"))
             ProgressBar(value: Double(model.planStep) / 4)
             VStack(alignment: .leading, spacing: 14) {
                 ForEach(Array(steps.enumerated()), id: \.offset) { i, label in
@@ -70,7 +70,7 @@ struct PlanView: View {
 
         ScrollView {
             VStack(alignment: .leading, spacing: 14) {
-                ScreenTitle(text: fromOnboarding ? "Your week is ready" : "This week")
+                ScreenTitle(text: fromOnboarding ? L("Your week is ready") : L("This week"))
                     .padding(.top, fromOnboarding ? 0 : 10)
 
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -84,7 +84,7 @@ struct PlanView: View {
                                         .foregroundStyle(on ? .white : theme.text)
                                         .frame(width: 24, height: 24)
                                         .background(on ? lh.base : theme.card, in: Circle())
-                                    Text("\(l.name) · \(model.level(l.key).code)").font(.fig(14, .semibold))
+                                    Text(verbatim: "\(l.name) · \(model.level(l.key).code)").font(.fig(14, .semibold))
                                 }
                                 .foregroundStyle(on ? lh.deep : theme.text)
                                 .padding(.leading, 5).padding(.trailing, 12).frame(height: 36)
@@ -106,8 +106,8 @@ struct PlanView: View {
                         }()
                         Button { selectedDay = i } label: {
                             VStack(spacing: 4) {
-                                Text(DateUtil.shortDays[i]).font(.fig(12, .semibold)).opacity(0.8)
-                                Text("\(DateUtil.calendar.component(.day, from: d))").font(.fig(17, .bold))
+                                Text(verbatim: DateUtil.shortDays[i]).font(.fig(12, .semibold)).opacity(0.8)
+                                Text(verbatim: "\(DateUtil.calendar.component(.day, from: d))").font(.fig(17, .bold))
                                 Circle().fill(dotColor).frame(width: 5, height: 5)
                             }
                             .foregroundStyle(on ? .white : theme.text)
@@ -126,7 +126,7 @@ struct PlanView: View {
                             Text(day.focus).font(.fig(14)).foregroundStyle(theme.muted)
                         }
                         Spacer()
-                        Text("\(day.tasks.reduce(0) { $0 + $1.minutes }) min").font(.fig(14, .semibold)).foregroundStyle(theme.muted)
+                        Text(L("%lld min", day.tasks.reduce(0) { $0 + $1.minutes })).font(.fig(14, .semibold)).foregroundStyle(theme.muted)
                     }
                     ForEach(day.tasks) { t in
                         HStack(spacing: 12) {
@@ -136,20 +136,20 @@ struct PlanView: View {
                                 Text(t.title).font(.fig(15, .semibold))
                             }
                             Spacer()
-                            Text("\(t.minutes) min").font(.fig(13)).foregroundStyle(theme.muted)
+                            Text(L("%lld min", t.minutes)).font(.fig(13)).foregroundStyle(theme.muted)
                         }
                         .padding(.top, 10)
                         .overlay(alignment: .top) { Rectangle().fill(theme.line).frame(height: 1) }
                     }
                     if day.tasks.isEmpty {
-                        Text("A rest day. Nothing planned.").font(.fig(14)).foregroundStyle(theme.muted)
+                        Text(L("A rest day. Nothing planned.")).font(.fig(14)).foregroundStyle(theme.muted)
                     }
                 }
                 .card()
 
                 HStack(alignment: .top, spacing: 10) {
                     Image(systemName: "sparkles").padding(.top, 2)
-                    Text("**Why this plan.** \(plan.rationale)")
+                    MD(L("**Why this plan.** %@", plan.rationale))
                 }
                 .tintedNote(theme.at, theme.ad, radius: theme.radius)
 
@@ -163,10 +163,10 @@ struct PlanView: View {
 
         HStack(spacing: 10) {
             if fromOnboarding {
-                Button("Redo") { Task { await model.buildPlans() } }
+                Button(L("Redo")) { Task { await model.buildPlans() } }
                     .buttonStyle(PrimaryButtonStyle(kind: .chip))
                     .frame(width: 110)
-                Button("Start my week") {
+                Button(L("Start my week")) {
                     model.s.onboarded = true
                     model.onboardingPath = []
                     model.tab = .today
@@ -174,7 +174,7 @@ struct PlanView: View {
                 .buttonStyle(.primary)
             } else {
                 Button { Task { await model.buildPlans() } } label: {
-                    Label(model.connected ? "Ask ChatGPT to re-plan" : "Re-plan my week", systemImage: "arrow.clockwise")
+                    Label(model.aiAvailable ? L("Ask ChatGPT to re-plan") : L("Re-plan my week"), systemImage: "arrow.clockwise")
                 }
                 .buttonStyle(PrimaryButtonStyle(kind: .chip))
             }

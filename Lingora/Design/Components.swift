@@ -40,7 +40,7 @@ extension View {
 struct PrimaryButtonStyle: ButtonStyle {
     @Environment(\.theme) private var theme
     @Environment(\.isEnabled) private var isEnabled
-    enum Kind { case accent, dark, chip }
+    enum Kind { case accent, dark, chip, white }
     var kind: Kind = .accent
     var height: CGFloat = 54
 
@@ -50,6 +50,7 @@ struct PrimaryButtonStyle: ButtonStyle {
             case .accent: return (configuration.isPressed ? theme.ad : theme.a, .white)
             case .dark: return (Color(hex: 0x2b2a28), theme.onDark)
             case .chip: return (configuration.isPressed ? theme.chip2 : theme.chip, theme.text)
+            case .white: return (configuration.isPressed ? theme.chip : .white, theme.text)
             }
         }()
         configuration.label
@@ -57,6 +58,8 @@ struct PrimaryButtonStyle: ButtonStyle {
             .foregroundStyle(fg)
             .frame(maxWidth: .infinity, minHeight: height)
             .background(bg, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .strokeBorder(kind == .white ? theme.line : .clear, lineWidth: 1.5))
             .opacity(isEnabled ? 1 : 0.5)
             .contentShape(Rectangle())
     }
@@ -115,10 +118,10 @@ struct CircleIconButton: View {
 }
 
 struct BackButton: View {
-    var systemName = "chevron.left"
+    var systemName = "chevron.backward"
     var action: () -> Void
     var body: some View {
-        CircleIconButton(systemName: systemName, label: systemName == "xmark" ? "Close" : "Back", action: action)
+        CircleIconButton(systemName: systemName, label: systemName == "xmark" ? L("Close") : L("Back"), action: action)
     }
 }
 
@@ -190,7 +193,7 @@ struct StepDots: View {
                     .frame(width: i == current ? 22 : 6, height: 6)
             }
         }
-        .accessibilityLabel("Step \(current + 1) of \(total)")
+        .accessibilityLabel(L("Step %lld of %lld", current + 1, total))
     }
 }
 
@@ -270,7 +273,7 @@ struct LingoraSwitch: View {
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(.isToggle)
-        .accessibilityValue(isOn ? "On" : "Off")
+        .accessibilityValue(isOn ? L("On") : L("Off"))
     }
 }
 
@@ -312,7 +315,7 @@ struct CorrectionBubble: View {
             }
             HStack(alignment: .firstTextBaseline, spacing: 6) {
                 Text(wrong).strikethrough().opacity(0.7)
-                Image(systemName: "arrow.right").font(.system(size: 11, weight: .bold))
+                Image(systemName: "arrow.forward").font(.system(size: 11, weight: .bold))
                 Text(right).font(.fig(15, .bold))
             }
             .font(.fig(15))
@@ -361,7 +364,7 @@ struct ChatInputBar: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            CircleIconButton(systemName: "mic", size: 48, bg: theme.chip, label: "Dictate") {
+            CircleIconButton(systemName: "mic", size: 48, bg: theme.chip, label: L("Dictate")) {
                 focused = true // The keyboard's dictation key handles speech input.
             }
             TextField(placeholder, text: $text)
@@ -373,7 +376,7 @@ struct ChatInputBar: View {
                 .frame(height: 48)
                 .background(theme.card, in: Capsule())
                 .overlay(Capsule().strokeBorder(theme.line, lineWidth: 1))
-            CircleIconButton(systemName: "paperplane.fill", size: 48, bg: theme.a, fg: .white, label: "Send", action: onSend)
+            CircleIconButton(systemName: "paperplane.fill", size: 48, bg: theme.a, fg: .white, label: L("Send"), action: onSend)
                 .disabled(disabled || text.trimmingCharacters(in: .whitespaces).isEmpty)
                 .opacity(disabled || text.trimmingCharacters(in: .whitespaces).isEmpty ? 0.5 : 1)
         }
