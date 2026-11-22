@@ -85,6 +85,7 @@ struct TodayView: View {
                     .buttonStyle(.plain)
 
                     DailyGoalCard()
+                    if model.socialAvailable { LeagueCard() }
 
                     ForEach(model.courseLanguages) { l in
                         CourseSummaryCard(lang: l)

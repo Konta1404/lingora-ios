@@ -119,6 +119,10 @@ struct FriendListRow: View {
                         Text(verbatim: subtitle).font(.fig(13)).foregroundStyle(theme.muted).lineLimit(1)
                     }
                     Spacer(minLength: 4)
+                    if let fs = f.friendStreak, fs > 0 {
+                        Label("\(fs)", systemImage: "flame.fill").font(.fig(12, .bold)).foregroundStyle(Color.orange)
+                            .accessibilityLabel(L("%lld-day Friend Streak", fs))
+                    }
                     if let n = f.unread, n > 0 {
                         Text(verbatim: "\(n)").font(.fig(12, .bold)).foregroundStyle(.white)
                             .frame(minWidth: 22, minHeight: 22).background(theme.a, in: Capsule())

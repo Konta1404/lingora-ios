@@ -72,7 +72,10 @@ struct LessonPlayerView: View {
 
     // MARK: Flow
 
-    private var isJump: Bool { if case .jump = lesson.mode { true } else { false } }
+    private var isJump: Bool {
+        if case .jump = lesson.mode { return true }
+        return false
+    }
 
     private var passedJump: Bool { total > 0 && Double(firstTryRight) / Double(total) >= 0.8 }
 

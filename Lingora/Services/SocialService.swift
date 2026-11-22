@@ -20,6 +20,7 @@ enum Social {
         var lastMessage: String?
         var lastMessageAt: Double?
         var lastFromMe: Bool?
+        var friendStreak: Int?
         var photoVersion: Int { photo ?? 0 }
         var id: String { uid }
         var firstName: String { name.split(separator: " ").first.map(String.init) ?? name }
@@ -111,8 +112,9 @@ enum Social {
         let r: Handle = try await Backend.call("setHandle", ["handle": handle])
         return r.handle
     }
-    static func report(days: [String: Int], event: (type: String, params: [String: String])?) async throws {
-        var payload: [String: Any] = ["day": DateUtil.dayKey(), "days": days]
+    static func report(days: [String: Int], xp: [String: Int] = [:], frozen: [String] = [],
+                       event: (type: String, params: [String: String])?) async throws {
+        var payload: [String: Any] = ["day": DateUtil.dayKey(), "days": days, "xpDays": xp, "frozen": frozen]
         if let event { payload["event"] = ["type": event.type, "params": event.params] }
         let _: Ok = try await Backend.call("reportActivity", payload)
     }
@@ -126,6 +128,25 @@ enum Social {
         let image: Any = jpeg.map { $0.base64EncodedString() } ?? NSNull()
         let r: Photo = try await Backend.call("setAvatar", ["image": image])
         return r.photo
+    }
+
+    // Leagues
+    struct League: Decodable {
+        struct Member: Decodable, Identifiable, Hashable {
+            var uid: String; var xp: Int; var me: Bool; var name: String; var hue: Double; var photo: Int; var streak: Int
+            var id: String { uid }
+        }
+        var joined: Bool
+        var tier: Int
+        var tierName: String
+        var week: String
+        var previous: String?
+        var promote: Int?
+        var demote: Int?
+        var members: [Member]
+    }
+    static func league() async throws -> League {
+        try await Backend.call("leagueStatus", days)
     }
 
     // Friends

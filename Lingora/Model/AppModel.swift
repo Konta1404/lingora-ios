@@ -463,16 +463,35 @@ final class AppModel: ObservableObject {
         }
         guard socialAvailable else { return }
         reportTask?.cancel()
-        let days = Progress.recentMinutes(s.activity)
+        let p = reportPayload
         if let event {
-            Task { try? await Social.report(days: days, event: (event.0, event.1)) }
+            Task { try? await Social.report(days: p.days, xp: p.xp, frozen: p.frozen, event: (event.0, event.1)) }
         } else {
             reportTask = Task {
                 try? await Task.sleep(for: .seconds(4))
                 if Task.isCancelled { return }
-                try? await Social.report(days: Progress.recentMinutes(self.s.activity), event: nil)
+                let p = self.reportPayload
+                try? await Social.report(days: p.days, xp: p.xp, frozen: p.frozen, event: nil)
             }
         }
+    }
+
+    /// Recent minutes, XP and frozen days for the server (streaks, leagues, friends).
+    var reportPayload: (days: [String: Int], xp: [String: Int], frozen: [String]) {
+        let cutoff = DateUtil.dayKey(DateUtil.calendar.date(byAdding: .day, value: -8, to: Date()) ?? Date())
+        let xp = s.days.filter { $0.key >= cutoff && $0.value.xp > 0 }.mapValues(\.xp)
+        return (Progress.recentMinutes(s.activity), xp, s.frozenDays.filter { $0 >= cutoff }.sorted())
+    }
+
+    // MARK: - League
+
+    @Published var league: Social.League?
+
+    func refreshLeague() async {
+        guard socialAvailable else { return }
+        let p = reportPayload
+        try? await Social.report(days: p.days, xp: p.xp, frozen: p.frozen, event: nil)
+        if let l = try? await Social.league() { league = l }
     }
 
     // MARK: - XP, streak, quests

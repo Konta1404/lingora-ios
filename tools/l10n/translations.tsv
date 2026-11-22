@@ -546,3 +546,25 @@ Your streak is back where it was.	Tvoj niz je opet tamo gdje je bio.	Deine Serie
 best streak	najduži niz	beste Serie	mejor racha	meilleure série	serie migliore	melhor sequência	лучшая серия
 freezes	zamrzavanja	Schutz	protectores	gels	congelamenti	protetores	заморозки
 total XP	ukupno XP	XP gesamt	XP total	XP au total	XP totali	XP total	всего XP
+Bronze	Bronza	Bronze	Bronce	Bronze	Bronzo	Bronze	Бронза
+Silver	Srebro	Silber	Plata	Argent	Argento	Prata	Серебро
+Gold	Zlato	Gold	Oro	Or	Oro	Ouro	Золото
+Sapphire	Safir	Saphir	Zafiro	Saphir	Zaffiro	Safira	Сапфир
+Ruby	Rubin	Rubin	Rubí	Rubis	Rubino	Rubi	Рубин
+Emerald	Smaragd	Smaragd	Esmeralda	Émeraude	Smeraldo	Esmeralda	Изумруд
+Amethyst	Ametist	Amethyst	Amatista	Améthyste	Ametista	Ametista	Аметист
+Pearl	Biser	Perle	Perla	Perle	Perla	Pérola	Жемчуг
+Obsidian	Opsidijan	Obsidian	Obsidiana	Obsidienne	Ossidiana	Obsidiana	Обсидиан
+Diamond	Dijamant	Diamant	Diamante	Diamant	Diamante	Diamante	Алмаз
+%@ League	Liga: %@	%@-Liga	Liga %@	Ligue %@	Lega %@	Liga %@	Лига: %@
+Place %lld of %lld · %lld XP this week	%lld. od %lld · %lld XP ove sedmice	Platz %lld von %lld · %lld XP diese Woche	#%lld de %lld · %lld XP esta semana	%lld/%lld · %lld XP cette semaine	%lld° su %lld · %lld XP questa settimana	#%lld de %lld · %lld XP nesta semana	%lld из %lld · %lld XP за неделю
+Earn XP this week to join	Osvoji XP ove sedmice da se pridružiš	Sammle diese Woche XP, um mitzumachen	Gana XP esta semana para unirte	Gagne des XP cette semaine pour participer	Guadagna XP questa settimana per partecipare	Ganhe XP nesta semana para entrar	Набери XP на этой неделе, чтобы участвовать
+%lld days left · top 7 move up, bottom 5 move down	Još %lld dana · prvih 7 ide gore, zadnjih 5 dolje	Noch %lld Tage · Top 7 steigen auf, letzte 5 ab	Quedan %lld días · los 7 primeros suben, los 5 últimos bajan	Encore %lld jours · les 7 premiers montent, les 5 derniers descendent	Mancano %lld giorni · i primi 7 salgono, gli ultimi 5 scendono	Faltam %lld dias · os 7 primeiros sobem, os 5 últimos descem	Осталось %lld дн. · 7 лучших поднимаются, 5 последних опускаются
+You moved up last week. Well done!	Prošle sedmice si napredovao. Bravo!	Du bist letzte Woche aufgestiegen. Super!	Subiste la semana pasada. ¡Bien hecho!	Tu es monté la semaine dernière. Bravo !	La settimana scorsa sei salito. Ottimo!	Você subiu na semana passada. Muito bem!	На прошлой неделе ты поднялся. Отлично!
+You moved down last week. A few lessons a day gets you back up.	Prošle sedmice si pao. Par lekcija dnevno i vraćaš se gore.	Du bist letzte Woche abgestiegen. Ein paar Lektionen am Tag bringen dich zurück.	Bajaste la semana pasada. Unas lecciones al día te devuelven arriba.	Tu es descendu la semaine dernière. Quelques leçons par jour et tu remontes.	La settimana scorsa sei sceso. Qualche lezione al giorno e risali.	Você desceu na semana passada. Algumas lições por dia te levam de volta.	На прошлой неделе ты опустился. Пара уроков в день — и ты снова наверху.
+You stayed in your league last week.	Prošle sedmice si ostao u svojoj ligi.	Du bist letzte Woche in deiner Liga geblieben.	Te quedaste en tu liga la semana pasada.	Tu es resté dans ta ligue la semaine dernière.	La settimana scorsa sei rimasto nella tua lega.	Você ficou na sua liga na semana passada.	На прошлой неделе ты остался в своей лиге.
+Leagues need a Lingora account.	Lige traže Lingora nalog.	Ligen brauchen ein Lingora-Konto.	Las ligas necesitan una cuenta de Lingora.	Les ligues nécessitent un compte Lingora.	Le leghe richiedono un account Lingora.	As ligas precisam de uma conta Lingora.	Для лиг нужен аккаунт Lingora.
+Finish a lesson this week to join a league of up to 30 learners at your level.	Završi lekciju ove sedmice da uđeš u ligu do 30 učenika na tvom nivou.	Schaffe diese Woche eine Lektion, um einer Liga mit bis zu 30 Lernenden beizutreten.	Completa una lección esta semana para unirte a una liga de hasta 30 estudiantes de tu nivel.	Termine une leçon cette semaine pour rejoindre une ligue de 30 apprenants de ton niveau.	Completa una lezione questa settimana per entrare in una lega di massimo 30 studenti del tuo livello.	Conclua uma lição nesta semana para entrar numa liga de até 30 alunos do seu nível.	Пройди урок на этой неделе, чтобы попасть в лигу до 30 учеников твоего уровня.
+Promotion zone	Zona za napredovanje	Aufstiegszone	Zona de ascenso	Zone de promotion	Zona promozione	Zona de promoção	Зона повышения
+Demotion zone	Zona za ispadanje	Abstiegszone	Zona de descenso	Zone de relégation	Zona retrocessione	Zona de rebaixamento	Зона понижения
+%lld-day Friend Streak	Zajednički niz od %lld dana	%lld-Tage-Freundesserie	Racha de amigos de %lld días	Série entre amis de %lld jours	Serie con amico di %lld giorni	Sequência com amigo de %lld dias	Совместная серия %lld дн.
