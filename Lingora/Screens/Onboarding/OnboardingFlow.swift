@@ -57,7 +57,7 @@ struct SocialSignInButtons: View {
                 Label(L("Continue with OpenAI"), systemImage: "sparkles")
             }
             .buttonStyle(PrimaryButtonStyle(kind: compact ? .chip : .accent, height: compact ? 52 : 54))
-            .disabled(!Backend.isConfigured)
+            .disabled(!Backend.isConfigured || Backend.usesEmulators)
 
             SignInWithAppleButton(.continue) { req in
                 AuthService.shared.prepare(req)
@@ -77,7 +77,7 @@ struct SocialSignInButtons: View {
                 }
             }
             .buttonStyle(PrimaryButtonStyle(kind: .white, height: compact ? 52 : 54))
-            .disabled(!Backend.isConfigured)
+            .disabled(!Backend.isConfigured || Backend.usesEmulators)
         }
         .disabled(model.authBusy)
         .overlay { if model.authBusy { ProgressView().tint(theme.a) } }
@@ -125,6 +125,9 @@ struct WelcomeView: View {
                         .fixedSize(horizontal: false, vertical: true)
                     if !Backend.isConfigured {
                         Text(L("Offline mode: add GoogleService-Info.plist to turn on accounts and ChatGPT."))
+                            .font(.fig(13)).foregroundStyle(theme.muted)
+                    } else if Backend.usesEmulators {
+                        Text(L("Local test server: sign up with email."))
                             .font(.fig(13)).foregroundStyle(theme.muted)
                     }
                 }

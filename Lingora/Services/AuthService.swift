@@ -69,7 +69,7 @@ final class AuthService: NSObject {
     // MARK: Google
 
     func signInWithGoogle() async throws -> AuthResult {
-        guard Backend.isConfigured, let clientID = FirebaseApp.app()?.options.clientID else { throw AuthError.notConfigured }
+        guard Backend.isConfigured, !Backend.usesEmulators, let clientID = FirebaseApp.app()?.options.clientID else { throw AuthError.notConfigured }
         GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientID)
         guard let root = Self.topViewController() else { throw AuthError.missingToken }
         let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: root)
@@ -84,6 +84,12 @@ final class AuthService: NSObject {
 
     func signInWithOpenAI() async throws -> AuthResult {
         guard Backend.isConfigured else { throw AuthError.notConfigured }
+        // Firebase crashes (fatalError) if the app's encoded-app-ID URL scheme is missing, so check first.
+        let appID = FirebaseApp.app()?.options.googleAppID ?? ""
+        let scheme = "app-" + appID.replacingOccurrences(of: ":", with: "-")
+        guard !Backend.usesEmulators, Self.hasURLScheme(scheme) else {
+            throw AuthError.openAIUnavailable(L("OpenAI sign-in isn't set up in this build."))
+        }
         let provider = OAuthProvider(providerID: Self.openAIProviderID)
         provider.scopes = ["openid", "email", "profile"]
         let credential: AuthCredential = try await withCheckedThrowingContinuation { cont in
@@ -163,6 +169,11 @@ final class AuthService: NSObject {
         if ns.domain == "com.google.GIDSignIn", ns.code == -5 { return true }
         if ns.domain == AuthErrorDomain, AuthErrorCode(rawValue: ns.code) == .webContextCancelled { return true }
         return false
+    }
+
+    private static func hasURLScheme(_ scheme: String) -> Bool {
+        let types = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [[String: Any]] ?? []
+        return types.contains { ($0["CFBundleURLSchemes"] as? [String] ?? []).contains(scheme) }
     }
 
     private static func topViewController() -> UIViewController? {
