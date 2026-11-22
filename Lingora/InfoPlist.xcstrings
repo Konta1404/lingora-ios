@@ -1,0 +1,189 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lingora"
+          }
+        }
+      }
+    },
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lingora"
+          }
+        }
+      }
+    },
+    "NSContactsUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora prüft, welche deiner Kontakte Lingora nutzen. Verglichen wird nur ein Fingerabdruck jeder E-Mail-Adresse; deine Kontakte werden nicht hochgeladen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora checks which of your contacts are on Lingora. Only a fingerprint of each email address is compared; your contacts aren't uploaded."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora comprueba cuáles de tus contactos usan Lingora. Solo se compara una huella de cada correo; tus contactos no se suben."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora vérifie lesquels de tes contacts utilisent Lingora. Seule une empreinte de chaque adresse e-mail est comparée ; tes contacts ne sont pas envoyés."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora controlla quali dei tuoi contatti usano Lingora. Viene confrontata solo un’impronta di ogni email; i contatti non vengono caricati."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Lingora verifica quais dos seus contatos usam o Lingora. Só uma impressão digital de cada e-mail é comparada; seus contatos não são enviados."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora проверяет, кто из твоих контактов пользуется Lingora. Сравнивается только отпечаток адреса почты; контакты не загружаются."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora provjerava koji su tvoji kontakti na Lingori. Upoređuje se samo otisak svake email adrese; kontakti se ne šalju."
+          }
+        }
+      }
+    },
+    "NSMicrophoneUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora nutzt das Mikrofon, wenn du eine Antwort in der Sprache diktierst, die du übst."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora uses the microphone when you dictate a reply in the language you're practising."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora usa el micrófono cuando dictas una respuesta en el idioma que practicas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora utilise le micro quand tu dictes une réponse dans la langue que tu pratiques."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora usa il microfono quando detti una risposta nella lingua che stai praticando."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Lingora usa o microfone quando você dita uma resposta no idioma que está praticando."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora использует микрофон, когда ты диктуешь ответ на изучаемом языке."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora koristi mikrofon kad diktiraš odgovor na jeziku koji vježbaš."
+          }
+        }
+      }
+    },
+    "NSSpeechRecognitionUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora wandelt deine Sprache in Text um, damit du sprechend antworten kannst."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora turns your speech into text so you can answer by speaking."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora convierte tu voz en texto para que puedas responder hablando."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora transforme ta voix en texte pour que tu puisses répondre à l’oral."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora trasforma la tua voce in testo così puoi rispondere parlando."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Lingora transforma sua fala em texto para você responder falando."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora превращает речь в текст, чтобы ты мог(ла) отвечать голосом."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingora pretvara tvoj govor u tekst da možeš odgovarati govorom."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

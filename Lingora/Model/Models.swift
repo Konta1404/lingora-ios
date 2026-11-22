@@ -115,20 +115,6 @@ struct TaskResult: Codable, Hashable {
     var date: Date
 }
 
-struct Friend: Identifiable, Hashable {
-    var id: String
-    var name: String
-    var handle: String
-    var langs: [String]
-    var streak: Int
-    var weekMinutes: Int
-    var practisedToday: Bool
-    var hue: Double
-    var chatLang: String
-    var firstName: String { name.split(separator: " ").first.map(String.init) ?? name }
-    var initial: String { String(name.prefix(1)) }
-}
-
 struct AppSettings: Codable, Equatable {
     var adaptDaily = true
     var reminders = true
@@ -152,13 +138,10 @@ struct PersistedState: Codable {
     var adaptNote: String? = nil
     var adaptedOn: String? = nil                  // "yyyy-MM-dd"
     var tutorThreads: [String: [ChatMessage]] = [:]
-    var friendThreads: [String: [ChatMessage]] = [:]
-    var cheered: Set<String> = []
-    var joined: Set<String> = []
-    var nudged: Set<String> = []
-    var startedChallenges: Set<String> = []
-    var addedFriends: Set<String> = []
-    var streak = 12
+    /// Seconds practised per day ("yyyy-MM-dd"). Streaks and weekly minutes come from this.
+    var activity: [String: Int] = [:]
+    /// Progress points per language toward the next level.
+    var xp: [String: Int] = [:]
     var settings = AppSettings()
 
     init() {}
@@ -181,13 +164,43 @@ struct PersistedState: Codable {
         adaptNote = (try? c.decodeIfPresent(String.self, forKey: .adaptNote)) ?? nil
         adaptedOn = (try? c.decodeIfPresent(String.self, forKey: .adaptedOn)) ?? nil
         tutorThreads = v(.tutorThreads, d.tutorThreads)
-        friendThreads = v(.friendThreads, d.friendThreads)
-        cheered = v(.cheered, d.cheered)
-        joined = v(.joined, d.joined)
-        nudged = v(.nudged, d.nudged)
-        startedChallenges = v(.startedChallenges, d.startedChallenges)
-        addedFriends = v(.addedFriends, d.addedFriends)
-        streak = v(.streak, d.streak)
+        activity = v(.activity, d.activity)
+        xp = v(.xp, d.xp)
         settings = v(.settings, d.settings)
+    }
+}
+
+/// Streaks, minutes and level progress, all derived from what the learner actually did.
+enum Progress {
+    /// Points needed to move from one level to the next.
+    static let pointsPerLevel = 600
+
+    static func streak(_ activity: [String: Int], today: Date = Date()) -> Int {
+        let cal = DateUtil.calendar
+        var d = cal.startOfDay(for: today)
+        if (activity[DateUtil.dayKey(d)] ?? 0) < 60 { d = cal.date(byAdding: .day, value: -1, to: d) ?? d }
+        var n = 0
+        while (activity[DateUtil.dayKey(d)] ?? 0) >= 60 {
+            n += 1
+            d = cal.date(byAdding: .day, value: -1, to: d) ?? d
+        }
+        return n
+    }
+
+    static func minutes(_ activity: [String: Int], since start: Date, until end: Date = Date()) -> Int {
+        let from = DateUtil.dayKey(start), to = DateUtil.dayKey(end)
+        return activity.filter { $0.key >= from && $0.key <= to }.values.reduce(0, +) / 60
+    }
+
+    /// Minutes per day for the server (recent days only).
+    static func recentMinutes(_ activity: [String: Int], days: Int = 8) -> [String: Int] {
+        let cal = DateUtil.calendar
+        var out: [String: Int] = [:]
+        for i in 0..<days {
+            guard let d = cal.date(byAdding: .day, value: -i, to: Date()) else { continue }
+            let k = DateUtil.dayKey(d)
+            if let s = activity[k], s > 0 { out[k] = s / 60 }
+        }
+        return out
     }
 }

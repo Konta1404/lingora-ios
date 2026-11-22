@@ -178,12 +178,12 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -206,11 +206,11 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -227,7 +227,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				GOOGLE_REVERSED_CLIENT_ID = "com.googleusercontent.apps.550654206602-5gucgvp3409jr1449kbrftlbql6f8v47";
 				INFOPLIST_FILE = Config/Info.plist;
-				LINGORA_API_URL = "https://lingora-backend-67bv.onrender.com";
 				INFOPLIST_KEY_CFBundleDisplayName = Lingora;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -237,6 +236,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LINGORA_API_URL = "https://lingora-backend-67bv.onrender.com";
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.veselin.lingora;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -261,7 +261,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				GOOGLE_REVERSED_CLIENT_ID = "com.googleusercontent.apps.550654206602-5gucgvp3409jr1449kbrftlbql6f8v47";
 				INFOPLIST_FILE = Config/Info.plist;
-				LINGORA_API_URL = "https://lingora-backend-67bv.onrender.com";
 				INFOPLIST_KEY_CFBundleDisplayName = Lingora;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -271,6 +270,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LINGORA_API_URL = "https://lingora-backend-67bv.onrender.com";
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.veselin.lingora;
 				PRODUCT_NAME = "$(TARGET_NAME)";

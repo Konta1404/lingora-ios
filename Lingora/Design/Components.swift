@@ -359,13 +359,19 @@ struct ChatInputBar: View {
     @Binding var text: String
     let placeholder: String
     var disabled = false
+    /// Lingora language key to dictate in (nil → the iPhone's language).
+    var speechLanguage: String? = nil
     var onSend: () -> Void
     @FocusState private var focused: Bool
+    @StateObject private var dictation = Dictation()
 
     var body: some View {
         HStack(spacing: 8) {
-            CircleIconButton(systemName: "mic", size: 48, bg: theme.chip, label: L("Dictate")) {
-                focused = true // The keyboard's dictation key handles speech input.
+            CircleIconButton(systemName: dictation.isRecording ? "stop.fill" : "mic", size: 48,
+                             bg: dictation.isRecording ? theme.a : theme.chip,
+                             fg: dictation.isRecording ? .white : nil,
+                             label: dictation.isRecording ? L("Stop dictation") : L("Dictate")) {
+                dictation.toggle(language: speechLanguage, prefix: text) { text = $0 }
             }
             TextField(placeholder, text: $text)
                 .font(.fig(15))
@@ -376,12 +382,22 @@ struct ChatInputBar: View {
                 .frame(height: 48)
                 .background(theme.card, in: Capsule())
                 .overlay(Capsule().strokeBorder(theme.line, lineWidth: 1))
-            CircleIconButton(systemName: "paperplane.fill", size: 48, bg: theme.a, fg: .white, label: L("Send"), action: onSend)
+            CircleIconButton(systemName: "paperplane.fill", size: 48, bg: theme.a, fg: .white, label: L("Send")) {
+                dictation.stop()
+                onSend()
+            }
                 .disabled(disabled || text.trimmingCharacters(in: .whitespaces).isEmpty)
                 .opacity(disabled || text.trimmingCharacters(in: .whitespaces).isEmpty ? 0.5 : 1)
         }
         .padding(.horizontal, 20).padding(.vertical, 10)
         .background(theme.ground)
+        .overlay(alignment: .top) {
+            if let err = dictation.error {
+                Text(err).font(.fig(12)).foregroundStyle(theme.muted).padding(.horizontal, 20).offset(y: -14)
+                    .onTapGesture { dictation.error = nil }
+            }
+        }
+        .onDisappear { dictation.stop() }
     }
 }
 

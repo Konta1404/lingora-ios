@@ -81,7 +81,8 @@ struct TutorView: View {
             }
             .padding(.top, 4)
 
-            ChatInputBar(text: $draft, placeholder: L("Reply in %@…", lang?.name ?? ""), disabled: model.tutorTyping) {
+            ChatInputBar(text: $draft, placeholder: L("Reply in %@…", lang?.name ?? ""), disabled: model.tutorTyping,
+                         speechLanguage: lang?.key) {
                 send(draft)
             }
         }

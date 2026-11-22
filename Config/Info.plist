@@ -14,7 +14,24 @@
 				<string>$(GOOGLE_REVERSED_CLIENT_ID)</string>
 			</array>
 		</dict>
+		<!-- Invite links and QR codes: lingora://add/<username> -->
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.veselin.lingora</string>
+			<key>CFBundleURLRole</key>
+			<string>Viewer</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>lingora</string>
+			</array>
+		</dict>
 	</array>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Lingora uses the microphone when you dictate a reply in the language you're practising.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Lingora turns your speech into text so you can answer by speaking.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Lingora checks which of your contacts are on Lingora. Only a fingerprint of each email address is compared; your contacts aren't uploaded.</string>
 	<!-- Lingora backend URL when it runs outside Firebase Functions (e.g. Render). Set LINGORA_API_URL in Build Settings. -->
 	<key>LingoraAPIURL</key>
 	<string>$(LINGORA_API_URL)</string>

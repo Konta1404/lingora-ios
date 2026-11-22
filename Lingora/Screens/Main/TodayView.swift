@@ -17,7 +17,7 @@ struct TodayView: View {
                     HStack {
                         Text(verbatim: DateUtil.format(Date(), "EEEEdMMMM")).font(.fig(14, .semibold)).foregroundStyle(theme.muted)
                         Spacer()
-                        Label(L("%lld days", model.s.streak), systemImage: "flame")
+                        Label(L("%lld days", model.streak), systemImage: "flame")
                             .font(.fig(14, .semibold))
                             .padding(.horizontal, 12).frame(height: 32)
                             .background(theme.card, in: Capsule())
@@ -73,7 +73,7 @@ struct TodayView: View {
                         let today = model.friends.filter(\.practisedToday)
                         HStack(spacing: 12) {
                             HStack(spacing: -8) {
-                                ForEach(today) { f in Avatar(initial: f.initial, hue: Hue(h: f.hue), size: 32, ring: theme.card) }
+                                ForEach(today.prefix(5)) { f in Avatar(initial: f.initial, hue: Hue(h: f.hue), size: 32, ring: theme.card) }
                             }
                             Text(friendsLine(today.map(\.firstName))).font(.fig(14)).foregroundStyle(theme.text)
                                 .multilineTextAlignment(.leading)
@@ -112,12 +112,17 @@ struct TodayView: View {
             .padding(.horizontal, 20).padding(.vertical, 10)
         }
         .background(theme.ground)
-        .refreshable { await model.adaptTodayIfNeeded() }
+        .refreshable {
+            await model.adaptTodayIfNeeded()
+            await model.refreshSocial()
+        }
     }
 
     private func friendsLine(_ names: [String]) -> String {
+        if let n = model.social?.nudges.first { return L("%@ nudged you — a few minutes today?", n.name) }
+        if let r = model.social?.incoming.first { return L("%@ wants to be friends", r.name) }
         switch names.count {
-        case 0: return L("Invite friends to learn together")
+        case 0: return model.friends.isEmpty ? L("Invite friends to learn together") : L("None of your friends has practised yet today")
         case 1: return L("%@ practised today", names[0])
         default: return L("%@ and %@ practised today", names.dropLast().joined(separator: ", "), names.last!)
         }

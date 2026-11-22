@@ -18,7 +18,7 @@ struct LingoraApp: App {
                 .environment(\.theme, model.theme)
                 .tint(model.theme.a)
                 .preferredColorScheme(.light)
-                .onOpenURL { url in _ = GIDSignIn.sharedInstance.handle(url) }
+                .onOpenURL { url in if !model.handle(url: url) { _ = GIDSignIn.sharedInstance.handle(url) } }
         }
     }
 }

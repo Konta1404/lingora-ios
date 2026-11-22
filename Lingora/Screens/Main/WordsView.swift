@@ -380,6 +380,7 @@ struct WordsView: View {
             phase = .question
         } else {
             phase = .summary
+            model.finishVocabRound(right: rightCount, total: answeredCount)
         }
     }
 

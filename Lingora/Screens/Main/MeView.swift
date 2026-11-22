@@ -5,6 +5,9 @@ struct MeView: View {
     @Environment(\.theme) private var theme
     @State private var confirmLogout = false
     @State private var confirmDelete = false
+    @State private var editHandle = false
+    @State private var newHandle = ""
+    @State private var showDevices = false
 
     var body: some View {
         let user = model.s.user
@@ -20,9 +23,9 @@ struct MeView: View {
                 .padding(.top, 10)
 
                 HStack(spacing: 10) {
-                    stat("\(model.s.streak)", L("day streak"), icon: "flame")
+                    stat("\(model.streak)", L("day streak"), icon: "flame")
                     stat("\(model.myWeekMinutes)", L("min this week"), icon: "clock")
-                    stat("\(model.friends.count + model.s.addedFriends.count)", L("friends"), icon: "person.2")
+                    stat("\(model.friends.count)", L("friends"), icon: "person.2")
                 }
 
                 SectionLabel(text: L("My languages")).padding(.top, 6)
@@ -42,7 +45,7 @@ struct MeView: View {
                                         Spacer()
                                         Text(verbatim: "\(lv.code) → \(lv.next.code)").font(.fig(13, .semibold)).foregroundStyle(theme.muted)
                                     }
-                                    ProgressBar(value: progress(l.key, index: i), color: h.base, height: 6)
+                                    ProgressBar(value: model.levelProgress(l.key), color: h.base, height: 6)
                                 }
                                 Image(systemName: "chevron.forward").font(.system(size: 12, weight: .semibold)).foregroundStyle(theme.muted)
                             }
@@ -131,6 +134,19 @@ struct MeView: View {
                     row(L("Signed in with"), sub: user?.email ?? "", first: true) {
                         Text(verbatim: user?.authMethod.label ?? "").font(.fig(14, .semibold)).foregroundStyle(theme.muted)
                     }
+                    if model.socialAvailable {
+                        row(L("Username"), sub: L("Friends find you by %@", user?.handle ?? "")) {
+                            Button(L("Change")) {
+                                newHandle = (user?.handle ?? "").replacingOccurrences(of: "@", with: "")
+                                editHandle = true
+                            }
+                            .font(.fig(14, .semibold)).foregroundStyle(theme.ad)
+                        }
+                        row(L("Devices"), sub: L("Where you're signed in")) {
+                            Button(L("Show")) { showDevices = true }
+                                .font(.fig(14, .semibold)).foregroundStyle(theme.ad)
+                        }
+                    }
                     row(L("Sync"), sub: model.signedInUID != nil ? L("Your progress syncs to your account.") : L("Progress is saved on this iPhone only.")) {
                         Image(systemName: model.signedInUID != nil ? "icloud" : "iphone").foregroundStyle(theme.muted)
                     }
@@ -153,6 +169,24 @@ struct MeView: View {
         }
         .background(theme.ground)
         .task { await model.refreshChatGPT() }
+        .alert(L("Choose a username"), isPresented: $editHandle) {
+            TextField(L("username"), text: $newHandle)
+                .textInputAutocapitalization(.never).autocorrectionDisabled()
+            Button(L("Cancel"), role: .cancel) {}
+            Button(L("Save")) {
+                let h = newHandle
+                Task { if let err = await model.changeHandle(h) { model.toast = err } }
+            }
+        } message: {
+            Text(L("3–20 letters, numbers, dots or underscores."))
+        }
+        .sheet(isPresented: $showDevices) {
+            DevicesSheet()
+                .environmentObject(model)
+                .environment(\.theme, model.theme)
+                .presentationDetents([.medium, .large])
+                .presentationCornerRadius(28)
+        }
         .confirmationDialog(L("Log out of Lingora?"), isPresented: $confirmLogout, titleVisibility: .visible) {
             Button(L("Log out"), role: .destructive) { model.logOut() }
         } message: {
@@ -183,13 +217,6 @@ struct MeView: View {
         return L("Not connected · using standard plans. Connect your ChatGPT Plus or Pro plan to turn on AI.")
     }
 
-    private func progress(_ key: String, index: Int) -> Double {
-        let scores = model.s.results.filter { $0.langKey == key }.map(\.score)
-        let base = [0.64, 0.38, 0.22, 0.15][index % 4]
-        guard !scores.isEmpty else { return base }
-        return min(0.95, base + Double(scores.reduce(0, +)) / 120)
-    }
-
     private func stat(_ value: String, _ label: String, icon: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Image(systemName: icon).font(.system(size: 14, weight: .semibold)).foregroundStyle(theme.ad)
@@ -212,5 +239,73 @@ struct MeView: View {
         .padding(.horizontal, 16).padding(.vertical, 12)
         .frame(minHeight: 56)
         .overlay(alignment: .top) { if !first { Rectangle().fill(theme.line).frame(height: 1) } }
+    }
+}
+
+/// Devices signed in to this account (registered by the app on sign-in).
+struct DevicesSheet: View {
+    @EnvironmentObject private var model: AppModel
+    @Environment(\.theme) private var theme
+    @Environment(\.dismiss) private var dismiss
+    @State private var devices: [Social.Device]?
+    @State private var error: String?
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 14) {
+                HStack {
+                    Text(L("Devices")).font(.fig(24, .bold))
+                    Spacer()
+                    BackButton(systemName: "xmark") { dismiss() }
+                }
+                .padding(.top, 20)
+                if let devices {
+                    VStack(spacing: 0) {
+                        ForEach(Array(devices.enumerated()), id: \.element.id) { i, d in
+                            let this = d.id == Social.deviceID
+                            HStack(spacing: 12) {
+                                Image(systemName: "iphone").font(.system(size: 18)).foregroundStyle(theme.ad)
+                                    .frame(width: 36, height: 36).background(theme.at, in: Circle())
+                                VStack(alignment: .leading, spacing: 1) {
+                                    Text(verbatim: d.name.isEmpty ? d.model : d.name).font(.fig(15, .semibold))
+                                    Text(verbatim: this ? L("This iPhone · %@", d.os)
+                                                        : "\(d.os) · \(FeedText.ago(Date(timeIntervalSince1970: d.lastSeen / 1000)))")
+                                        .font(.fig(13)).foregroundStyle(theme.muted)
+                                }
+                                Spacer()
+                                if !this {
+                                    Button(L("Remove")) {
+                                        Task {
+                                            try? await Social.removeDevice(d.id)
+                                            self.devices = try? await Social.devices()
+                                        }
+                                    }
+                                    .font(.fig(13, .semibold)).foregroundStyle(theme.muted)
+                                }
+                            }
+                            .padding(.horizontal, 14).padding(.vertical, 12)
+                            .overlay(alignment: .top) { if i > 0 { Rectangle().fill(theme.line).frame(height: 1) } }
+                        }
+                    }
+                    .card(padding: 0)
+                    Text(L("Removing a device here only hides it from this list. To sign out everywhere, change your password or remove Lingora from your Apple, Google or ChatGPT account settings."))
+                        .font(.fig(13)).foregroundStyle(theme.muted)
+                } else if let error {
+                    Text(error).font(.fig(14)).foregroundStyle(theme.muted)
+                } else {
+                    ProgressView().frame(maxWidth: .infinity).padding(30)
+                }
+            }
+            .padding(.horizontal, 20).padding(.bottom, 20)
+        }
+        .background(theme.ground)
+        .task {
+            do {
+                try? await Social.registerThisDevice()
+                devices = try await Social.devices()
+            } catch {
+                self.error = Backend.message(for: error)
+            }
+        }
     }
 }

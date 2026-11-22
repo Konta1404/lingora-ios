@@ -22,6 +22,16 @@ PLURALS = {
         'pt-BR': {'one': '%lld dia', 'other': '%lld dias'},
         'ru': {'one': '%lld день', 'few': '%lld дня', 'many': '%lld дней', 'other': '%lld дня'},
     },
+    '%lld days left': {
+        'en': {'one': '%lld day left', 'other': '%lld days left'},
+        'sr-Latn': {'one': 'Još %lld dan', 'few': 'Još %lld dana', 'other': 'Još %lld dana'},
+        'de': {'one': 'Noch %lld Tag', 'other': 'Noch %lld Tage'},
+        'es': {'one': 'Queda %lld día', 'other': 'Quedan %lld días'},
+        'fr': {'one': '%lld jour restant', 'other': '%lld jours restants'},
+        'it': {'one': 'Manca %lld giorno', 'other': 'Mancano %lld giorni'},
+        'pt-BR': {'one': 'Falta %lld dia', 'other': 'Faltam %lld dias'},
+        'ru': {'one': 'Остался %lld день', 'few': 'Осталось %lld дня', 'many': 'Осталось %lld дней', 'other': 'Осталось %lld дня'},
+    },
     'Continue with %lld (languages)': {
         'en': {'one': 'Continue with %lld language', 'other': 'Continue with %lld languages'},
         'sr-Latn': {'one': 'Nastavi sa %lld jezikom', 'few': 'Nastavi sa %lld jezika', 'other': 'Nastavi sa %lld jezika'},

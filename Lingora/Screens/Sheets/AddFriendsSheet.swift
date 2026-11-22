@@ -1,4 +1,5 @@
 import SwiftUI
+import Contacts
 import CoreImage.CIFilterBuiltins
 import UIKit
 
@@ -7,16 +8,20 @@ struct AddFriendsSheet: View {
     @Environment(\.theme) private var theme
     @Environment(\.dismiss) private var dismiss
     @State private var query = ""
+    @State private var results: [Social.Person] = []
+    @State private var searching = false
     @State private var copied = false
-    @State private var contactsFound = false
+    @State private var contacts: [Social.Person]?
+    @State private var contactsBusy = false
+    @State private var contactsNote: String?
+    @State private var relations: [String: String] = [:]
 
-    private var handle: String { model.s.user?.handle ?? "@you" }
-    private var inviteURL: String { "https://lingora.app/add/\(handle.dropFirst())" }
-
-    private var results: [SampleFriends.Suggested] {
-        let q = query.trimmingCharacters(in: .whitespaces).lowercased().replacingOccurrences(of: "@", with: "")
-        guard !q.isEmpty else { return SampleFriends.suggested }
-        return SampleFriends.suggested.filter { $0.name.lowercased().contains(q) || $0.handle.lowercased().contains(q) }
+    private var handle: String { model.s.user?.handle ?? "" }
+    private var inviteURL: URL? {
+        let h = handle.replacingOccurrences(of: "@", with: "")
+        guard !h.isEmpty else { return nil }
+        if let base = Backend.apiBaseURL { return base.appendingPathComponent("u").appendingPathComponent(h) }
+        return URL(string: "lingora://add/\(h)")
     }
 
     var body: some View {
@@ -33,70 +38,145 @@ struct AddFriendsSheet: View {
                     Image(systemName: "magnifyingglass").foregroundStyle(theme.muted)
                     TextField(L("Search by username"), text: $query)
                         .font(.fig(16)).textInputAutocapitalization(.never).autocorrectionDisabled()
+                    if searching { ProgressView() }
                 }
                 .padding(.horizontal, 16).frame(height: 52)
                 .background(theme.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(theme.line, lineWidth: 1.5))
 
-                VStack(spacing: 0) {
-                    ForEach(Array(results.enumerated()), id: \.element.id) { i, p in
-                        let added = model.s.addedFriends.contains(p.id)
-                        HStack(spacing: 12) {
-                            Avatar(initial: String(p.name.prefix(1)), hue: Hue(h: p.hue), size: 40)
-                            VStack(alignment: .leading, spacing: 1) {
-                                Text(p.name).font(.fig(15, .semibold))
-                                Text(verbatim: "\(p.handle) · \(p.sub)").font(.fig(13)).foregroundStyle(theme.muted)
-                            }
-                            Spacer()
-                            PillButton(title: added ? L("Requested") : L("Add"), bg: added ? theme.at : theme.a,
-                                       fg: added ? theme.ad : .white, height: 34) {
-                                if !added { model.toggle(\.addedFriends, p.id) }
-                            }
-                        }
-                        .padding(.horizontal, 14).padding(.vertical, 12)
-                        .overlay(alignment: .top) { if i > 0 { Rectangle().fill(theme.line).frame(height: 1) } }
-                    }
-                    if results.isEmpty {
-                        Text(L("No one found. Share your link instead.")).font(.fig(14)).foregroundStyle(theme.muted).padding(16)
-                    }
+                if query.trimmingCharacters(in: .whitespaces).count >= 2 {
+                    people(results, emptyText: searching ? nil : L("No one found. Share your link instead."))
                 }
-                .card(padding: 0)
+
+                if let contacts {
+                    SectionLabel(text: L("From your contacts"))
+                    people(contacts, emptyText: L("None of your contacts are on Lingora yet. Send them your link."))
+                }
+                if let contactsNote {
+                    Text(contactsNote).font(.fig(13)).foregroundStyle(theme.muted)
+                }
+
+                if let out = model.social?.outgoing, !out.isEmpty {
+                    SectionLabel(text: L("Requests you sent"))
+                    people(out.map { var p = $0; p.relation = "requested"; return p }, emptyText: nil)
+                }
 
                 HStack(spacing: 10) {
                     Button {
-                        UIPasteboard.general.string = inviteURL
+                        if let inviteURL { UIPasteboard.general.string = inviteURL.absoluteString }
                         copied = true
                         Haptics.success()
                     } label: {
-                        Label(copied ? L("Link copied") : L("Share invite link"), systemImage: copied ? "checkmark" : "link")
+                        Label(copied ? L("Link copied") : L("Copy invite link"), systemImage: copied ? "checkmark" : "link")
                     }
                     .buttonStyle(.secondary)
-                    Button {
-                        contactsFound = true
-                        Haptics.tap()
-                    } label: {
-                        Label(contactsFound ? L("2 friends found") : L("From contacts"), systemImage: "person.crop.circle")
+                    .disabled(inviteURL == nil)
+                    Button(action: findContacts) {
+                        Label(contactsBusy ? L("Looking…") : L("From contacts"), systemImage: "person.crop.circle")
                     }
                     .buttonStyle(.secondary)
+                    .disabled(contactsBusy)
                 }
 
-                VStack(spacing: 12) {
-                    if let qr = QRCode.image(for: inviteURL) {
-                        Image(uiImage: qr).interpolation(.none).resizable().scaledToFit()
-                            .frame(width: 170, height: 170)
-                            .padding(12).background(.white, in: RoundedRectangle(cornerRadius: 16))
+                if let inviteURL {
+                    VStack(spacing: 12) {
+                        if let qr = QRCode.image(for: inviteURL.absoluteString) {
+                            Image(uiImage: qr).interpolation(.none).resizable().scaledToFit()
+                                .frame(width: 170, height: 170)
+                                .padding(12).background(.white, in: RoundedRectangle(cornerRadius: 16))
+                                .accessibilityLabel(L("QR code for your invite link"))
+                        }
+                        Text(L("Scan to add %@", handle)).font(.fig(15, .semibold))
+                        ShareLink(item: inviteURL, message: Text(L("Learn languages with me on Lingora"))) {
+                            Label(L("Share"), systemImage: "square.and.arrow.up").font(.fig(14, .semibold))
+                        }
                     }
-                    Text(L("Scan to add %@", handle)).font(.fig(15, .semibold))
-                    ShareLink(item: URL(string: inviteURL)!) {
-                        Label(L("Share"), systemImage: "square.and.arrow.up").font(.fig(14, .semibold))
-                    }
+                    .frame(maxWidth: .infinity)
+                    .card()
                 }
-                .frame(maxWidth: .infinity)
-                .card()
             }
             .padding(.horizontal, 20).padding(.bottom, 20)
         }
         .background(theme.ground)
+        .task(id: query) { await search() }
+    }
+
+    @ViewBuilder
+    private func people(_ list: [Social.Person], emptyText: String?) -> some View {
+        if list.isEmpty {
+            if let emptyText { Text(emptyText).font(.fig(14)).foregroundStyle(theme.muted).padding(.horizontal, 4) }
+        } else {
+            VStack(spacing: 0) {
+                ForEach(Array(list.enumerated()), id: \.element.id) { i, p in
+                    let rel = relations[p.uid] ?? p.relation ?? "none"
+                    HStack(spacing: 12) {
+                        Avatar(initial: p.initial, hue: Hue(h: p.hue), size: 40)
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text(verbatim: p.name).font(.fig(15, .semibold))
+                            Text(verbatim: subtitle(p)).font(.fig(13)).foregroundStyle(theme.muted).lineLimit(1)
+                        }
+                        Spacer()
+                        switch rel {
+                        case "friend":
+                            Text(L("Friends")).font(.fig(13, .semibold)).foregroundStyle(theme.ad)
+                        case "requested":
+                            Text(L("Requested")).font(.fig(13, .semibold)).foregroundStyle(theme.muted)
+                        default:
+                            PillButton(title: rel == "incoming" ? L("Accept") : L("Add"), bg: theme.a, fg: .white, height: 34) {
+                                Task {
+                                    if let r = await model.addFriend(uid: p.uid) { relations[p.uid] = r }
+                                }
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 14).padding(.vertical, 12)
+                    .overlay(alignment: .top) { if i > 0 { Rectangle().fill(theme.line).frame(height: 1) } }
+                }
+            }
+            .card(padding: 0)
+        }
+    }
+
+    private func subtitle(_ p: Social.Person) -> String {
+        let langs = p.langs.prefix(3).map { FeedText.language($0, fallback: $0) }
+        return langs.isEmpty ? p.atHandle : L("%@ · learning %@", p.atHandle, ListFormatter.localizedString(byJoining: langs))
+    }
+
+    private func search() async {
+        let q = query.trimmingCharacters(in: .whitespaces)
+        guard q.count >= 2 else { results = []; return }
+        try? await Task.sleep(for: .milliseconds(350))
+        if Task.isCancelled { return }
+        searching = true
+        defer { searching = false }
+        if let r = try? await Social.search(q), !Task.isCancelled { results = r }
+    }
+
+    private func findContacts() {
+        contactsBusy = true
+        contactsNote = nil
+        Task {
+            defer { contactsBusy = false }
+            let store = CNContactStore()
+            do {
+                guard try await store.requestAccess(for: .contacts) else {
+                    contactsNote = L("Allow Contacts in Settings to find friends.")
+                    return
+                }
+                let emails = try await Task.detached(priority: .userInitiated) { () -> [String] in
+                    var out: [String] = []
+                    let req = CNContactFetchRequest(keysToFetch: [CNContactEmailAddressesKey as CNKeyDescriptor])
+                    try CNContactStore().enumerateContacts(with: req) { c, _ in
+                        out.append(contentsOf: c.emailAddresses.map { $0.value as String })
+                    }
+                    return out
+                }.value
+                contacts = try await Social.matchContacts(emails: emails)
+                contactsNote = L("Only a fingerprint of each email address is checked; your contacts aren't uploaded.")
+            } catch {
+                contactsNote = Backend.message(for: error)
+            }
+        }
     }
 }
 

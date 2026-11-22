@@ -45,14 +45,21 @@ final class AppModel: ObservableObject {
     // Chat
     @Published var tutorTyping = false
     @Published var tutorSuggestions: [String: [String]] = [:]
-    @Published var friendTyping = false
+    @Published var friendSending = false
     @Published var toast: String?
+
+    // Friends (from the Lingora backend)
+    @Published var social: Social.Overview?
+    @Published var socialLoading = false
+    @Published var chats: [String: [Social.Message]] = [:]
+    @Published var nudgedToday: Set<String> = []
 
     // Lessons
     @Published var lessonCache: [String: LessonContent] = [:]
 
     private var replyIndex = 0
-    private var friendReplyIndex = 0
+    private var reportTask: Task<Void, Never>?
+    private var syncedProfile = ""
     private var bag = Set<AnyCancellable>()
     private var adaptInFlight = false
     private var authHandle: AuthStateDidChangeListenerHandle?
@@ -127,10 +134,17 @@ final class AppModel: ObservableObject {
     func isDone(_ t: PlanTask) -> Bool { s.done["\(DateUtil.dayKey())|\(t.id)"] == true }
 
     var doneMinutesToday: Int { todayTasks.filter(isDone).reduce(0) { $0 + $1.minutes } }
-    var myWeekMinutes: Int { 131 + doneMinutesToday }
+    var streak: Int { Progress.streak(s.activity) }
+    var myWeekMinutes: Int { Progress.minutes(s.activity, since: DateUtil.weekStart()) }
+    var practisedToday: Bool { (s.activity[DateUtil.dayKey()] ?? 0) >= 60 }
+    /// 0…1 toward the next level, from finished tasks and vocabulary answers.
+    func levelProgress(_ key: String) -> Double {
+        min(1, Double(s.xp[key] ?? 0) / Double(Progress.pointsPerLevel))
+    }
 
-    var friends: [Friend] { SampleFriends.friends }
-    func friend(_ id: String) -> Friend? { friends.first { $0.id == id } }
+    var socialAvailable: Bool { Backend.isConfigured && signedInUID != nil }
+    var friends: [Social.Person] { social?.friends ?? [] }
+    func friend(_ id: String) -> Social.Person? { friends.first { $0.uid == id } }
 
     // MARK: - Auth
 
@@ -154,13 +168,16 @@ final class AppModel: ObservableObject {
             }
             cloudLoaded = true
             CloudSync.save(state: s, uid: uid)
+            await syncProfile()
+            await refreshSocial()
+            try? await Social.registerThisDevice()
         }
     }
 
     private func finishSignIn(_ r: AuthResult) {
         let name = r.name.trimmingCharacters(in: .whitespaces)
         let finalName = name.isEmpty ? (s.user?.name ?? r.email.components(separatedBy: "@").first?.capitalized ?? L("Friend")) : name
-        s.user = UserProfile(uid: r.uid, name: finalName, email: r.email, handle: Self.handle(from: finalName),
+        s.user = UserProfile(uid: r.uid, name: finalName, email: r.email, handle: s.user?.handle ?? "",
                              authMethod: Backend.isConfigured ? r.method : .local)
         if r.uid != nil { signedInUID = r.uid }
         if s.onboarded && !s.learning.isEmpty { return }
@@ -261,13 +278,9 @@ final class AppModel: ObservableObject {
         friendsPath = []
         tab = .today
         lessonCache = [:]
-    }
-
-    private static func handle(from name: String) -> String {
-        let parts = name.lowercased().split(separator: " ")
-        guard let first = parts.first else { return "@you" }
-        let last = parts.dropFirst().first.map { "." + String($0.prefix(1)) } ?? ""
-        return "@" + first.filter { $0.isLetter || $0.isNumber } + last
+        social = nil
+        chats = [:]
+        nudgedToday = []
     }
 
     // MARK: - Languages
@@ -399,7 +412,14 @@ final class AppModel: ObservableObject {
     }
 
     func complete(_ t: PlanTask, score: Int) {
-        s.done["\(DateUtil.dayKey())|\(t.id)"] = true
+        let key = "\(DateUtil.dayKey())|\(t.id)"
+        if s.done[key] != true {
+            let lang = language(t.langKey)?.name ?? ""
+            logActivity(seconds: t.minutes * 60, lang: t.langKey, points: t.minutes * 2 + score * 5,
+                        event: (t.type == .roleplay ? "roleplay" : "lesson",
+                                ["langKey": t.langKey, "lang": lang, "title": t.title, "kind": t.type.rawValue]))
+        }
+        s.done[key] = true
         s.results.append(TaskResult(taskID: t.id, langKey: t.langKey, title: t.title, type: t.type, score: score, date: Date()))
         if s.results.count > 60 { s.results.removeFirst(s.results.count - 60) }
         Haptics.success()
@@ -407,8 +427,41 @@ final class AppModel: ObservableObject {
 
     func toggleDone(_ t: PlanTask) {
         let k = "\(DateUtil.dayKey())|\(t.id)"
-        s.done[k] = s.done[k] == true ? nil : true
+        let undo = s.done[k] == true
+        s.done[k] = undo ? nil : true
+        logActivity(seconds: (undo ? -1 : 1) * t.minutes * 60, lang: t.langKey, points: (undo ? -1 : 1) * t.minutes * 2)
         Haptics.success()
+    }
+
+    // MARK: - Activity (streak, minutes, level progress)
+
+    /// Records practice time and level points, and tells friends (through the backend) when it's worth sharing.
+    func logActivity(seconds: Int, lang: String? = nil, points: Int = 0, event: (String, [String: String])? = nil) {
+        let today = DateUtil.dayKey()
+        s.activity[today] = max(0, (s.activity[today] ?? 0) + seconds)
+        if let lang, points != 0 { s.xp[lang] = max(0, (s.xp[lang] ?? 0) + points) }
+        // Keep about three months.
+        if s.activity.count > 100, let cutoff = DateUtil.calendar.date(byAdding: .day, value: -95, to: Date()) {
+            let c = DateUtil.dayKey(cutoff)
+            s.activity = s.activity.filter { $0.key >= c }
+        }
+        guard socialAvailable else { return }
+        reportTask?.cancel()
+        let days = Progress.recentMinutes(s.activity)
+        if let event {
+            Task { try? await Social.report(days: days, event: (event.0, event.1)) }
+        } else {
+            reportTask = Task {
+                try? await Task.sleep(for: .seconds(4))
+                if Task.isCancelled { return }
+                try? await Social.report(days: Progress.recentMinutes(self.s.activity), event: nil)
+            }
+        }
+    }
+
+    func finishVocabRound(right: Int, total: Int) {
+        guard total > 0 else { return }
+        logActivity(seconds: 0, event: ("vocab", ["count": String(total), "right": String(right)]))
     }
 
     func lessonContent(for t: PlanTask) async -> LessonContent {
@@ -468,6 +521,7 @@ final class AppModel: ObservableObject {
         var msgs = tutorMessages(key)
         msgs.append(ChatMessage(role: .me, text: t))
         s.tutorThreads[key] = msgs
+        logActivity(seconds: 45, lang: key, points: 2)
         tutorTyping = true
         defer { tutorTyping = false }
 
@@ -503,40 +557,235 @@ final class AppModel: ObservableObject {
 
     // MARK: - Friends
 
-    func friendMessages(_ id: String) -> [ChatMessage] {
-        guard let f = friend(id) else { return [] }
-        return s.friendThreads[id] ?? SampleFriends.chats[f.chatLang]?.seed ?? []
-    }
-
-    func sendFriend(_ text: String, to id: String) async {
-        let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !t.isEmpty, !friendTyping, let f = friend(id), let seed = SampleFriends.chats[f.chatLang] else { return }
-        var msgs = friendMessages(id)
-        msgs.append(ChatMessage(role: .me, text: t))
-        s.friendThreads[id] = msgs
-        friendTyping = true
-        defer { friendTyping = false }
-
-        let svc: AIService? = aiAvailable ? ai : nil
-        let lang = language(f.chatLang)
-        async let correction = Self.correction(svc, message: t, language: lang)
-        try? await Task.sleep(for: .milliseconds(1400))
-        if let c = await correction, c.hasCorrection, !c.right.isEmpty {
-            msgs.append(ChatMessage(role: .correction, wrong: c.wrong, right: c.right, note: c.note))
+    func syncProfile() async {
+        guard socialAvailable, let name = s.user?.name else { return }
+        if let handle = try? await Social.sync(name: name, langs: s.learning) {
+            s.user?.handle = "@" + handle
+            syncedProfile = "\(name)|\(s.learning.joined(separator: ","))"
         }
-        msgs.append(ChatMessage(role: .them, text: seed.replies[friendReplyIndex % seed.replies.count]))
-        friendReplyIndex += 1
-        s.friendThreads[id] = msgs
     }
 
-    nonisolated private static func correction(_ svc: AIService?, message: String, language: Language?) async -> AIService.Correction? {
-        guard let svc, let language else { return nil }
-        return try? await svc.correct(message: message, language: language)
+    func refreshSocial() async {
+        guard socialAvailable else { social = nil; return }
+        if syncedProfile != "\(s.user?.name ?? "")|\(s.learning.joined(separator: ","))" { await syncProfile() }
+        socialLoading = true
+        defer { socialLoading = false }
+        do {
+            social = try await Social.overview()
+        } catch {
+            if social == nil { toast = L("Couldn't load friends — %@", Backend.message(for: error)) }
+        }
     }
 
-    func toggle(_ set: WritableKeyPath<PersistedState, Set<String>>, _ id: String) {
-        if s[keyPath: set].contains(id) { s[keyPath: set].remove(id) } else { s[keyPath: set].insert(id) }
+    func changeHandle(_ handle: String) async -> String? {
+        do {
+            s.user?.handle = "@" + (try await Social.setHandle(handle))
+            await refreshSocial()
+            return nil
+        } catch {
+            return Backend.message(for: error)
+        }
+    }
+
+    /// Sends a friend request (or accepts theirs). Returns the new relation.
+    @discardableResult
+    func addFriend(uid: String? = nil, handle: String? = nil) async -> String? {
+        do {
+            let r = try await Social.request(uid: uid, handle: handle)
+            Haptics.success()
+            toast = r == "friend" ? L("You're now friends.") : L("Friend request sent.")
+            await refreshSocial()
+            return r
+        } catch {
+            toast = Backend.message(for: error)
+            return nil
+        }
+    }
+
+    func respond(to uid: String, accept: Bool) async {
+        do {
+            try await Social.respond(uid: uid, accept: accept)
+            if accept { Haptics.success() }
+            await refreshSocial()
+        } catch {
+            toast = Backend.message(for: error)
+        }
+    }
+
+    func removeFriend(_ uid: String) async {
+        do {
+            try await Social.remove(uid: uid)
+            friendsPath.removeAll { $0 == uid }
+            await refreshSocial()
+        } catch {
+            toast = Backend.message(for: error)
+        }
+    }
+
+    func cheer(_ item: Social.FeedItem) {
+        guard var o = social, let i = o.feed.firstIndex(where: { $0.id == item.id && $0.uid == item.uid }) else { return }
+        o.feed[i].cheeredByMe.toggle()
+        o.feed[i].cheers += o.feed[i].cheeredByMe ? 1 : -1
+        social = o
         Haptics.tap()
+        Task {
+            do { try await Social.cheer(owner: item.uid, id: item.id) } catch { await refreshSocial() }
+        }
+    }
+
+    func nudge(_ uid: String) {
+        nudgedToday.insert(uid)
+        Haptics.tap()
+        Task {
+            do { try await Social.nudge(uid: uid) } catch {
+                nudgedToday.remove(uid)
+                toast = Backend.message(for: error)
+            }
+        }
+    }
+
+    func dismissNudges() {
+        guard let ids = social?.nudges.map(\.id), !ids.isEmpty else { return }
+        social?.nudges = []
+        Task { try? await Social.markNudgesSeen(ids) }
+    }
+
+    func startChallenge(type: String, friends: [String], goalMinutes: Int? = nil, planLang: String? = nil) async -> Bool {
+        do {
+            var plan: WeeklyPlan?
+            var title: String?
+            if type == "plan" {
+                guard let key = planLang, let p = s.plans[key] else { toast = L("Make a plan first."); return false }
+                plan = p
+                title = language(key)?.name
+            }
+            let end = type == "sprint" ? DateUtil.calendar.date(byAdding: .day, value: 6, to: Date()).map { DateUtil.dayKey($0) } : nil
+            try await Social.createChallenge(type: type, friends: friends, goalMinutes: goalMinutes, endDay: end,
+                                             lang: planLang, title: title, plan: plan)
+            Haptics.success()
+            toast = L("Invite sent.")
+            await refreshSocial()
+            return true
+        } catch {
+            toast = Backend.message(for: error)
+            return false
+        }
+    }
+
+    func respondChallenge(_ c: Social.Challenge, accept: Bool) async {
+        do {
+            try await Social.respondChallenge(id: c.id, accept: accept)
+            if accept, c.type == "plan", let id = c.planId { await joinPlan(id) }
+            await refreshSocial()
+        } catch {
+            toast = Backend.message(for: error)
+        }
+    }
+
+    func leaveChallenge(_ c: Social.Challenge) async {
+        do {
+            try await Social.leaveChallenge(id: c.id)
+            await refreshSocial()
+        } catch {
+            toast = Backend.message(for: error)
+        }
+    }
+
+    func sharePlan(_ key: String) async {
+        guard socialAvailable else { toast = L("Sign in to share plans with friends."); return }
+        guard let plan = s.plans[key], let l = language(key) else { return }
+        do {
+            try await Social.sharePlan(plan, lang: key, title: plan.days.compactMap { $0.tasks.first?.title }.first ?? l.name)
+            Haptics.success()
+            toast = L("Plan shared with your friends.")
+            await refreshSocial()
+        } catch {
+            toast = Backend.message(for: error)
+        }
+    }
+
+    /// Copies a friend's shared plan into this week, adding the language if needed.
+    func joinPlan(_ planId: String) async {
+        do {
+            let (key, shared) = try await Social.sharedPlan(id: planId)
+            guard Catalog.byKey[key] != nil || s.customLanguages[key] != nil else {
+                toast = L("This plan is for a language you can add in Me first.")
+                return
+            }
+            if !s.learning.contains(key) { s.learning.append(key) }
+            if s.levels[key] == nil { s.levels[key] = .a1 }
+            let ws = DateUtil.weekStart()
+            var plan = shared
+            plan.weekStart = ws
+            plan.days = plan.days.enumerated().map { di, d in
+                PlanDay(focus: d.focus, tasks: d.tasks.enumerated().map { ti, t in
+                    var t = t
+                    t.id = "\(key)-\(di)-j\(ti)"
+                    t.langKey = key
+                    return t
+                })
+            }
+            s.plans[key] = plan
+            planLang = key
+            Haptics.success()
+            toast = L("Plan added to your week.")
+        } catch {
+            toast = Backend.message(for: error)
+        }
+    }
+
+    /// The language two friends practise together: one I learn that they learn too, else my first.
+    func chatLanguage(with f: Social.Person) -> Language? {
+        (s.learning.first { f.langs.contains($0) } ?? s.learning.first).flatMap(language)
+    }
+
+    func loadChat(_ uid: String) async {
+        guard socialAvailable else { return }
+        if let m = try? await Social.messages(with: uid) { chats[uid] = m }
+    }
+
+    func sendFriend(_ text: String, to uid: String) async {
+        let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !t.isEmpty, !friendSending, let f = friend(uid) else { return }
+        friendSending = true
+        defer { friendSending = false }
+        let lang = chatLanguage(with: f)
+        let pending = Social.Message(id: "local-\(UUID().uuidString)", mine: true, text: t,
+                                     createdAt: Date().timeIntervalSince1970 * 1000, correction: nil)
+        chats[uid, default: []].append(pending)
+        do {
+            _ = try await Social.send(t, to: uid, language: aiAvailable ? lang : nil)
+            if let lang { logActivity(seconds: 30, lang: lang.key, points: 1) }
+            await loadChat(uid)
+        } catch {
+            chats[uid]?.removeAll { $0.id == pending.id }
+            toast = Backend.message(for: error)
+        }
+    }
+
+    /// A reply idea from ChatGPT for the friend chat.
+    func suggestReply(to uid: String) async -> String? {
+        guard aiAvailable, let f = friend(uid), let l = chatLanguage(with: f) else { return nil }
+        let history = (chats[uid] ?? []).suffix(12).map { ChatMessage(role: $0.mine ? .me : .ai, text: $0.text) }
+        do {
+            let turn = try await ai.tutorTurn(language: l, level: level(l.key),
+                                              scene: L("Chatting with a friend who is also learning"), history: Array(history))
+            return turn.suggestions.first
+        } catch {
+            toast = chatGPTMessage(error)
+            return nil
+        }
+    }
+
+    /// lingora://add/<username> — opened from an invite link or QR code.
+    func handle(url: URL) -> Bool {
+        guard url.scheme == "lingora", url.host == "add" else { return false }
+        let handle = url.pathComponents.dropFirst().first ?? ""
+        guard !handle.isEmpty else { return true }
+        guard socialAvailable else { toast = L("Sign in first, then open the link again."); return true }
+        tab = .friends
+        Task { await addFriend(handle: handle) }
+        return true
     }
 
     // MARK: - German vocabulary
@@ -576,6 +825,7 @@ final class AppModel: ObservableObject {
 
     func recordVocab(_ id: String, correct: Bool) {
         VocabEngine.record(&vocab, id: id, correct: correct)
+        logActivity(seconds: 20, lang: "de", points: correct ? 2 : 0)
     }
 
     // MARK: - Reminders

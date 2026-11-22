@@ -177,6 +177,13 @@ struct PlanView: View {
                     Label(model.aiAvailable ? L("Ask ChatGPT to re-plan") : L("Re-plan my week"), systemImage: "arrow.clockwise")
                 }
                 .buttonStyle(PrimaryButtonStyle(kind: .chip))
+                if model.socialAvailable {
+                    Button { Task { await model.sharePlan(lang.key) } } label: {
+                        Label(L("Share"), systemImage: "square.and.arrow.up")
+                    }
+                    .buttonStyle(PrimaryButtonStyle(kind: .chip))
+                    .frame(width: 120)
+                }
             }
         }
         .padding(.horizontal, 20).padding(.vertical, 12)

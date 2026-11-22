@@ -89,59 +89,6 @@ struct LanguageContent {
     }
 }
 
-enum SampleFriends {
-    static let friends: [Friend] = [
-        .init(id: "yuki", name: "Yuki Tanaka", handle: "@yuki_t", langs: ["en"], streak: 54, weekMinutes: 210, practisedToday: true, hue: 340, chatLang: "en"),
-        .init(id: "marco", name: "Marco Rossi", handle: "@marco", langs: ["es", "ja"], streak: 31, weekMinutes: 186, practisedToday: true, hue: 110, chatLang: "es"),
-        .init(id: "lena", name: "Lena Weber", handle: "@lena.w", langs: ["it"], streak: 24, weekMinutes: 142, practisedToday: true, hue: 20, chatLang: "it"),
-        .init(id: "sam", name: "Sam Okafor", handle: "@samo", langs: ["es"], streak: 9, weekMinutes: 98, practisedToday: false, hue: 240, chatLang: "es"),
-        .init(id: "priya", name: "Priya Shah", handle: "@priya", langs: ["fr", "es"], streak: 4, weekMinutes: 64, practisedToday: false, hue: 300, chatLang: "fr")
-    ]
-
-    struct Suggested: Identifiable { var id: String; var name: String; var handle: String; var sub: String; var hue: Double }
-    static let suggested: [Suggested] = [
-        .init(id: "noah", name: "Noah Berg", handle: "@noahb", sub: L("learning Spanish"), hue: 200),
-        .init(id: "mia", name: "Mia Costa", handle: "@miac", sub: L("3 mutual friends"), hue: 60),
-        .init(id: "omar", name: "Omar Haddad", handle: "@omar.h", sub: L("learning Japanese"), hue: 160)
-    ]
-
-    struct FeedItem: Identifiable { var id: String; var friendID: String; var text: String; var time: String; var cheers: Int; var isPlan: Bool }
-    static let feed: [FeedItem] = [
-        .init(id: "lena0", friendID: "lena", text: L("finished a roleplay in Italian: “Ordering at a bar in Rome”"), time: L("12 min ago"), cheers: 3, isPlan: false),
-        .init(id: "yuki1", friendID: "yuki", text: L("reached a 54-day streak"), time: L("1 h ago"), cheers: 8, isPlan: false),
-        .init(id: "marco2", friendID: "marco", text: L("shared a plan: Spanish for travel · 4 weeks"), time: L("3 h ago"), cheers: 2, isPlan: true),
-        .init(id: "sam3", friendID: "sam", text: L("completed 3 ser vs. estar drills"), time: L("Yesterday"), cheers: 1, isPlan: false)
-    ]
-
-    struct ChatSeed { var seed: [ChatMessage]; var replies: [String]; var suggestion: String }
-    static let chats: [String: ChatSeed] = [
-        "it": .init(seed: [.init(role: .them, text: "Ciao Ana! Com’è andata la giornata?"),
-                           .init(role: .me, text: "Ciao! È stato bene, ho lavorato molto."),
-                           .init(role: .correction, wrong: "È stato bene", right: "È andata bene", note: L("“Andare” fits better for how a day went.")),
-                           .init(role: .them, text: "Anche io! Stasera guardo un film italiano.")],
-                    replies: ["Che bello! Quale film?", "Domani facciamo la sfida dei 20 minuti?", "A domani, buona serata!"],
-                    suggestion: "Che film guardi? Io adoro Fellini."),
-        "es": .init(seed: [.init(role: .them, text: "¡Hola! ¿Practicamos un poco?"),
-                           .init(role: .me, text: "¡Sí! Hoy soy muy cansada."),
-                           .init(role: .correction, wrong: "soy muy cansada", right: "estoy muy cansada", note: L("Temporary states use estar.")),
-                           .init(role: .them, text: "Jaja, yo también. ¿Qué hiciste hoy?")],
-                    replies: ["¡Qué bien! Cuéntame más.", "¿Hacemos el reto de 20 minutos mañana?", "¡Hasta mañana!"],
-                    suggestion: "Fui al mercado y compré fruta."),
-        "en": .init(seed: [.init(role: .them, text: "Hi! Shall we practise some English?"),
-                           .init(role: .me, text: "Yes! I am learning since two years."),
-                           .init(role: .correction, wrong: "I am learning since two years", right: "I’ve been learning for two years", note: L("Use the present perfect continuous + “for”.")),
-                           .init(role: .them, text: "Nice! What got you started?")],
-                    replies: ["Love that. Tell me more!", "Up for the 20-minute challenge tomorrow?", "Talk tomorrow!"],
-                    suggestion: "A trip to London, actually!"),
-        "fr": .init(seed: [.init(role: .them, text: "Salut ! On pratique un peu ?"),
-                           .init(role: .me, text: "Oui ! Je suis allé au marché hier."),
-                           .init(role: .correction, wrong: "Je suis allé", right: "Je suis allée", note: L("The participle agrees with a female subject.")),
-                           .init(role: .them, text: "Super ! Qu’est-ce que tu as acheté ?")],
-                    replies: ["Génial, raconte-moi !", "On fait le défi des 20 minutes demain ?", "À demain !"],
-                    suggestion: "J’ai acheté des fruits et du fromage.")
-    ]
-}
-
 /// Offline weekly plan, used when ChatGPT isn't connected or a request fails.
 enum FallbackPlanner {
     static func plan(for lang: Language, index: Int, weekStart: Date, goals: [String]) -> WeeklyPlan {
