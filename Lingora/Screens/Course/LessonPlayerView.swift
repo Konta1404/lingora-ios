@@ -517,7 +517,7 @@ struct LessonPlayerView: View {
     private var finishTitle: String {
         switch lesson.mode {
         case .normal: L("Lesson complete!")
-        case .practice: L("Practice done!")
+        case .practice, .listening, .speaking: L("Practice done!")
         case .jump: passedJump ? L("You jumped ahead!") : L("Not quite yet")
         }
     }
