@@ -344,30 +344,6 @@ struct CorrectionBubble: View {
     }
 }
 
-struct ChatBubble: View {
-    @Environment(\.theme) private var theme
-    let text: String
-    let mine: Bool
-
-    var body: some View {
-        Text(text)
-            .font(.fig(15))
-            .foregroundStyle(mine ? .white : theme.text)
-            .padding(.horizontal, 14).padding(.vertical, 10)
-            .background(mine ? theme.a : theme.card,
-                        in: UnevenRoundedRectangle(topLeadingRadius: 20,
-                                                   bottomLeadingRadius: mine ? 20 : 6,
-                                                   bottomTrailingRadius: mine ? 6 : 20,
-                                                   topTrailingRadius: 20))
-            .overlay(UnevenRoundedRectangle(topLeadingRadius: 20, bottomLeadingRadius: mine ? 20 : 6,
-                                            bottomTrailingRadius: mine ? 6 : 20, topTrailingRadius: 20)
-                .strokeBorder(mine ? .clear : theme.cardBorder, lineWidth: 1))
-            .frame(maxWidth: 300, alignment: mine ? .trailing : .leading)
-            .frame(maxWidth: .infinity, alignment: mine ? .trailing : .leading)
-            .textSelection(.enabled)
-    }
-}
-
 /// Mic · text field · send — 48pt each.
 struct ChatInputBar: View {
     @Environment(\.theme) private var theme
