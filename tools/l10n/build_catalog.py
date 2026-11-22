@@ -69,15 +69,17 @@ def main():
             if nfmt(v) > nfmt(key):
                 sys.exit(f'{lang}: too many format specifiers in {key!r}')
             loc[lang] = unit(v)
-        strings[key] = {'extractionState': 'manual', 'localizations': loc}
+        strings[key] = {'extractionState': 'manual', 'localizations': dict(sorted(loc.items()))}
     for key, by_lang in PLURALS.items():
         strings[key] = {'extractionState': 'manual', 'localizations': {
-            lang: {'variations': {'plural': {cat: unit(v) for cat, v in cats.items()}}} for lang, cats in by_lang.items()}}
+            lang: {'variations': {'plural': {cat: unit(v) for cat, v in sorted(cats.items())}}} for lang, cats in sorted(by_lang.items())}}
 
     catalog = {'sourceLanguage': 'en', 'strings': dict(sorted(strings.items())), 'version': '1.0'}
     out = os.path.join(ROOT, 'Lingora/Localizable.xcstrings')
     with open(out, 'w', encoding='utf-8') as fh:
-        json.dump(catalog, fh, ensure_ascii=False, indent=2)
+        # Same layout Xcode writes, so opening the project doesn't rewrite the whole file.
+        json.dump(catalog, fh, ensure_ascii=False, indent=2, separators=(',', ' : '))
+        fh.write('\n')
     unused = sorted(set(rows) - set(used))
     print(f'{len(strings)} keys × {len(LANGS) + 1} languages → {os.path.relpath(out, ROOT)}')
     if unused:

@@ -10,12 +10,42 @@ enum Backend {
     static let region = "europe-west1"
 
     private(set) static var isConfigured = false
+    /// True when the app talks to the local Firebase emulators (see lingora-backend → scripts/dev.sh).
+    private(set) static var usesEmulators = false
 
     static func configure() {
-        guard !isConfigured,
-              Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") != nil else { return }
+        guard !isConfigured else { return }
+        let env = ProcessInfo.processInfo.environment
+        #if DEBUG
+        if env["LINGORA_USE_EMULATORS"] == "1" {
+            configureForEmulators(host: env["LINGORA_EMULATOR_HOST"] ?? "127.0.0.1")
+            return
+        }
+        #endif
+        guard Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") != nil else { return }
         FirebaseApp.configure()
         isConfigured = true
+    }
+
+    /// Local testing: a "demo-" project needs no real Firebase project, no plist and no Google login.
+    private static func configureForEmulators(host: String) {
+        let options = FirebaseOptions(googleAppID: "1:1234567890:ios:0123456789abcdef", gcmSenderID: "1234567890")
+        options.projectID = "demo-lingora"
+        options.apiKey = "AIzaSyDemoKeyForLocalEmulatorsOnly00000"
+        options.bundleID = Bundle.main.bundleIdentifier ?? "com.veselin.lingora"
+        FirebaseApp.configure(options: options)
+
+        Auth.auth().useEmulator(withHost: host, port: 9099)
+        let settings = Firestore.firestore().settings
+        settings.host = "\(host):8080"
+        settings.isSSLEnabled = false
+        settings.cacheSettings = MemoryCacheSettings()
+        Firestore.firestore().settings = settings
+        Functions.functions(region: region).useEmulator(withHost: host, port: 5001)
+
+        isConfigured = true
+        usesEmulators = true
+        print("Lingora: using Firebase emulators at \(host)")
     }
 
     static var currentUID: String? { isConfigured ? Auth.auth().currentUser?.uid : nil }

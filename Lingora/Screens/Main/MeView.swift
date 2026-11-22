@@ -169,6 +169,7 @@ struct MeView: View {
 
     private var aiStatus: String {
         if !Backend.isConfigured { return L("Offline mode · using standard plans") }
+        if Backend.usesEmulators { return L("Local test server (Firebase emulators)") }
         return model.aiAvailable ? L("On · plans, lessons and tutor run on the Lingora server") : L("Sign in to turn it on")
     }
 
