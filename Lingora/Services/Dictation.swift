@@ -3,6 +3,7 @@ import Speech
 import AVFoundation
 
 /// Live speech-to-text in the language being practised (Speech framework, on-device when available).
+/// Hold-to-talk: `press` starts recording, `release` stops it and keeps the final words.
 @MainActor
 final class Dictation: ObservableObject {
     @Published private(set) var isRecording = false
@@ -11,6 +12,8 @@ final class Dictation: ObservableObject {
     private let engine = AVAudioEngine()
     private var request: SFSpeechAudioBufferRecognitionRequest?
     private var task: SFSpeechRecognitionTask?
+    /// False once the finger lifts — also covers a release while permissions are still being asked.
+    private var held = false
 
     /// Maps Lingora language keys to speech locales.
     static func locale(for key: String?) -> Locale {
@@ -21,11 +24,24 @@ final class Dictation: ObservableObject {
         return Locale(identifier: map[key] ?? key)
     }
 
-    func toggle(language key: String?, prefix: String, onText: @escaping (String) -> Void) {
-        if isRecording { stop() } else { Task { await start(language: key, prefix: prefix, onText: onText) } }
+    func press(language key: String?, onText: @escaping (String) -> Void) {
+        held = true
+        cancel()
+        Task { await start(language: key, onText: onText) }
     }
 
-    func start(language key: String?, prefix: String, onText: @escaping (String) -> Void) async {
+    /// Stops listening; the recogniser still delivers the last words, then finishes.
+    func release() {
+        held = false
+        guard isRecording else { return }
+        engine.stop()
+        engine.inputNode.removeTap(onBus: 0)
+        request?.endAudio()
+        isRecording = false
+        deactivateSession()
+    }
+
+    private func start(language key: String?, onText: @escaping (String) -> Void) async {
         error = nil
         let speechOK = await withCheckedContinuation { c in
             SFSpeechRecognizer.requestAuthorization { c.resume(returning: $0 == .authorized) }
@@ -35,6 +51,8 @@ final class Dictation: ObservableObject {
             error = L("Allow Microphone and Speech Recognition in Settings to dictate.")
             return
         }
+        // The first time, the permission alerts take the touch — the user lifts their finger meanwhile.
+        guard held else { return }
         guard let recognizer = SFSpeechRecognizer(locale: Self.locale(for: key)), recognizer.isAvailable else {
             error = L("Dictation isn't available for this language on your iPhone.")
             return
@@ -58,29 +76,46 @@ final class Dictation: ObservableObject {
             try engine.start()
             isRecording = true
 
-            let base = prefix.isEmpty || prefix.hasSuffix(" ") ? prefix : prefix + " "
             task = recognizer.recognitionTask(with: req) { [weak self] result, err in
                 Task { @MainActor in
                     guard let self else { return }
-                    if let result { onText(base + result.bestTranscription.formattedString) }
-                    if err != nil || result?.isFinal == true { self.stop() }
+                    if let result { onText(result.bestTranscription.formattedString) }
+                    if err != nil || result?.isFinal == true {
+                        if self.isRecording { self.release() }
+                        self.task = nil
+                        self.request = nil
+                    }
                 }
             }
+            // Released while the engine was starting.
+            if !held { release() }
         } catch {
             self.error = error.localizedDescription
-            stop()
+            release()
+        }
+    }
+
+    /// Drops any recognition still finishing from a previous recording.
+    private func cancel() {
+        task?.cancel()
+        task = nil
+        request = nil
+        if isRecording {
+            engine.stop()
+            engine.inputNode.removeTap(onBus: 0)
+            isRecording = false
         }
     }
 
     func stop() {
-        guard isRecording || task != nil else { return }
-        engine.stop()
-        engine.inputNode.removeTap(onBus: 0)
-        request?.endAudio()
-        task?.finish()
+        held = false
+        release()
+        task?.cancel()   // after Send, late words must not refill the field
         task = nil
         request = nil
-        isRecording = false
+    }
+
+    private func deactivateSession() {
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 }

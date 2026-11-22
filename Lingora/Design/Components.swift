@@ -344,6 +344,43 @@ struct CorrectionBubble: View {
     }
 }
 
+/// Hold to record, release to stop (like a voice message).
+struct HoldToTalkButton: View {
+    @Environment(\.theme) private var theme
+    @ObservedObject var dictation: Dictation
+    var onPress: () -> Void
+    @State private var holding = false
+
+    var body: some View {
+        let on = holding || dictation.isRecording
+        Image(systemName: on ? "waveform" : "mic")
+            .font(.system(size: 20, weight: .semibold))
+            .foregroundStyle(on ? .white : theme.text)
+            .symbolEffect(.variableColor.iterative, isActive: dictation.isRecording)
+            .frame(width: 48, height: 48)
+            .background(on ? theme.a : theme.chip, in: Circle())
+            .scaleEffect(holding ? 1.15 : 1)
+            .animation(.spring(duration: 0.25), value: holding)
+            .contentShape(Circle())
+            .gesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { _ in
+                        guard !holding else { return }
+                        holding = true
+                        Haptics.tap()
+                        onPress()
+                    }
+                    .onEnded { _ in
+                        holding = false
+                        dictation.release()
+                    }
+            )
+            .accessibilityLabel(L("Hold to talk"))
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAction { if dictation.isRecording { dictation.release() } else { onPress() } }
+    }
+}
+
 /// Mic · text field · send — 48pt each.
 struct ChatInputBar: View {
     @Environment(\.theme) private var theme
@@ -358,11 +395,10 @@ struct ChatInputBar: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            CircleIconButton(systemName: dictation.isRecording ? "stop.fill" : "mic", size: 48,
-                             bg: dictation.isRecording ? theme.a : theme.chip,
-                             fg: dictation.isRecording ? .white : nil,
-                             label: dictation.isRecording ? L("Stop dictation") : L("Dictate")) {
-                dictation.toggle(language: speechLanguage, prefix: text) { text = $0 }
+            HoldToTalkButton(dictation: dictation) {
+                // Each recording replaces what was in the field.
+                text = ""
+                dictation.press(language: speechLanguage) { text = $0 }
             }
             TextField(placeholder, text: $text)
                 .font(.fig(15))
