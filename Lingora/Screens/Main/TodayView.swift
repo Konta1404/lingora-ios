@@ -90,6 +90,9 @@ struct TodayView: View {
                     ForEach(model.courseLanguages) { l in
                         CourseSummaryCard(lang: l)
                     }
+                    if let l = model.courseLanguages.first(where: { !model.learnedWords($0.key).isEmpty }) {
+                        PracticeCard(lang: l)
+                    }
 
                     if model.learnsGerman {
                         Button { model.showWords = true } label: { WordsSummaryCard() }

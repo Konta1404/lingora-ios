@@ -1043,6 +1043,73 @@ final class AppModel: ObservableObject {
         return (all.filter(isDone).count, all.count)
     }
 
+    // Words (every language)
+
+    /// Spaced repetition for course words: right → next box (1, 2, 4, 8, 16 days), wrong → back to box 0.
+    func recordWord(_ item: CourseItem, right: Bool, lang: String) {
+        let key = "\(lang)|\(item.t)"
+        var m = s.wordMemory[key] ?? WordMemory()
+        m.seen += 1
+        if right { m.box = min(5, m.box + 1) } else { m.box = 0; m.wrong += 1 }
+        let days = [0, 1, 2, 4, 8, 16][m.box]
+        m.due = DateUtil.dayKey(DateUtil.calendar.date(byAdding: .day, value: days, to: Date()) ?? Date())
+        s.wordMemory[key] = m
+    }
+
+    func memory(_ item: CourseItem, lang: String) -> WordMemory? { s.wordMemory["\(lang)|\(item.t)"] }
+
+    /// Words from units you've started, with their memory.
+    func learnedWords(_ lang: String) -> [CourseItem] {
+        guard let c = course(lang) else { return [] }
+        return c.sections.flatMap(\.units).filter { isDone(CourseLesson(unit: $0, kind: .words1)) }.flatMap(\.words)
+    }
+
+    /// Weakest and due words first.
+    func wordsLesson(_ lang: String) -> CourseLesson? {
+        let today = DateUtil.dayKey()
+        let words = learnedWords(lang).sorted { a, b in
+            let ma = memory(a, lang: lang), mb = memory(b, lang: lang)
+            let da = (ma?.due ?? "") <= today, db = (mb?.due ?? "") <= today
+            if da != db { return da }
+            return (ma?.box ?? 0) < (mb?.box ?? 0)
+        }
+        guard words.count >= 4 else { return nil }
+        let unit = CourseUnit(id: "words-\(lang)", title: "Words", tip: nil, words: Array(words.prefix(12)), sentences: [])
+        return CourseLesson(unit: unit, kind: .review, mode: .practice)
+    }
+
+    func dueWordCount(_ lang: String) -> Int {
+        let today = DateUtil.dayKey()
+        return learnedWords(lang).filter { (memory($0, lang: lang)?.due ?? "") <= today }.count
+    }
+
+    func listeningLesson(_ lang: String) -> CourseLesson? {
+        reviewLesson(lang).map { CourseLesson(unit: $0.unit, kind: .review, mode: .listening) }
+    }
+
+    func speakingLesson(_ lang: String) -> CourseLesson? {
+        reviewLesson(lang).map { CourseLesson(unit: $0.unit, kind: .review, mode: .speaking) }
+    }
+
+    // Stories
+
+    func stories(_ lang: String) -> [Story] { StoryLibrary.stories(lang) }
+
+    func storyUnlocked(_ st: Story) -> Bool {
+        guard let u = st.unit else { return true }
+        return s.courseDone.contains("\(u)#0")
+    }
+
+    func finishStory(_ st: Story, lang: String, correct: Int, seconds: Int) -> Int {
+        let first = !s.storiesDone.contains(st.id)
+        s.storiesDone.insert(st.id)
+        let xp = 10 + correct * 2
+        bumpDay { $0.practice += 1 }
+        logActivity(seconds: max(60, seconds), lang: lang, points: xp,
+                    event: first ? ("lesson", ["langKey": lang, "lang": language(lang)?.name ?? "", "title": st.title, "kind": TaskType.reading.rawValue]) : nil)
+        return xp
+    }
+
     // Mistakes & practice
 
     func noteMistake(_ item: CourseItem, sentence: Bool, lang: String) {

@@ -56,6 +56,10 @@ enum LessonMode: Hashable {
     case practice
     /// Test to skip ahead: passing marks every lesson before section `index` done.
     case jump(section: Int)
+    /// Only listening exercises.
+    case listening
+    /// Only speaking exercises.
+    case speaking
 }
 
 struct CourseLesson: Identifiable, Hashable {
@@ -67,6 +71,8 @@ struct CourseLesson: Identifiable, Hashable {
         case .normal: "\(unit.id)#\(kind.rawValue)"
         case .practice: "practice-\(unit.id)"
         case .jump(let s): "jump-\(unit.id)-\(s)"
+        case .listening: "listening-\(unit.id)"
+        case .speaking: "speaking-\(unit.id)"
         }
     }
 }
@@ -149,7 +155,18 @@ enum LessonBuilder {
         func next() -> String { n += 1; return "\(lesson.id)-\(n)" }
         func others<T: Equatable>(_ pool: [T], not x: T, count: Int) -> [T] { Array(pool.filter { $0 != x }.shuffled().prefix(count)) }
 
-        if lesson.mode != .normal {
+        switch lesson.mode {
+        case .normal: break
+        case .listening:
+            let wordPool = words.map(\.t)
+            var out: [Exercise] = words.shuffled().prefix(5).map { w in
+                Exercise.listenPick(id: next(), item: w, options: (Array(wordPool.filter { $0 != w.t }.shuffled().prefix(2)) + [w.t]).shuffled())
+            }
+            out += sentences.shuffled().prefix(5).map { Exercise.listenType(id: next(), item: $0) }
+            return out.shuffled()
+        case .speaking:
+            return (Array(sentences.shuffled().prefix(6)) + Array(words.shuffled().prefix(3))).map { Exercise.speak(id: next(), item: $0) }
+        default:
             return mixed(words: words, sentences: sentences, count: lesson.mode == .practice ? 12 : 15, next: next)
         }
 
@@ -311,15 +328,22 @@ final class Speaker {
         return v
     }
 
+    /// The best voice of a gender, for story characters (falls back to the best voice).
+    static func voice(for lang: String, gender: AVSpeechSynthesisVoiceGender) -> AVSpeechSynthesisVoice? {
+        let id = Dictation.locale(for: lang).identifier.replacingOccurrences(of: "_", with: "-")
+        let pool = AVSpeechSynthesisVoice.speechVoices().filter { $0.language.hasPrefix(String(id.prefix(2))) && $0.gender == gender }
+        return pool.max { ($0.quality.rawValue, $0.language == id ? 1 : 0) < ($1.quality.rawValue, $1.language == id ? 1 : 0) }
+    }
+
     /// True when only the basic (compact) voice is installed for the language.
     static func hasOnlyBasicVoice(_ lang: String) -> Bool {
         (bestVoice(for: lang)?.quality ?? .default) == .default
     }
 
-    func say(_ text: String, lang: String, slow: Bool = false) {
+    func say(_ text: String, lang: String, slow: Bool = false, gender: AVSpeechSynthesisVoiceGender? = nil) {
         synth.stopSpeaking(at: .immediate)
         let u = AVSpeechUtterance(string: text)
-        u.voice = Self.bestVoice(for: lang)
+        u.voice = gender.flatMap { Self.voice(for: lang, gender: $0) } ?? Self.bestVoice(for: lang)
         u.rate = slow ? 0.32 : 0.45
         synth.speak(u)
     }

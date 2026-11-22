@@ -1,0 +1,55 @@
+[
+ {"id":"de-s1","title":"A coffee, please","level":"A1","unit":"de-a1-1-3",
+  "speakers":{"Anna":"f","Kellner":"m"},
+  "lines":[
+   {"s":"Kellner","t":"Guten Morgen! Was möchten Sie?","en":"Good morning! What would you like?"},
+   {"s":"Anna","t":"Guten Morgen. Ich möchte einen Kaffee, bitte.","en":"Good morning. I would like a coffee, please."},
+   {"s":"Kellner","t":"Mit Milch?","en":"With milk?"},
+   {"s":"Anna","t":"Ja, mit Milch. Und ein Wasser, bitte.","en":"Yes, with milk. And a water, please."},
+   {"q":"What does Anna order?","options":["A coffee with milk and a water","A tea and bread","Only a water"],"a":0},
+   {"s":"Kellner","t":"Möchten Sie auch ein Brot?","en":"Would you also like some bread?"},
+   {"s":"Anna","t":"Nein, danke. Was kostet das?","en":"No, thank you. How much is that?"},
+   {"s":"Kellner","t":"Das kostet vier Euro.","en":"That is four euros."},
+   {"q":"How much does it cost?","options":["Two euros","Four euros","Five euros"],"a":1},
+   {"s":"Anna","t":"Hier, bitte. Tschüss!","en":"Here you go. Bye!"},
+   {"s":"Kellner","t":"Danke, tschüss!","en":"Thank you, bye!"}
+  ]},
+ {"id":"de-s2","title":"New in Berlin","level":"A1","unit":"de-a1-1-2",
+  "speakers":{"Marco":"m","Lena":"f"},
+  "lines":[
+   {"s":"Lena","t":"Hallo! Ich bin Lena. Wie heißt du?","en":"Hello! I'm Lena. What's your name?"},
+   {"s":"Marco","t":"Hallo Lena, ich heiße Marco.","en":"Hello Lena, my name is Marco."},
+   {"s":"Lena","t":"Woher kommst du, Marco?","en":"Where are you from, Marco?"},
+   {"s":"Marco","t":"Ich komme aus Italien. Und du?","en":"I come from Italy. And you?"},
+   {"q":"Where does Marco come from?","options":["Germany","Austria","Italy"],"a":2},
+   {"s":"Lena","t":"Ich komme aus Hamburg, aber ich wohne jetzt in Berlin.","en":"I come from Hamburg, but I live in Berlin now."},
+   {"s":"Marco","t":"Ich wohne auch in Berlin! Seit einer Woche.","en":"I live in Berlin too! For a week."},
+   {"q":"Where does Lena live now?","options":["In Hamburg","In Berlin","In Vienna"],"a":1},
+   {"s":"Lena","t":"Willkommen in Berlin, Marco!","en":"Welcome to Berlin, Marco!"}
+  ]},
+ {"id":"de-s3","title":"Family photo","level":"A1","unit":"de-a1-1-4",
+  "speakers":{"Sophie":"f","Jonas":"m"},
+  "lines":[
+   {"s":"Jonas","t":"Ist das deine Familie?","en":"Is that your family?"},
+   {"s":"Sophie","t":"Ja! Das ist meine Mutter und das ist mein Vater.","en":"Yes! That's my mother and that's my father."},
+   {"s":"Jonas","t":"Und wer ist das?","en":"And who is that?"},
+   {"s":"Sophie","t":"Das ist mein Bruder Max. Er ist zehn.","en":"That's my brother Max. He is ten."},
+   {"q":"Who is Max?","options":["Sophie's father","Sophie's brother","Jonas's son"],"a":1},
+   {"s":"Jonas","t":"Hast du auch eine Schwester?","en":"Do you also have a sister?"},
+   {"s":"Sophie","t":"Nein, ich habe keine Schwester. Und du?","en":"No, I don't have a sister. And you?"},
+   {"s":"Jonas","t":"Ich habe zwei Schwestern.","en":"I have two sisters."},
+   {"q":"How many sisters does Jonas have?","options":["None","One","Two"],"a":2}
+  ]},
+ {"id":"de-s4","title":"Rainy weekend","level":"A1","unit":"de-a1-2-5",
+  "speakers":{"Paul":"m","Mia":"f"},
+  "lines":[
+   {"s":"Mia","t":"Was machst du am Wochenende?","en":"What are you doing at the weekend?"},
+   {"s":"Paul","t":"Ich spiele gern Fußball, aber es regnet.","en":"I like playing football, but it's raining."},
+   {"s":"Mia","t":"Ja, das Wetter ist schlecht. Ich lese ein Buch.","en":"Yes, the weather is bad. I'm reading a book."},
+   {"q":"Why can't Paul play football?","options":["It is raining","He is tired","He has no ball"],"a":0},
+   {"s":"Paul","t":"Gute Idee. Und am Abend? Kino?","en":"Good idea. And in the evening? Cinema?"},
+   {"s":"Mia","t":"Gern! Um sieben Uhr?","en":"Gladly! At seven o'clock?"},
+   {"s":"Paul","t":"Perfekt. Bis später!","en":"Perfect. See you later!"},
+   {"q":"When do they meet?","options":["At five","At seven","Tomorrow morning"],"a":1}
+  ]}
+]

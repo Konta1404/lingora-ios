@@ -62,7 +62,7 @@ struct LessonPlayerView: View {
             }
         }
         .background(theme.ground)
-        .modifier(MeaningTranslator(lesson: lesson, done: { meanings = $0; build() }))
+        .modifier(TextTranslator(texts: lesson.unit.words.map(\.en) + lesson.unit.sentences.map(\.en), done: { meanings = $0; build() }))
         .confirmationDialog(L("Quit this lesson?"), isPresented: $confirmQuit, titleVisibility: .visible) {
             Button(L("Quit"), role: .destructive) { dismiss() }
         } message: {
@@ -127,10 +127,12 @@ struct LessonPlayerView: View {
             Haptics.success()
             SoundFX.play(.right)
             if lesson.mode == .practice, let it { model.clearMistake(it.0, lang: lang) }
+            if let it, !it.1 { model.recordWord(it.0, right: true, lang: lang) }
         case .wrong:
             UINotificationFeedbackGenerator().notificationOccurred(.error)
             SoundFX.play(.wrong)
             if let it { model.noteMistake(it.0, sentence: it.1, lang: lang) }
+            if let it, !it.1 { model.recordWord(it.0, right: false, lang: lang) }
             if !missed.contains(ex.id) {
                 missed.insert(ex.id)
                 queue.append(ex)        // comes back once at the end
@@ -480,48 +482,3 @@ private struct Shake: GeometryEffect {
     }
 }
 
-/// Translates the unit's English meanings into the iPhone's language (Apple Translation, iOS 18).
-/// English phones, older iOS or a failure → English meanings.
-private struct MeaningTranslator: ViewModifier {
-    let lesson: CourseLesson
-    let done: ([String: String]) -> Void
-    @State private var config: AnyObject?
-    @State private var finished = false
-
-    private var needsTranslation: Bool {
-        let code = Locale.current.language.languageCode?.identifier ?? "en"
-        return code != "en"
-    }
-
-    func body(content: Content) -> some View {
-        if #available(iOS 18.0, *), needsTranslation {
-            content
-                .onAppear {
-                    config = TranslationSession.Configuration(source: Locale.Language(identifier: "en"),
-                                                              target: Locale.current.language) as AnyObject
-                    // Don't keep the learner waiting if the language pack isn't there.
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 8) { finish([:]) }
-                }
-                .translationTask(config as? TranslationSession.Configuration) { session in
-                    let texts = Array(Set(lesson.unit.words.map(\.en) + lesson.unit.sentences.map(\.en)))
-                    let requests = texts.map { TranslationSession.Request(sourceText: $0, clientIdentifier: $0) }
-                    do {
-                        let res = try await session.translations(from: requests)
-                        var map: [String: String] = [:]
-                        for r in res { if let id = r.clientIdentifier { map[id] = r.targetText } }
-                        await MainActor.run { finish(map) }
-                    } catch {
-                        await MainActor.run { finish([:]) }
-                    }
-                }
-        } else {
-            content.onAppear { finish([:]) }
-        }
-    }
-
-    private func finish(_ map: [String: String]) {
-        guard !finished else { return }
-        finished = true
-        done(map)
-    }
-}
