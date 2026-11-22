@@ -38,6 +38,7 @@ final class Dictation: ObservableObject {
         engine.inputNode.removeTap(onBus: 0)
         request?.endAudio()
         isRecording = false
+        Haptics.recordStop()
         deactivateSession()
     }
 
@@ -60,6 +61,8 @@ final class Dictation: ObservableObject {
         do {
             let session = AVAudioSession.sharedInstance()
             try session.setCategory(.record, mode: .measurement, options: .duckOthers)
+            // iOS mutes vibrations while the mic records unless this is allowed.
+            try? session.setAllowHapticsAndSystemSoundsDuringRecording(true)
             try session.setActive(true, options: .notifyOthersOnDeactivation)
 
             let req = SFSpeechAudioBufferRecognitionRequest()
@@ -75,6 +78,7 @@ final class Dictation: ObservableObject {
             engine.prepare()
             try engine.start()
             isRecording = true
+            Haptics.recordStart()
 
             task = recognizer.recognitionTask(with: req) { [weak self] result, err in
                 Task { @MainActor in

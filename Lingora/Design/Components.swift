@@ -367,7 +367,6 @@ struct HoldToTalkButton: View {
                     .onChanged { _ in
                         guard !holding else { return }
                         holding = true
-                        Haptics.tap()
                         onPress()
                     }
                     .onEnded { _ in
@@ -464,6 +463,14 @@ struct FlowLayout: Layout {
 enum Haptics {
     static func tap() { UIImpactFeedbackGenerator(style: .light).impactOccurred() }
     static func success() { UINotificationFeedbackGenerator().notificationOccurred(.success) }
+    /// Recording started: one firm tap.
+    static func recordStart() { UIImpactFeedbackGenerator(style: .heavy).impactOccurred(intensity: 1) }
+    /// Recording stopped: two soft taps, so it feels different from the start.
+    static func recordStop() {
+        let g = UIImpactFeedbackGenerator(style: .medium)
+        g.impactOccurred()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) { g.impactOccurred(intensity: 0.7) }
+    }
 }
 
 // MARK: - Swipe-back with hidden navigation bars
