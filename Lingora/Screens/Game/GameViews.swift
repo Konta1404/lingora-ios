@@ -110,6 +110,11 @@ struct StreakView: View {
                     stat("\(model.s.streakFreezes)/2", L("freezes"), icon: "snowflake", color: .cyan)
                 }
                 calendar
+                if model.streak > 0 {
+                    ShareCardButton(card: ShareCard(icon: "flame.fill", value: "\(model.streak)", title: L("day streak"),
+                                                    subtitle: L("Learning languages every day with Lingora"), color: .orange))
+                        .frame(maxWidth: .infinity)
+                }
                 Text(L("A streak freeze covers one missed day. You earn one for every 7 days of streak and can keep two. Missed a day without one? Finish 2 lessons the next day to repair it."))
                     .font(.fig(13)).foregroundStyle(theme.muted)
             }
@@ -172,17 +177,7 @@ struct AchievementsSection: View {
     @Environment(\.theme) private var theme
     @State private var selected: Achievement?
 
-    private func value(_ a: Achievement) -> Int {
-        switch a.kind {
-        case .streak: model.s.bestStreak
-        case .xp: model.s.totalXP
-        case .lessons: model.lessonsCompleted
-        case .perfect: model.perfectLessons
-        case .words: model.wordsMastered
-        case .friends: model.friends.count
-        case .quests: model.questsCompleted
-        }
-    }
+    private func value(_ a: Achievement) -> Int { model.achievementValue(a.kind) }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -214,6 +209,10 @@ struct AchievementsSection: View {
                 let v = value(a), lv = a.level(for: v)
                 VStack(alignment: .leading, spacing: 6) {
                     Text(a.title).font(.fig(15, .bold))
+                    if lv.reached > 0 {
+                        ShareCardButton(card: ShareCard(icon: a.icon, value: String(repeating: "★", count: lv.reached), title: a.title,
+                                                        subtitle: a.detail(a.tiers[lv.reached - 1]), color: Color(hex: 0xE8A33D)))
+                    }
                     if let next = lv.next {
                         Text(a.detail(next)).font(.fig(13)).foregroundStyle(theme.muted)
                         ProgressBar(value: Double(v) / Double(next), height: 6)
@@ -249,6 +248,7 @@ struct CelebrationView: View {
                 Text(title).font(.fig(28, .bold)).multilineTextAlignment(.center)
                 Text(subtitle).font(.fig(16)).foregroundStyle(theme.muted).multilineTextAlignment(.center)
                 Spacer()
+                ShareCardButton(card: ShareCard(icon: icon, value: shareValue, title: title, subtitle: subtitle, color: color))
                 Button(L("Continue")) { model.celebration = nil }.buttonStyle(.primary)
             }
             .padding(24)
@@ -257,6 +257,15 @@ struct CelebrationView: View {
             SoundFX.play(.done)
             Haptics.success()
             withAnimation(.spring(duration: 0.5, bounce: 0.5)) { pop = true }
+        }
+    }
+
+    private var shareValue: String {
+        switch c {
+        case .dailyGoal(let g): "\(g) XP"
+        case .streak(let n): "\(n)"
+        case .quest(_, let xp): "+\(xp) XP"
+        case .repaired: "\(model.streak)"
         }
     }
 

@@ -143,7 +143,7 @@ struct FriendsView: View {
                 ForEach(items) { item in
                     let mine = item.uid == model.signedInUID
                     VStack(alignment: .leading, spacing: 12) {
-                        Button { if !mine { model.friendsPath.append(item.uid) } } label: {
+                        Button { model.profileUID = item.uid } label: {
                             HStack(alignment: .top, spacing: 12) {
                                 Avatar(initial: String(item.name.first ?? "?").uppercased(), hue: Hue(h: item.hue), size: 40, uid: item.uid, photo: item.photo ?? 0)
                                 VStack(alignment: .leading, spacing: 2) {
@@ -508,12 +508,18 @@ struct FriendChatView: View {
         VStack(spacing: 0) {
             HStack(spacing: 12) {
                 BackButton { dismiss() }
-                if let f { Avatar(initial: f.initial, hue: Hue(h: f.hue), size: 40, uid: f.uid, photo: f.photoVersion) }
-                VStack(alignment: .leading, spacing: 0) {
-                    Text(verbatim: f?.name ?? "").font(.fig(16, .bold))
-                    Text(lang.map { L("Practising %@ together", $0.name) } ?? (f?.atHandle ?? ""))
-                        .font(.fig(13)).foregroundStyle(theme.muted)
+                Button { model.profileUID = friendID } label: {
+                    HStack(spacing: 12) {
+                        if let f { Avatar(initial: f.initial, hue: Hue(h: f.hue), size: 40, uid: f.uid, photo: f.photoVersion) }
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text(verbatim: f?.name ?? "").font(.fig(16, .bold)).foregroundStyle(theme.text)
+                            Text(lang.map { L("Practising %@ together", $0.name) } ?? (f?.atHandle ?? ""))
+                                .font(.fig(13)).foregroundStyle(theme.muted)
+                        }
+                    }
                 }
+                .buttonStyle(.plain)
+                .accessibilityHint(L("Opens the profile"))
                 Spacer()
                 Menu {
                     if let f, !f.practisedToday {

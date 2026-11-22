@@ -92,6 +92,11 @@ struct LeagueView: View {
                         .tintedNote(prev == "demoted" ? theme.errorTint : theme.at, prev == "demoted" ? theme.errorText : theme.ad, radius: 14)
                 }
 
+                if let l, l.joined, let me = l.members.firstIndex(where: \.me) {
+                    ShareCardButton(card: ShareCard(icon: "shield.lefthalf.filled", value: "#\(me + 1)", title: L("%@ League", LeagueStyle.name(tier)),
+                                                    subtitle: L("%lld XP this week", l.members[me].xp), color: LeagueStyle.color(tier)))
+                        .frame(maxWidth: .infinity)
+                }
                 if !model.socialAvailable {
                     Text(L("Leagues need a Lingora account.")).font(.fig(14)).foregroundStyle(theme.muted).card()
                 } else if let l, l.joined {
@@ -133,6 +138,8 @@ struct LeagueView: View {
                 }
                 .padding(.horizontal, 14).padding(.vertical, 10)
                 .background(m.me ? theme.at : .clear)
+                .contentShape(Rectangle())
+                .onTapGesture { model.profileUID = m.uid }
             }
         }
         .card(padding: 0)

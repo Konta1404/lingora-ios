@@ -113,9 +113,10 @@ enum Social {
         let r: Handle = try await Backend.call("setHandle", ["handle": handle])
         return r.handle
     }
-    static func report(days: [String: Int], xp: [String: Int] = [:], frozen: [String] = [],
+    static func report(days: [String: Int], xp: [String: Int] = [:], frozen: [String] = [], stats: [String: Any]? = nil,
                        event: (type: String, params: [String: String])?) async throws {
         var payload: [String: Any] = ["day": DateUtil.dayKey(), "days": days, "xpDays": xp, "frozen": frozen]
+        if let stats { payload["stats"] = stats }
         if let event { payload["event"] = ["type": event.type, "params": event.params] }
         let _: Ok = try await Backend.call("reportActivity", payload)
     }
@@ -129,6 +130,29 @@ enum Social {
         let image: Any = jpeg.map { $0.base64EncodedString() } ?? NSNull()
         let r: Photo = try await Backend.call("setAvatar", ["image": image])
         return r.photo
+    }
+
+    // Public profile
+    struct PublicProfile: Decodable {
+        struct Stats: Decodable { var totalXP: Int; var bestStreak: Int; var lessons: Int; var words: Int; var stories: Int; var achievements: [String: Int] }
+        var uid: String
+        var name: String
+        var handle: String
+        var hue: Double
+        var langs: [String]
+        var streak: Int
+        var weekXP: Int?
+        var sharesActivity: Bool?
+        var photo: Int?
+        var relation: String
+        var friendsCount: Int
+        var joined: Double?
+        var league: Int?
+        var stats: Stats?
+    }
+    static func profile(uid: String) async throws -> PublicProfile {
+        var p = days; p["uid"] = uid
+        return try await Backend.call("publicProfile", p)
     }
 
     // Leagues

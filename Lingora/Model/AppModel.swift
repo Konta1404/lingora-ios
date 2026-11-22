@@ -469,16 +469,40 @@ final class AppModel: ObservableObject {
         reportTask?.cancel()
         let p = reportPayload
         if let event {
-            Task { try? await Social.report(days: p.days, xp: p.xp, frozen: p.frozen, event: (event.0, event.1)) }
+            let stats = lifetimeStats
+            Task { try? await Social.report(days: p.days, xp: p.xp, frozen: p.frozen, stats: stats, event: (event.0, event.1)) }
         } else {
             reportTask = Task {
                 try? await Task.sleep(for: .seconds(4))
                 if Task.isCancelled { return }
                 let p = self.reportPayload
-                try? await Social.report(days: p.days, xp: p.xp, frozen: p.frozen, event: nil)
+                try? await Social.report(days: p.days, xp: p.xp, frozen: p.frozen, stats: self.lifetimeStats, event: nil)
             }
         }
     }
+
+    /// Lifetime numbers for the public profile.
+    var lifetimeStats: [String: Any] {
+        var ach: [String: Int] = [:]
+        for a in Achievement.all { ach[a.kind.rawValue] = a.level(for: achievementValue(a.kind)).reached }
+        return ["totalXP": s.totalXP, "bestStreak": s.bestStreak, "lessons": lessonsCompleted, "words": wordsMastered,
+                "stories": s.storiesDone.count, "achievements": ach]
+    }
+
+    func achievementValue(_ k: Achievement.Kind) -> Int {
+        switch k {
+        case .streak: s.bestStreak
+        case .xp: s.totalXP
+        case .lessons: lessonsCompleted
+        case .perfect: perfectLessons
+        case .words: wordsMastered
+        case .friends: friends.count
+        case .quests: questsCompleted
+        }
+    }
+
+    /// Someone's public profile on screen.
+    @Published var profileUID: String?
 
     /// Recent minutes, XP and frozen days for the server (streaks, leagues, friends).
     var reportPayload: (days: [String: Int], xp: [String: Int], frozen: [String]) {

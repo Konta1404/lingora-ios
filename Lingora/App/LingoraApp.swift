@@ -156,6 +156,13 @@ struct MainTabView: View {
                 .environmentObject(model)
                 .environment(\.theme, model.theme)
         }
+        .sheet(item: Binding(get: { model.profileUID.map(CourseLangID.init) }, set: { model.profileUID = $0?.id })) { p in
+            ProfileView(uid: p.id)
+                .environmentObject(model)
+                .environment(\.theme, model.theme)
+                .presentationDetents([.large])
+                .presentationCornerRadius(28)
+        }
         .sheet(isPresented: $model.showAddFriend) {
             AddFriendsSheet()
                 .environmentObject(model)

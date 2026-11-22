@@ -43,6 +43,10 @@ struct MeView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(verbatim: user?.name ?? "").font(.fig(22, .bold))
                         Text(verbatim: user?.handle ?? "").font(.fig(14)).foregroundStyle(theme.muted)
+                        if model.socialAvailable, let uid = model.signedInUID {
+                            Button(L("View my profile")) { model.profileUID = uid }
+                                .font(.fig(13, .semibold)).foregroundStyle(theme.ad)
+                        }
                     }
                 }
                 .padding(.top, 10)

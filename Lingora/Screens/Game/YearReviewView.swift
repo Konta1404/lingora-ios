@@ -57,7 +57,15 @@ struct YearReviewView: View {
                 .padding(.horizontal, 20).padding(.top, 12)
                 Spacer()
             }
-            if page == 7 { Confetti().ignoresSafeArea().allowsHitTesting(false) }
+            if page == 7 {
+                Confetti().ignoresSafeArea().allowsHitTesting(false)
+                VStack {
+                    Spacer()
+                    ShareCardButton(card: ShareCard(icon: "sparkles", value: "\(t.xp) XP", title: L("Your %@ in Lingora", year),
+                                                    subtitle: "\(t.daysActive.count) · \(L("days you practised"))", color: theme.a))
+                        .padding(.bottom, 60)
+                }
+            }
         }
     }
 }

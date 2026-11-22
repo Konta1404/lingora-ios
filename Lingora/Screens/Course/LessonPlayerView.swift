@@ -582,6 +582,8 @@ struct LessonPlayerView: View {
                 stat("\(total == 0 ? 100 : firstTryRight * 100 / total)%", L("accuracy"))
                 stat(minutes, L("time"))
             }
+            ShareCardButton(card: ShareCard(icon: "star.fill", value: "+\(xp) XP", title: finishTitle,
+                                            subtitle: "\(L(lesson.unit.title)) · \(model.language(lang)?.name ?? "")", color: Color(hex: 0xE8A33D)))
             Spacer()
             Button(L("Continue")) { dismiss() }.buttonStyle(.primary)
         }
