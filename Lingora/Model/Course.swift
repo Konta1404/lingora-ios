@@ -50,10 +50,25 @@ enum LessonKind: Int, CaseIterable, Codable {
     }
 }
 
+enum LessonMode: Hashable {
+    case normal
+    /// Mistakes or mixed review — doesn't unlock anything.
+    case practice
+    /// Test to skip ahead: passing marks every lesson before section `index` done.
+    case jump(section: Int)
+}
+
 struct CourseLesson: Identifiable, Hashable {
     var unit: CourseUnit
     var kind: LessonKind
-    var id: String { "\(unit.id)#\(kind.rawValue)" }
+    var mode: LessonMode = .normal
+    var id: String {
+        switch mode {
+        case .normal: "\(unit.id)#\(kind.rawValue)"
+        case .practice: "practice-\(unit.id)"
+        case .jump(let s): "jump-\(unit.id)-\(s)"
+        }
+    }
 }
 
 enum CourseLibrary {
@@ -134,6 +149,10 @@ enum LessonBuilder {
         func next() -> String { n += 1; return "\(lesson.id)-\(n)" }
         func others<T: Equatable>(_ pool: [T], not x: T, count: Int) -> [T] { Array(pool.filter { $0 != x }.shuffled().prefix(count)) }
 
+        if lesson.mode != .normal {
+            return mixed(words: words, sentences: sentences, count: lesson.mode == .practice ? 12 : 15, next: next)
+        }
+
         switch lesson.kind {
         case .words1, .words2:
             let set = lesson.kind == .words1 ? Array(words.prefix(half)) : Array(words.dropFirst(half))
@@ -164,6 +183,30 @@ enum LessonBuilder {
             if let w = words.randomElement() { out.append(.listenPick(id: next(), item: w, options: (others(words.map(\.t), not: w.t, count: 2) + [w.t]).shuffled())) }
         }
         return out
+    }
+
+    /// Practice and jump tests: a shuffled mix over all the given words and sentences.
+    private static func mixed(words: [CourseItem], sentences: [CourseItem], count: Int, next: () -> String) -> [Exercise] {
+        var out: [Exercise] = []
+        let wordPool = words.map(\.t), meaningPool = words.map(\.en)
+        func three<T: Equatable>(_ pool: [T], _ x: T) -> [T] { (Array(pool.filter { $0 != x }.shuffled().prefix(2)) + [x]).shuffled() }
+        for (i, w) in words.shuffled().prefix(count / 2).enumerated() {
+            switch i % 4 {
+            case 0: out.append(.meaning(id: next(), item: w, options: three(meaningPool, w.en)))
+            case 1: out.append(.typeTarget(id: next(), item: w))
+            case 2: out.append(.listenPick(id: next(), item: w, options: three(wordPool, w.t)))
+            default: out.append(.pickWord(id: next(), item: w, options: three(wordPool, w.t)))
+            }
+        }
+        for (i, s) in sentences.shuffled().prefix(count - out.count).enumerated() {
+            switch i % 3 {
+            case 0: out.append(.buildTarget(id: next(), item: s, tiles: tiles(s.t, extra: wordPool)))
+            case 1: out.append(.listenType(id: next(), item: s))
+            default: out.append(fill(s, id: next(), pool: wordPool))
+            }
+        }
+        if words.count >= 4 { out.insert(.match(id: next(), items: Array(words.shuffled().prefix(4))), at: min(2, out.count)) }
+        return out.shuffled()
     }
 
     /// The sentence's words plus a few distractors, shuffled.

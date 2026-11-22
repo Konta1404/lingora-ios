@@ -933,8 +933,64 @@ final class AppModel: ObservableObject {
         return (all.filter(isDone).count, all.count)
     }
 
+    // Mistakes & practice
+
+    func noteMistake(_ item: CourseItem, sentence: Bool, lang: String) {
+        let kp: WritableKeyPath<PersistedState, [String: [CourseItem]]> = sentence ? \.mistakeSentences : \.mistakeWords
+        var list = s[keyPath: kp][lang] ?? []
+        list.removeAll { $0.t == item.t }
+        list.append(item)
+        s[keyPath: kp][lang] = Array(list.suffix(40))
+    }
+
+    func clearMistake(_ item: CourseItem, lang: String) {
+        s.mistakeWords[lang]?.removeAll { $0.t == item.t }
+        s.mistakeSentences[lang]?.removeAll { $0.t == item.t }
+    }
+
+    func mistakeCount(_ lang: String) -> Int { (s.mistakeWords[lang]?.count ?? 0) + (s.mistakeSentences[lang]?.count ?? 0) }
+
+    /// A practice session from your mistakes.
+    func mistakesLesson(_ lang: String) -> CourseLesson? {
+        let w = s.mistakeWords[lang] ?? [], se = s.mistakeSentences[lang] ?? []
+        guard w.count + se.count >= 3 else { return nil }
+        let unit = CourseUnit(id: "mistakes-\(lang)", title: "Your mistakes", tip: nil, words: w, sentences: se)
+        return CourseLesson(unit: unit, kind: .review, mode: .practice)
+    }
+
+    /// Mixed review over everything finished so far.
+    func reviewLesson(_ lang: String) -> CourseLesson? {
+        guard let c = course(lang) else { return nil }
+        let units = c.sections.flatMap(\.units).filter { u in isDone(CourseLesson(unit: u, kind: .words1)) }
+        guard !units.isEmpty else { return nil }
+        let unit = CourseUnit(id: "review-\(lang)", title: "Mixed review", tip: nil,
+                              words: units.flatMap(\.words), sentences: units.flatMap(\.sentences))
+        return CourseLesson(unit: unit, kind: .review, mode: .practice)
+    }
+
+    /// Test to skip to `section`: everything before it, mixed.
+    func jumpLesson(_ lang: String, to section: Int) -> CourseLesson? {
+        guard let c = course(lang), section > 0, section < c.sections.count else { return nil }
+        let units = c.sections.prefix(section).flatMap(\.units)
+        let unit = CourseUnit(id: "jump-\(lang)", title: "Jump ahead", tip: nil,
+                              words: units.flatMap(\.words), sentences: units.flatMap(\.sentences))
+        return CourseLesson(unit: unit, kind: .review, mode: .jump(section: section))
+    }
+
     /// Records a finished lesson: practice time, level points and a feed update.
+    /// Returns the points, or nil when a jump test wasn't passed.
     func finishLesson(_ l: CourseLesson, lang: String, correct: Int, total: Int, seconds: Int) -> Int {
+        if l.mode != .normal {
+            let passed = total > 0 && Double(correct) / Double(total) >= 0.8
+            if case .jump(let section) = l.mode, passed, let c = course(lang) {
+                for u in c.sections.prefix(section).flatMap(\.units) {
+                    for k in LessonKind.allCases { s.courseDone.insert(CourseLesson(unit: u, kind: k).id) }
+                }
+            }
+            let xp = 5 + correct
+            logActivity(seconds: max(60, seconds), lang: lang, points: xp)
+            return xp
+        }
         let first = !isDone(l)
         s.courseDone.insert(l.id)
         let xp = 10 + correct + (first ? 5 : 0)

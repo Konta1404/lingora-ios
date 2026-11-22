@@ -72,7 +72,10 @@ struct LessonPlayerView: View {
 
     // MARK: Flow
 
+    private var passedJump: Bool { total > 0 && Double(firstTryRight) / Double(total) >= 0.8 }
+
     private func build() {
+        SoundFX.enabled = model.s.settings.soundEffects
         let list = LessonBuilder.exercises(for: lesson, meanings: meanings ?? [:],
                                            allowSpeaking: model.s.settings.speakingExercises)
         queue = list
@@ -112,12 +115,17 @@ struct LessonPlayerView: View {
         result = r
         fieldFocused = false
         dictation.stop()
+        let it = item(of: ex)
         switch r {
         case .right, .typo:
             if !missed.contains(ex.id) { firstTryRight += 1 }
             Haptics.success()
+            SoundFX.play(.right)
+            if lesson.mode == .practice, let it { model.clearMistake(it.0, lang: lang) }
         case .wrong:
             UINotificationFeedbackGenerator().notificationOccurred(.error)
+            SoundFX.play(.wrong)
+            if let it { model.noteMistake(it.0, sentence: it.1, lang: lang) }
             if !missed.contains(ex.id) {
                 missed.insert(ex.id)
                 queue.append(ex)        // comes back once at the end
@@ -125,6 +133,19 @@ struct LessonPlayerView: View {
         }
         // Hear the right answer after a miss.
         if r != .right, let t = target(of: ex) { Speaker.shared.say(t, lang: lang) }
+    }
+
+    /// The word or sentence an exercise is about, with its original (English) meaning; true = sentence.
+    private func item(of ex: Exercise) -> (CourseItem, Bool)? {
+        let found: (CourseItem, Bool)?
+        switch ex {
+        case .meaning(_, let i, _), .pickWord(_, let i, _), .listenPick(_, let i, _), .typeTarget(_, let i): found = (i, false)
+        case .buildTarget(_, let i, _), .buildMeaning(_, let i, _), .fillBlank(_, let i, _, _), .listenType(_, let i), .speak(_, let i): found = (i, true)
+        case .match: found = nil
+        }
+        guard var f = found else { return nil }
+        if let original = meanings?.first(where: { $0.value == f.0.en })?.key { f.0.en = original }
+        return f
     }
 
     private func target(of ex: Exercise) -> String? {
@@ -140,6 +161,7 @@ struct LessonPlayerView: View {
             prepare()
         } else {
             let secs = Int(Date().timeIntervalSince(started))
+            SoundFX.play(.done)
             withAnimation { earned = model.finishLesson(lesson, lang: lang, correct: firstTryRight, total: total, seconds: secs) }
         }
     }
@@ -407,7 +429,12 @@ struct LessonPlayerView: View {
             Spacer()
             Image(systemName: "star.fill").font(.system(size: 44)).foregroundStyle(.white)
                 .frame(width: 104, height: 104).background(theme.a, in: Circle())
-            Text(L("Lesson complete!")).font(.fig(28, .bold))
+            Text(finishTitle).font(.fig(28, .bold)).multilineTextAlignment(.center)
+            if case .jump = lesson.mode {
+                Text(passedJump ? L("Everything before this section is now marked as done.")
+                                : L("You need 80% to jump ahead. Keep going from where you are — you'll get there."))
+                    .font(.fig(15)).foregroundStyle(theme.muted).multilineTextAlignment(.center)
+            }
             HStack(spacing: 12) {
                 stat("+\(xp)", L("points"))
                 stat("\(total == 0 ? 100 : firstTryRight * 100 / total)%", L("accuracy"))
@@ -417,6 +444,14 @@ struct LessonPlayerView: View {
             Button(L("Continue")) { dismiss() }.buttonStyle(.primary)
         }
         .padding(20)
+    }
+
+    private var finishTitle: String {
+        switch lesson.mode {
+        case .normal: L("Lesson complete!")
+        case .practice: L("Practice done!")
+        case .jump: passedJump ? L("You jumped ahead!") : L("Not quite yet")
+        }
     }
 
     private var minutes: String {

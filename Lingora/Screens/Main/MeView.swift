@@ -134,6 +134,12 @@ struct MeView: View {
                             LingoraSwitch(isOn: Binding(get: { model.s.settings.shareActivity }, set: { model.setShareActivity($0) }))
                         }
                     }
+                    row(L("Sound effects"), sub: L("Right, wrong and lesson-complete sounds")) {
+                        LingoraSwitch(isOn: $model.s.settings.soundEffects)
+                    }
+                    row(L("Speaking exercises"), sub: L("Read sentences aloud in lessons")) {
+                        LingoraSwitch(isOn: $model.s.settings.speakingExercises)
+                    }
                     row(L("App language"), sub: L("Lingora follows your iPhone's language. ChatGPT answers in it too.")) {
                         Button(L("Change")) {
                             if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }

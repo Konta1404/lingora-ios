@@ -128,6 +128,7 @@ struct AppSettings: Codable, Equatable {
     var appearance: Appearance = .system
     /// Speaking exercises in course lessons ("Can't speak now" turns them off).
     var speakingExercises = true
+    var soundEffects = true
 
     init() {}
 
@@ -144,6 +145,7 @@ struct AppSettings: Codable, Equatable {
         notifyMessages = v(.notifyMessages, d.notifyMessages)
         appearance = v(.appearance, d.appearance)
         speakingExercises = v(.speakingExercises, d.speakingExercises)
+        soundEffects = v(.soundEffects, d.soundEffects)
     }
 }
 
@@ -170,6 +172,9 @@ struct PersistedState: Codable {
     var courseDone: Set<String> = []
     /// Units ChatGPT wrote for this learner, per language (after or instead of the built-in course).
     var generatedUnits: [String: [CourseUnit]] = [:]
+    /// Words and sentences the learner got wrong, per language (newest last).
+    var mistakeWords: [String: [CourseItem]] = [:]
+    var mistakeSentences: [String: [CourseItem]] = [:]
     var settings = AppSettings()
 
     init() {}
@@ -196,6 +201,8 @@ struct PersistedState: Codable {
         xp = v(.xp, d.xp)
         courseDone = v(.courseDone, d.courseDone)
         generatedUnits = v(.generatedUnits, d.generatedUnits)
+        mistakeWords = v(.mistakeWords, d.mistakeWords)
+        mistakeSentences = v(.mistakeSentences, d.mistakeSentences)
         settings = v(.settings, d.settings)
     }
 }

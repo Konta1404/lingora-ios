@@ -37,8 +37,9 @@ struct CourseMapView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
-                            ForEach(course.sections) { section in
-                                sectionHeader(section, hue: h)
+                            practiceRow(hue: h)
+                            ForEach(Array(course.sections.enumerated()), id: \.element.id) { si, section in
+                                sectionHeader(section, index: si, course: course, hue: h)
                                 ForEach(Array(section.units.enumerated()), id: \.element.id) { i, unit in
                                     unitCard(unit, number: i + 1, course: course, hue: h).id(unit.id)
                                 }
@@ -98,14 +99,45 @@ struct CourseMapView: View {
         }
     }
 
-    private func sectionHeader(_ s: CourseSection, hue: Hue) -> some View {
-        HStack(spacing: 10) {
+    private func sectionHeader(_ s: CourseSection, index: Int, course: Course, hue: Hue) -> some View {
+        let firstLocked = s.units.first.map { !model.isUnlocked(CourseLesson(unit: $0, kind: .words1), in: course) } ?? false
+        return HStack(spacing: 10) {
             Text(verbatim: s.level).font(.fig(12, .bold)).foregroundStyle(.white)
                 .padding(.horizontal, 10).frame(height: 24).background(hue.base, in: Capsule())
             Text(L(s.title)).font(.fig(17, .bold))
             Spacer()
+            if index > 0 && firstLocked {
+                PillButton(title: L("Jump here"), icon: "forward.fill", bg: hue.tint, fg: hue.deep, height: 32) {
+                    playing = model.jumpLesson(lang, to: index)
+                }
+            }
         }
         .padding(.top, 8)
+    }
+
+    @ViewBuilder
+    private func practiceRow(hue: Hue) -> some View {
+        let mistakes = model.mistakesLesson(lang)
+        let review = model.reviewLesson(lang)
+        if mistakes != nil || review != nil {
+            HStack(spacing: 10) {
+                if let mistakes {
+                    practiceButton(L("Mistakes · %lld", model.mistakeCount(lang)), icon: "arrow.uturn.backward", hue: hue) { playing = mistakes }
+                }
+                if let review {
+                    practiceButton(L("Mixed review"), icon: "shuffle", hue: hue) { playing = review }
+                }
+            }
+        }
+    }
+
+    private func practiceButton(_ title: String, icon: String, hue: Hue, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Label(title, systemImage: icon).font(.fig(14, .semibold)).foregroundStyle(hue.deep)
+                .frame(maxWidth: .infinity, minHeight: 44)
+                .background(hue.tint, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        }
+        .buttonStyle(.plain)
     }
 
     private func unitCard(_ u: CourseUnit, number: Int, course: Course, hue: Hue) -> some View {
