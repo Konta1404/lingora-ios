@@ -454,6 +454,10 @@ final class AppModel: ObservableObject {
         let today = DateUtil.dayKey()
         s.activity[today] = max(0, (s.activity[today] ?? 0) + seconds)
         if let lang, points != 0 { s.xp[lang] = max(0, (s.xp[lang] ?? 0) + points) }
+        let year = String(today.prefix(4))
+        s.yearTotals[year, default: YearTotal()].seconds = max(0, (s.yearTotals[year]?.seconds ?? 0) + seconds)
+        if (s.activity[today] ?? 0) >= 60 { s.yearTotals[year, default: YearTotal()].daysActive.insert(today) }
+        if let lang, points > 0 { s.yearTotals[year, default: YearTotal()].xpByLanguage[lang, default: 0] += points }
         if points != 0 { addXP(points) }
         afterProgress()
         // Keep about three months.
@@ -517,6 +521,7 @@ final class AppModel: ObservableObject {
         let before = s.days[k]?.xp ?? 0
         s.days[k, default: DayStat()].xp = max(0, before + n)
         s.totalXP = max(0, s.totalXP + n)
+        s.yearTotals[String(k.prefix(4)), default: YearTotal()].xp += n
         let goal = s.settings.dailyXPGoal
         if before < goal && before + n >= goal { celebration = .dailyGoal(goal) }
         if s.days.count > 120, let cutoff = DateUtil.calendar.date(byAdding: .day, value: -100, to: Date()) {
@@ -526,7 +531,13 @@ final class AppModel: ObservableObject {
     }
 
     func bumpDay(_ change: (inout DayStat) -> Void) {
-        change(&s.days[DateUtil.dayKey(), default: DayStat()])
+        let k = DateUtil.dayKey()
+        let before = s.days[k] ?? DayStat()
+        change(&s.days[k, default: DayStat()])
+        let after = s.days[k] ?? DayStat()
+        let y = String(k.prefix(4))
+        s.yearTotals[y, default: YearTotal()].lessons += after.lessons - before.lessons
+        s.yearTotals[y, default: YearTotal()].tutorMessages += after.tutor - before.tutor
         afterProgress()
     }
 
@@ -648,7 +659,13 @@ final class AppModel: ObservableObject {
 
         if aiAvailable {
             do {
-                let turn = try await ai.tutorTurn(language: l, level: level(key), scene: tutorScene(key), history: msgs)
+                let turn = try await ai.tutorTurn(language: l, level: level(key), scene: tutorScene(key), history: msgs,
+                                                  memory: s.tutorMemory[key] ?? [])
+                if let fact = turn.remember?.trimmingCharacters(in: .whitespacesAndNewlines), !fact.isEmpty {
+                    var mem = s.tutorMemory[key] ?? []
+                    if !mem.contains(fact) { mem.append(fact) }
+                    s.tutorMemory[key] = Array(mem.suffix(20))
+                }
                 if turn.hasCorrection, !turn.right.isEmpty {
                     msgs.append(ChatMessage(role: .correction, wrong: turn.wrong, right: turn.right, note: turn.note))
                 }
@@ -1103,6 +1120,7 @@ final class AppModel: ObservableObject {
     func finishStory(_ st: Story, lang: String, correct: Int, seconds: Int) -> Int {
         let first = !s.storiesDone.contains(st.id)
         s.storiesDone.insert(st.id)
+        s.yearTotals[String(DateUtil.dayKey().prefix(4)), default: YearTotal()].stories += 1
         let xp = 10 + correct * 2
         bumpDay { $0.practice += 1 }
         logActivity(seconds: max(60, seconds), lang: lang, points: xp,

@@ -130,3 +130,14 @@ struct Achievement: Identifiable, Hashable {
         return (reached, tiers[safe: reached])
     }
 }
+
+/// A year of learning, for the year in review.
+struct YearTotal: Codable, Hashable {
+    var seconds = 0
+    var xp = 0
+    var lessons = 0
+    var stories = 0
+    var tutorMessages = 0
+    var daysActive: Set<String> = []
+    var xpByLanguage: [String: Int] = [:]
+}

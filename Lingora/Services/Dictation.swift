@@ -97,6 +97,8 @@ final class AudioCapture: @unchecked Sendable {
 final class Dictation: ObservableObject {
     @Published private(set) var isRecording = false
     @Published var error: String?
+    /// Confidence (0…1) per recognised word of the last recording; 0 = not reported yet.
+    @Published private(set) var confidences: [String: Float] = [:]
 
     private let audio = AudioCapture()
     private var request: SFSpeechAudioBufferRecognitionRequest?
@@ -188,6 +190,7 @@ final class Dictation: ObservableObject {
         generation += 1
         let gen = generation
         gotFirstWords = false
+        confidences = [:]
 
         let req = SFSpeechAudioBufferRecognitionRequest()
         req.shouldReportPartialResults = true
@@ -200,10 +203,12 @@ final class Dictation: ObservableObject {
         task = recognizer.recognitionTask(with: req) { [weak self] result, err in
             let text = result?.bestTranscription.formattedString
             let final = result?.isFinal == true
+            let segs = (result?.bestTranscription.segments ?? []).map { (Check.norm($0.substring), $0.confidence) }
             Task { @MainActor in
                 guard let self, gen == self.generation else { return }
                 if let text {
                     if !self.gotFirstWords { self.gotFirstWords = true; self.log("first words") }
+                    for (w, c) in segs where c > 0 || self.confidences[w] == nil { self.confidences[w] = c }
                     onText(text)
                 }
                 if err != nil || final {

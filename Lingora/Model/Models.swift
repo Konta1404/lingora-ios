@@ -186,6 +186,10 @@ struct PersistedState: Codable {
     var freezeAwardedAt = 0
     var claimedQuests: Set<String> = []
     var storiesDone: Set<String> = []
+    /// What the tutor remembers about the learner, per language.
+    var tutorMemory: [String: [String]] = [:]
+    /// Totals per calendar year ("2026") for the year in review.
+    var yearTotals: [String: YearTotal] = [:]
     /// Course words: "lang|word" → memory.
     var wordMemory: [String: WordMemory] = [:]
     /// Yesterday's date when the streak broke and can still be repaired today.
@@ -227,6 +231,8 @@ struct PersistedState: Codable {
         claimedQuests = v(.claimedQuests, d.claimedQuests)
         repairDay = (try? c.decodeIfPresent(String.self, forKey: .repairDay)) ?? nil
         storiesDone = v(.storiesDone, d.storiesDone)
+        tutorMemory = v(.tutorMemory, d.tutorMemory)
+        yearTotals = v(.yearTotals, d.yearTotals)
         wordMemory = v(.wordMemory, d.wordMemory)
         settings = v(.settings, d.settings)
     }

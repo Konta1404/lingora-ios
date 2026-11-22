@@ -27,6 +27,7 @@ struct AIService {
         var note: String
         var reply: String
         var suggestions: [String]
+        var remember: String?
     }
 
     struct Correction: Decodable { var hasCorrection: Bool; var wrong: String; var right: String; var note: String }
@@ -85,9 +86,32 @@ struct AIService {
         ])
     }
 
-    func tutorTurn(language: Language, level: Level, scene: String, history: [ChatMessage]) async throws -> TutorTurn {
+    func tutorTurn(language: Language, level: Level, scene: String, history: [ChatMessage], memory: [String] = []) async throws -> TutorTurn {
         try await Backend.call("tutorTurn", [
             "language": lang(language), "level": level.code, "scene": scene,
+            "history": history.filter { $0.role == .ai || $0.role == .me }.map { ["role": $0.role.rawValue, "text": $0.text] },
+            "memory": memory,
+            "uiLanguage": ui
+        ])
+    }
+
+    struct Explanation: Decodable { var explanation: String }
+    func explainAnswer(language: Language, task: String, prompt: String, expected: String, answer: String) async throws -> String {
+        let r: Explanation = try await Backend.call("explainAnswer", [
+            "language": lang(language), "task": task, "prompt": prompt, "expected": expected, "answer": answer, "uiLanguage": ui
+        ])
+        return r.explanation
+    }
+
+    struct CallFeedback: Decodable {
+        struct Fix: Decodable, Hashable { var wrong: String; var right: String; var note: String }
+        var summary: String
+        var strengths: [String]
+        var fixes: [Fix]
+    }
+    func callFeedback(language: Language, level: Level, history: [ChatMessage]) async throws -> CallFeedback {
+        try await Backend.call("callFeedback", [
+            "language": lang(language), "level": level.code,
             "history": history.filter { $0.role == .ai || $0.role == .me }.map { ["role": $0.role.rawValue, "text": $0.text] },
             "uiLanguage": ui
         ])

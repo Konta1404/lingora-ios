@@ -4,6 +4,7 @@ struct TutorView: View {
     @EnvironmentObject private var model: AppModel
     @Environment(\.theme) private var theme
     @State private var draft = ""
+    @State private var calling = false
 
     private var key: String {
         if let t = model.tutorLang, model.s.learning.contains(t) { return t }
@@ -19,6 +20,11 @@ struct TutorView: View {
                 HStack {
                     ScreenTitle(text: L("Tutor"))
                     Spacer()
+                    Button { calling = true } label: {
+                        Image(systemName: "phone.fill").font(.system(size: 15, weight: .semibold))
+                            .foregroundStyle(.white).frame(width: 40, height: 40).background(theme.a, in: Circle())
+                    }
+                    .accessibilityLabel(L("Call the tutor"))
                     Menu {
                         Button(L("Start a fresh conversation"), systemImage: "arrow.clockwise") { model.resetTutor(key) }
                     } label: {
@@ -87,6 +93,9 @@ struct TutorView: View {
             }
         }
         .background(theme.ground)
+        .fullScreenCover(isPresented: $calling) {
+            TutorCallView(lang: key).environmentObject(model).environment(\.theme, model.theme)
+        }
     }
 
     private func send(_ text: String) {

@@ -28,6 +28,8 @@ struct LessonPlayerView: View {
     @State private var matchLeft: String?
     @State private var matchRight: String?
     @State private var matchMiss = false
+    @State private var explanation: String?
+    @State private var explaining = false
     @StateObject private var dictation = Dictation()
     @FocusState private var fieldFocused: Bool
 
@@ -91,6 +93,7 @@ struct LessonPlayerView: View {
 
     private func prepare() {
         picked = nil; chosenTiles = []; typed = ""; heard = ""; matched = []; matchLeft = nil; matchRight = nil
+        explanation = nil; explaining = false
         result = nil
         if let ex { autoplay(ex) }
     }
@@ -173,6 +176,28 @@ struct LessonPlayerView: View {
         }
     }
 
+    /// What the learner answered, as text.
+    private func given(_ ex: Exercise) -> String {
+        switch ex {
+        case .buildTarget(_, _, let tiles), .buildMeaning(_, _, let tiles): chosenTiles.map { tiles[$0] }.joined(separator: " ")
+        case .listenType, .typeTarget: typed
+        case .speak: heard
+        default: picked ?? ""
+        }
+    }
+
+    private func explain(_ ex: Exercise, expected: String) {
+        guard let l = model.language(lang) else { return }
+        explaining = true
+        let prompt = item(of: ex).map { "\($0.0.t) — \($0.0.en)" } ?? ""
+        Task {
+            explanation = try? await model.ai.explainAnswer(language: l, task: ex.instruction, prompt: prompt,
+                                                            expected: expected, answer: given(ex))
+            if explanation == nil { model.toast = L("ChatGPT couldn't explain this one right now.") }
+            explaining = false
+        }
+    }
+
     private var canCheck: Bool {
         guard let ex else { return false }
         switch ex {
@@ -199,6 +224,15 @@ struct LessonPlayerView: View {
                 case .wrong(let answer):
                     Label(L("Correct answer:"), systemImage: "xmark.circle.fill").font(.fig(17, .bold)).foregroundStyle(theme.errorText)
                     Text(answer).font(.fig(16, .semibold))
+                    if let explanation {
+                        Text(explanation).font(.fig(14)).foregroundStyle(theme.text)
+                    } else if model.aiAvailable {
+                        Button { explain(ex, expected: answer) } label: {
+                            Label(explaining ? L("Thinking…") : L("Explain my answer"), systemImage: "sparkles")
+                                .font(.fig(14, .semibold)).foregroundStyle(theme.errorText)
+                        }
+                        .disabled(explaining)
+                    }
                 }
                 Button(L("Continue"), action: next).buttonStyle(.primary)
             } else {
@@ -266,15 +300,42 @@ struct LessonPlayerView: View {
                     heard = ""
                     dictation.press(language: lang) { heard = $0 }
                 }
-                Text(heard.isEmpty ? L("Hold the mic and read the sentence") : heard)
-                    .font(.fig(15)).foregroundStyle(heard.isEmpty ? theme.muted : theme.text)
-                    .multilineTextAlignment(.center)
+                if heard.isEmpty {
+                    Text(L("Hold the mic and read the sentence"))
+                        .font(.fig(15)).foregroundStyle(theme.muted).multilineTextAlignment(.center)
+                } else {
+                    pronunciation(item.t)
+                }
             }
             .frame(maxWidth: .infinity).padding(.top, 20)
             .onAppear { dictation.prepare(language: lang) }
             .onDisappear { dictation.shutdown() }
         case .match(_, let items):
             matchBoard(items)
+        }
+    }
+
+    /// Each word of the sentence coloured by how well it was heard, plus a score.
+    private func pronunciation(_ sentence: String) -> some View {
+        let words = Check.words(sentence)
+        let heardWords = Set(Check.norm(heard).split(separator: " ").map(String.init))
+        let scores: [Double] = words.map { w in
+            let n = Check.norm(w)
+            guard heardWords.contains(n) else { return 0 }
+            let c = Double(dictation.confidences[n] ?? 0)
+            return c == 0 ? 0.9 : max(0.5, c)
+        }
+        let total = scores.isEmpty ? 0 : Int((scores.reduce(0, +) / Double(scores.count)) * 100)
+        return VStack(spacing: 10) {
+            FlowLayout(spacing: 6) {
+                ForEach(Array(words.enumerated()), id: \.offset) { i, w in
+                    Text(w).font(.fig(18, .semibold))
+                        .foregroundStyle(scores[i] == 0 ? theme.errorText : scores[i] < 0.6 ? Color.orange : theme.ad)
+                }
+            }
+            if !dictation.isRecording {
+                Text(L("Pronunciation: %lld%%", total)).font(.fig(14, .semibold)).foregroundStyle(theme.muted)
+            }
         }
     }
 

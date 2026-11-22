@@ -12,6 +12,7 @@ struct MeView: View {
     @State private var photoItem: PhotosPickerItem?
     @State private var photoBusy = false
     @State private var removing: Social.Person?
+    @State private var showYear = false
 
     var body: some View {
         let user = model.s.user
@@ -105,6 +106,21 @@ struct MeView: View {
                 .buttonStyle(.plain)
 
                 AchievementsSection()
+
+                Button { showYear = true } label: {
+                    HStack(spacing: 12) {
+                        Image(systemName: "sparkles").foregroundStyle(.white)
+                            .frame(width: 40, height: 40).background(theme.a, in: Circle())
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text(L("Your year in review")).font(.fig(15, .bold))
+                            Text(L("Time, XP, lessons and your best streak")).font(.fig(13)).foregroundStyle(theme.muted)
+                        }
+                        Spacer()
+                        Image(systemName: "chevron.forward").font(.system(size: 12, weight: .semibold)).foregroundStyle(theme.muted)
+                    }
+                    .card(padding: 14)
+                }
+                .buttonStyle(.plain)
 
                 if model.socialAvailable { friendsSection }
 
@@ -262,6 +278,9 @@ struct MeView: View {
             }
         } message: {
             Text(L("You'll stop seeing each other's activity and chat. You can add each other again later."))
+        }
+        .fullScreenCover(isPresented: $showYear) {
+            YearReviewView().environmentObject(model).environment(\.theme, model.theme)
         }
         .sheet(isPresented: $showDevices) {
             DevicesSheet()
