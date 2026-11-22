@@ -367,14 +367,16 @@ struct HoldToTalkButton: View {
                 }
             }
             .scaleEffect(on ? 1.6 : 1, anchor: .center)
-            .animation(.spring(duration: 0.3, bounce: 0.35), value: on)
+            .animation(.spring(duration: 0.18, bounce: 0.4), value: on)
             .zIndex(1)
             .contentShape(Circle())
             .gesture(
                 DragGesture(minimumDistance: 0)
                     .onChanged { _ in
                         guard !holding else { return }
-                        holding = true
+                        // Feedback on touch-down, before any audio work.
+                        Haptics.recordStart()
+                        withAnimation(.spring(duration: 0.18, bounce: 0.4)) { holding = true }
                         onPress()
                     }
                     .onEnded { _ in
@@ -431,6 +433,7 @@ struct ChatInputBar: View {
                     .onTapGesture { dictation.error = nil }
             }
         }
+        .defersSystemGestures(on: .bottom)
         .onAppear { dictation.prepare(language: speechLanguage) }
         .onDisappear { dictation.shutdown() }
     }
@@ -472,8 +475,16 @@ struct FlowLayout: Layout {
 enum Haptics {
     static func tap() { UIImpactFeedbackGenerator(style: .light).impactOccurred() }
     static func success() { UINotificationFeedbackGenerator().notificationOccurred(.success) }
-    /// Recording started: one firm tap.
-    static func recordStart() { UIImpactFeedbackGenerator(style: .heavy).impactOccurred(intensity: 1) }
+    private static let heavy: UIImpactFeedbackGenerator = {
+        let g = UIImpactFeedbackGenerator(style: .heavy)
+        g.prepare()
+        return g
+    }()
+    /// Recording started: one firm tap (generator kept ready so it fires without delay).
+    static func recordStart() {
+        heavy.impactOccurred(intensity: 1)
+        heavy.prepare()
+    }
     /// Recording stopped: two soft taps, so it feels different from the start.
     static func recordStop() {
         let g = UIImpactFeedbackGenerator(style: .medium)

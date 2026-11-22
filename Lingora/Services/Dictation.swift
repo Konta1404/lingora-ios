@@ -225,8 +225,7 @@ final class Dictation: ObservableObject {
                     return
                 }
                 self.log("mic listening")
-                self.isRecording = true
-                Haptics.recordStart()
+                self.isRecording = true   // the button already vibrated on touch-down
                 // Released while the mic was starting.
                 if !self.held { self.release() }
             }
