@@ -36,6 +36,8 @@ final class AppModel: ObservableObject {
     @Published var lessonTask: PlanTask?
     @Published var showAddFriend = false
     @Published var showWords = false
+    /// Language whose course map is open.
+    @Published var courseLang: String?
 
     // Plan generation
     @Published var generating = false
@@ -873,6 +875,45 @@ final class AppModel: ObservableObject {
         tab = .friends
         Task { await addFriend(handle: handle) }
         return true
+    }
+
+    // MARK: - Course
+
+    func course(_ lang: String) -> Course? { CourseLibrary.builtIn(lang) }
+
+    var courseLanguages: [Language] { languages.filter { course($0.key) != nil } }
+
+    func isDone(_ l: CourseLesson) -> Bool { s.courseDone.contains(l.id) }
+
+    /// A lesson opens once the one before it is done.
+    func isUnlocked(_ l: CourseLesson, in course: Course) -> Bool {
+        let all = CourseLibrary.lessons(course)
+        guard let i = all.firstIndex(where: { $0.id == l.id }) else { return false }
+        return i == 0 || isDone(all[i - 1])
+    }
+
+    func nextLesson(_ lang: String) -> CourseLesson? {
+        guard let c = course(lang) else { return nil }
+        return CourseLibrary.lessons(c).first { !isDone($0) }
+    }
+
+    func courseProgress(_ lang: String) -> (done: Int, total: Int) {
+        guard let c = course(lang) else { return (0, 0) }
+        let all = CourseLibrary.lessons(c)
+        return (all.filter(isDone).count, all.count)
+    }
+
+    /// Records a finished lesson: practice time, level points and a feed update.
+    func finishLesson(_ l: CourseLesson, lang: String, correct: Int, total: Int, seconds: Int) -> Int {
+        let first = !isDone(l)
+        s.courseDone.insert(l.id)
+        let xp = 10 + correct + (first ? 5 : 0)
+        let kind: TaskType = l.kind == .sentences ? .writing : .vocabulary
+        logActivity(seconds: max(60, seconds), lang: lang, points: xp,
+                    event: first ? ("lesson", ["langKey": lang, "lang": language(lang)?.name ?? "",
+                                                "title": "\(l.unit.title) · \(l.kind.title)", "kind": kind.rawValue]) : nil)
+        Haptics.success()
+        return xp
     }
 
     // MARK: - German vocabulary

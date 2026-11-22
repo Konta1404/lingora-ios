@@ -138,6 +138,11 @@ struct MainTabView: View {
                 .environmentObject(model)
                 .environment(\.theme, model.theme)
         }
+        .fullScreenCover(item: Binding(get: { model.courseLang.map(CourseLangID.init) }, set: { model.courseLang = $0?.id })) { c in
+            CourseMapView(lang: c.id)
+                .environmentObject(model)
+                .environment(\.theme, model.theme)
+        }
         .fullScreenCover(isPresented: $model.showWords) {
             WordsView()
                 .environmentObject(model)
@@ -160,3 +165,5 @@ struct MainTabView: View {
         }
     }
 }
+
+private struct CourseLangID: Identifiable { let id: String }

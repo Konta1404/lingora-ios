@@ -84,6 +84,10 @@ struct TodayView: View {
                     }
                     .buttonStyle(.plain)
 
+                    ForEach(model.courseLanguages) { l in
+                        CourseSummaryCard(lang: l)
+                    }
+
                     if model.learnsGerman {
                         Button { model.showWords = true } label: { WordsSummaryCard() }
                             .buttonStyle(.plain)

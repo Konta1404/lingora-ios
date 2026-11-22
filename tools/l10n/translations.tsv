@@ -421,3 +421,55 @@ Hide translation	Sakrij prevod	Übersetzung ausblenden	Ocultar traducción	Masqu
 Translate	Prevedi	Übersetzen	Traducir	Traduire	Traduci	Traduzir	Перевести
 Double-tap to translate	Dvaput dodirni za prevod	Zum Übersetzen doppeltippen	Toca dos veces para traducir	Touche deux fois pour traduire	Tocca due volte per tradurre	Toque duas vezes para traduzir	Дважды коснитесь для перевода
 Hold to talk	Drži za govor	Zum Sprechen gedrückt halten	Mantén pulsado para hablar	Maintiens pour parler	Tieni premuto per parlare	Segure para falar	Удерживайте, чтобы говорить
+%@ course	Kurs: %@	Kurs: %@	Curso de %@	Cours de %@	Corso di %@	Curso de %@	Курс: %@
+%lld of %lld lessons	%lld od %lld lekcija	%lld von %lld Lektionen	%lld de %lld lecciones	%lld leçons sur %lld	%lld di %lld lezioni	%lld de %lld lições	%lld из %lld уроков
+Almost — watch the spelling	Skoro — pazi na pravopis	Fast – achte auf die Schreibweise	Casi: cuidado con la ortografía	Presque — attention à l’orthographe	Quasi: attenzione all’ortografia	Quase — atenção à ortografia	Почти — проверь написание
+Can't speak now	Ne mogu sad da pričam	Kann gerade nicht sprechen	Ahora no puedo hablar	Je ne peux pas parler	Ora non posso parlare	Não posso falar agora	Не могу говорить
+Change language	Promijeni jezik	Sprache wechseln	Cambiar idioma	Changer de langue	Cambia lingua	Mudar idioma	Сменить язык
+Continue: %@	Nastavi: %@	Weiter: %@	Continuar: %@	Continuer : %@	Continua: %@	Continuar: %@	Продолжить: %@
+Correct answer:	Tačan odgovor:	Richtige Antwort:	Respuesta correcta:	Bonne réponse :	Risposta corretta:	Resposta correta:	Правильный ответ:
+Correct!	Tačno!	Richtig!	¡Correcto!	Correct !	Giusto!	Correto!	Верно!
+Course complete	Kurs završen	Kurs abgeschlossen	Curso completado	Cours terminé	Corso completato	Curso concluído	Курс пройден
+Fill in the blank	Popuni prazninu	Fülle die Lücke	Completa el espacio	Complète le blanc	Completa lo spazio	Preencha a lacuna	Заполни пропуск
+Grammar tip	Gramatički savjet	Grammatiktipp	Consejo de gramática	Astuce de grammaire	Consiglio di grammatica	Dica de gramática	Подсказка по грамматике
+Hold the mic and read the sentence	Drži mikrofon i pročitaj rečenicu	Halte das Mikrofon und lies den Satz	Mantén el micrófono y lee la frase	Maintiens le micro et lis la phrase	Tieni premuto il microfono e leggi la frase	Segure o microfone e leia a frase	Удерживай микрофон и прочитай фразу
+Lesson complete!	Lekcija završena!	Lektion geschafft!	¡Lección completada!	Leçon terminée !	Lezione completata!	Lição concluída!	Урок пройден!
+More units are on the way.	Još jedinica stiže uskoro.	Weitere Einheiten folgen.	Pronto habrá más unidades.	D’autres unités arrivent.	Altre unità in arrivo.	Mais unidades em breve.	Скоро будут новые разделы.
+More words	Još riječi	Mehr Wörter	Más palabras	Plus de mots	Altre parole	Mais palavras	Ещё слова
+New words	Nove riječi	Neue Wörter	Palabras nuevas	Nouveaux mots	Parole nuove	Palavras novas	Новые слова
+Play audio	Pusti zvuk	Audio abspielen	Reproducir audio	Écouter	Riproduci audio	Ouvir áudio	Воспроизвести
+Play slowly	Pusti sporije	Langsam abspielen	Reproducir despacio	Écouter lentement	Riproduci lentamente	Ouvir devagar	Медленнее
+Quit	Izađi	Beenden	Salir	Quitter	Esci	Sair	Выйти
+Quit this lesson?	Izaći iz lekcije?	Lektion beenden?	¿Salir de la lección?	Quitter la leçon ?	Uscire dalla lezione?	Sair da lição?	Выйти из урока?
+Read this aloud	Pročitaj naglas	Lies das laut vor	Léelo en voz alta	Lis à voix haute	Leggi ad alta voce	Leia em voz alta	Прочитай вслух
+Review	Ponovi	Wiederholen	Repasar	Réviser	Ripassa	Revisar	Повторить
+Select the correct word	Izaberi tačnu riječ	Wähle das richtige Wort	Elige la palabra correcta	Choisis le bon mot	Scegli la parola giusta	Escolha a palavra certa	Выбери правильное слово
+Sentences	Rečenice	Sätze	Frases	Phrases	Frasi	Frases	Предложения
+Tap the matching pairs	Spoji parove	Tippe die passenden Paare an	Toca las parejas	Associe les paires	Tocca le coppie	Toque nos pares	Соедини пары
+The built-in course covers German for now. Units for other languages will come from ChatGPT.	Ugrađeni kurs za sada pokriva njemački. Jedinice za druge jezike stići će od ChatGPT-a.	Der eingebaute Kurs gibt es vorerst für Deutsch. Einheiten für andere Sprachen kommen von ChatGPT.	El curso incluido es de alemán por ahora. Las unidades de otros idiomas vendrán de ChatGPT.	Le cours intégré couvre l’allemand pour l’instant. Les unités des autres langues viendront de ChatGPT.	Il corso incluso per ora è di tedesco. Le unità delle altre lingue arriveranno da ChatGPT.	O curso incluído é de alemão por enquanto. As unidades de outros idiomas virão do ChatGPT.	Встроенный курс пока только по немецкому. Разделы для других языков подготовит ChatGPT.
+Translate this sentence	Prevedi ovu rečenicu	Übersetze diesen Satz	Traduce esta frase	Traduis cette phrase	Traduci questa frase	Traduza esta frase	Переведи предложение
+Type in %@	Piši na jeziku: %@	Auf %@ schreiben	Escribe en %@	Écris en %@	Scrivi in %@	Escreva em %@	Пиши: %@
+Type this in your new language	Napiši ovo na novom jeziku	Schreibe das in deiner neuen Sprache	Escríbelo en tu nuevo idioma	Écris-le dans ta nouvelle langue	Scrivilo nella tua nuova lingua	Escreva isso no novo idioma	Напиши это на новом языке
+Type what you hear	Napiši šta čuješ	Schreibe, was du hörst	Escribe lo que oyes	Écris ce que tu entends	Scrivi ciò che senti	Escreva o que ouvir	Напиши, что слышишь
+Unit %lld	Jedinica %lld	Einheit %lld	Unidad %lld	Unité %lld	Unità %lld	Unidade %lld	Раздел %lld
+Unit review	Ponavljanje jedinice	Wiederholung	Repaso de la unidad	Révision de l’unité	Ripasso dell’unità	Revisão da unidade	Повторение раздела
+What do you hear?	Šta čuješ?	Was hörst du?	¿Qué oyes?	Qu’entends-tu ?	Cosa senti?	O que você ouve?	Что ты слышишь?
+What does this mean?	Šta ovo znači?	Was bedeutet das?	¿Qué significa esto?	Que veut dire ceci ?	Cosa significa?	O que isso significa?	Что это значит?
+Write this in your new language	Sastavi ovo na novom jeziku	Schreibe das in deiner neuen Sprache	Escríbelo en tu nuevo idioma	Écris-le dans ta nouvelle langue	Scrivilo nella tua nuova lingua	Escreva isso no novo idioma	Составь это на новом языке
+Your progress in this lesson will be lost.	Napredak u ovoj lekciji biće izgubljen.	Dein Fortschritt in dieser Lektion geht verloren.	Perderás el progreso de esta lección.	Ta progression dans cette leçon sera perdue.	Perderai i progressi di questa lezione.	O progresso desta lição será perdido.	Прогресс в этом уроке пропадёт.
+accuracy	tačnost	Genauigkeit	precisión	précision	precisione	precisão	точность
+done	završeno	erledigt	hecho	terminé	fatto	concluído	готово
+locked	zaključano	gesperrt	bloqueado	verrouillé	bloccato	bloqueado	закрыто
+points	poena	Punkte	puntos	points	punti	pontos	очков
+ready	spremno	bereit	listo	prêt	pronto	pronto	доступно
+time	vrijeme	Zeit	tiempo	temps	tempo	tempo	время
+First conversations	Prvi razgovori	Erste Gespräche	Primeras conversaciones	Premières conversations	Prime conversazioni	Primeiras conversas	Первые разговоры
+Hello and goodbye	Zdravo i doviđenja	Hallo und Tschüss	Hola y adiós	Bonjour et au revoir	Ciao e arrivederci	Olá e tchau	Привет и пока
+Introduce yourself	Predstavi se	Stell dich vor	Preséntate	Présente-toi	Presentati	Apresente-se	Представься
+At the café	U kafiću	Im Café	En la cafetería	Au café	Al bar	No café	В кафе
+Numbers and time	Brojevi i vrijeme	Zahlen und Uhrzeit	Números y hora	Nombres et heure	Numeri e ora	Números e horas	Числа и время
+"Du" is for friends and family, "Sie" (always capitalised) is the polite you for strangers and at work.	„Du“ je za prijatelje i porodicu, „Sie“ (uvijek velikim slovom) je učtivo „Vi“ za nepoznate i na poslu.	„Du“ sagt man zu Freunden und Familie, „Sie“ (immer groß) ist die höfliche Form für Fremde und im Job.	«Du» es para amigos y familia; «Sie» (siempre en mayúscula) es el usted para desconocidos y el trabajo.	« Du » sert pour les amis et la famille, « Sie » (toujours avec majuscule) est le vouvoiement pour les inconnus et au travail.	«Du» si usa con amici e famiglia, «Sie» (sempre maiuscolo) è il Lei per sconosciuti e lavoro.	“Du” é para amigos e família; “Sie” (sempre com maiúscula) é o tratamento formal para desconhecidos e no trabalho.	«Du» — для друзей и семьи, «Sie» (всегда с большой буквы) — вежливое «вы» для незнакомых и на работе.
+Verbs change with the person: ich komme, du kommst, er kommt.	Glagoli se mijenjaju po licu: ich komme, du kommst, er kommt.	Verben ändern sich mit der Person: ich komme, du kommst, er kommt.	Los verbos cambian según la persona: ich komme, du kommst, er kommt.	Les verbes changent selon la personne : ich komme, du kommst, er kommt.	I verbi cambiano con la persona: ich komme, du kommst, er kommt.	Os verbos mudam com a pessoa: ich komme, du kommst, er kommt.	Глаголы меняются по лицам: ich komme, du kommst, er kommt.
+Every noun has a gender: der (masculine), die (feminine), das (neuter). Learn the article with the word.	Svaka imenica ima rod: der (muški), die (ženski), das (srednji). Uči član zajedno s riječju.	Jedes Nomen hat ein Genus: der (maskulin), die (feminin), das (neutral). Lerne den Artikel mit dem Wort.	Cada sustantivo tiene género: der (masculino), die (femenino), das (neutro). Aprende el artículo con la palabra.	Chaque nom a un genre : der (masculin), die (féminin), das (neutre). Apprends l’article avec le mot.	Ogni sostantivo ha un genere: der (maschile), die (femminile), das (neutro). Impara l’articolo con la parola.	Todo substantivo tem gênero: der (masculino), die (feminino), das (neutro). Aprenda o artigo com a palavra.	У каждого существительного есть род: der (м.), die (ж.), das (ср.). Учи артикль вместе со словом.
+"Mein" goes with der and das words, "meine" with die words: mein Bruder, meine Schwester.	„Mein“ ide uz der i das riječi, „meine“ uz die riječi: mein Bruder, meine Schwester.	„Mein“ steht bei der- und das-Wörtern, „meine“ bei die-Wörtern: mein Bruder, meine Schwester.	«Mein» va con palabras der y das, «meine» con palabras die: mein Bruder, meine Schwester.	« Mein » va avec les mots der et das, « meine » avec les mots die : mein Bruder, meine Schwester.	«Mein» va con le parole der e das, «meine» con le parole die: mein Bruder, meine Schwester.	“Mein” vai com palavras der e das; “meine” com palavras die: mein Bruder, meine Schwester.	«Mein» — со словами der и das, «meine» — со словами die: mein Bruder, meine Schwester.
+Numbers over twenty start with the ones: einundzwanzig = one-and-twenty.	Brojevi preko dvadeset počinju jedinicama: einundzwanzig = jedan-i-dvadeset.	Zahlen über zwanzig beginnen mit der Einerstelle: einundzwanzig.	Los números mayores de veinte empiezan por las unidades: einundzwanzig = uno-y-veinte.	Après vingt, on dit d’abord l’unité : einundzwanzig = un-et-vingt.	Oltre il venti si dice prima l’unità: einundzwanzig = uno-e-venti.	Acima de vinte, as unidades vêm primeiro: einundzwanzig = um-e-vinte.	После двадцати сначала идут единицы: einundzwanzig = один-и-двадцать.

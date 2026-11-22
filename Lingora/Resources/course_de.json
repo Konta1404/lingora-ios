@@ -1,0 +1,127 @@
+{
+  "lang": "de",
+  "sections": [
+    {
+      "id": "de-a1-1",
+      "title": "First conversations",
+      "level": "A1",
+      "units": [
+        {
+          "id": "de-a1-1-1",
+          "title": "Hello and goodbye",
+          "tip": "\"Du\" is for friends and family, \"Sie\" (always capitalised) is the polite you for strangers and at work.",
+          "words": [
+            {"t": "Hallo", "en": "hello"},
+            {"t": "Guten Morgen", "en": "good morning"},
+            {"t": "Guten Tag", "en": "good day"},
+            {"t": "Tschüss", "en": "bye"},
+            {"t": "danke", "en": "thank you"},
+            {"t": "bitte", "en": "please"},
+            {"t": "ja", "en": "yes"},
+            {"t": "nein", "en": "no"}
+          ],
+          "sentences": [
+            {"t": "Hallo, ich bin Anna.", "en": "Hello, I am Anna."},
+            {"t": "Guten Morgen, Herr Weber.", "en": "Good morning, Mr Weber."},
+            {"t": "Wie geht es dir?", "en": "How are you?"},
+            {"t": "Danke, gut.", "en": "Thanks, good."},
+            {"t": "Tschüss, bis morgen!", "en": "Bye, see you tomorrow!"},
+            {"t": "Ja, bitte.", "en": "Yes, please."}
+          ]
+        },
+        {
+          "id": "de-a1-1-2",
+          "title": "Introduce yourself",
+          "tip": "Verbs change with the person: ich komme, du kommst, er kommt.",
+          "words": [
+            {"t": "ich", "en": "I"},
+            {"t": "du", "en": "you"},
+            {"t": "heißen", "en": "to be called"},
+            {"t": "kommen", "en": "to come"},
+            {"t": "wohnen", "en": "to live"},
+            {"t": "aus", "en": "from"},
+            {"t": "in", "en": "in"},
+            {"t": "woher", "en": "where from"}
+          ],
+          "sentences": [
+            {"t": "Ich heiße Marco.", "en": "My name is Marco."},
+            {"t": "Wie heißt du?", "en": "What is your name?"},
+            {"t": "Ich komme aus Italien.", "en": "I come from Italy."},
+            {"t": "Woher kommst du?", "en": "Where do you come from?"},
+            {"t": "Ich wohne in Berlin.", "en": "I live in Berlin."},
+            {"t": "Du wohnst in Wien.", "en": "You live in Vienna."}
+          ]
+        },
+        {
+          "id": "de-a1-1-3",
+          "title": "At the café",
+          "tip": "Every noun has a gender: der (masculine), die (feminine), das (neuter). Learn the article with the word.",
+          "words": [
+            {"t": "der Kaffee", "en": "the coffee"},
+            {"t": "der Tee", "en": "the tea"},
+            {"t": "das Wasser", "en": "the water"},
+            {"t": "die Milch", "en": "the milk"},
+            {"t": "das Brot", "en": "the bread"},
+            {"t": "ich möchte", "en": "I would like"},
+            {"t": "und", "en": "and"},
+            {"t": "oder", "en": "or"}
+          ],
+          "sentences": [
+            {"t": "Ich möchte einen Kaffee, bitte.", "en": "I would like a coffee, please."},
+            {"t": "Kaffee oder Tee?", "en": "Coffee or tea?"},
+            {"t": "Ein Wasser, bitte.", "en": "A water, please."},
+            {"t": "Mit Milch, bitte.", "en": "With milk, please."},
+            {"t": "Das Brot ist frisch.", "en": "The bread is fresh."},
+            {"t": "Ich trinke Tee und Wasser.", "en": "I drink tea and water."}
+          ]
+        },
+        {
+          "id": "de-a1-1-4",
+          "title": "Family",
+          "tip": "\"Mein\" goes with der and das words, \"meine\" with die words: mein Bruder, meine Schwester.",
+          "words": [
+            {"t": "die Mutter", "en": "the mother"},
+            {"t": "der Vater", "en": "the father"},
+            {"t": "der Bruder", "en": "the brother"},
+            {"t": "die Schwester", "en": "the sister"},
+            {"t": "das Kind", "en": "the child"},
+            {"t": "mein", "en": "my"},
+            {"t": "haben", "en": "to have"},
+            {"t": "die Familie", "en": "the family"}
+          ],
+          "sentences": [
+            {"t": "Das ist meine Mutter.", "en": "That is my mother."},
+            {"t": "Mein Vater heißt Peter.", "en": "My father is called Peter."},
+            {"t": "Ich habe einen Bruder.", "en": "I have a brother."},
+            {"t": "Hast du eine Schwester?", "en": "Do you have a sister?"},
+            {"t": "Wir haben ein Kind.", "en": "We have a child."},
+            {"t": "Meine Familie wohnt in Hamburg.", "en": "My family lives in Hamburg."}
+          ]
+        },
+        {
+          "id": "de-a1-1-5",
+          "title": "Numbers and time",
+          "tip": "Numbers over twenty start with the ones: einundzwanzig = one-and-twenty.",
+          "words": [
+            {"t": "eins", "en": "one"},
+            {"t": "zwei", "en": "two"},
+            {"t": "drei", "en": "three"},
+            {"t": "vier", "en": "four"},
+            {"t": "fünf", "en": "five"},
+            {"t": "heute", "en": "today"},
+            {"t": "morgen", "en": "tomorrow"},
+            {"t": "die Uhr", "en": "the clock"}
+          ],
+          "sentences": [
+            {"t": "Wie spät ist es?", "en": "What time is it?"},
+            {"t": "Es ist drei Uhr.", "en": "It is three o'clock."},
+            {"t": "Ich habe zwei Kinder.", "en": "I have two children."},
+            {"t": "Heute ist Montag.", "en": "Today is Monday."},
+            {"t": "Bis morgen um vier!", "en": "See you tomorrow at four!"},
+            {"t": "Ich brauche fünf Brötchen.", "en": "I need five bread rolls."}
+          ]
+        }
+      ]
+    }
+  ]
+}

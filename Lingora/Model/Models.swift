@@ -126,6 +126,8 @@ struct AppSettings: Codable, Equatable {
     /// Notify me about new messages, friend requests and nudges.
     var notifyMessages = true
     var appearance: Appearance = .system
+    /// Speaking exercises in course lessons ("Can't speak now" turns them off).
+    var speakingExercises = true
 
     init() {}
 
@@ -141,6 +143,7 @@ struct AppSettings: Codable, Equatable {
         shareActivity = v(.shareActivity, d.shareActivity)
         notifyMessages = v(.notifyMessages, d.notifyMessages)
         appearance = v(.appearance, d.appearance)
+        speakingExercises = v(.speakingExercises, d.speakingExercises)
     }
 }
 
@@ -163,6 +166,8 @@ struct PersistedState: Codable {
     var activity: [String: Int] = [:]
     /// Progress points per language toward the next level.
     var xp: [String: Int] = [:]
+    /// Finished course lessons ("<unit id>#<lesson kind>").
+    var courseDone: Set<String> = []
     var settings = AppSettings()
 
     init() {}
@@ -187,6 +192,7 @@ struct PersistedState: Codable {
         tutorThreads = v(.tutorThreads, d.tutorThreads)
         activity = v(.activity, d.activity)
         xp = v(.xp, d.xp)
+        courseDone = v(.courseDone, d.courseDone)
         settings = v(.settings, d.settings)
     }
 }
