@@ -149,14 +149,29 @@ struct Avatar: View {
     let hue: Hue
     var size: CGFloat = 40
     var ring: Color? = nil
+    /// Profile photo: the person's uid and photo version (0 = no photo → initial).
+    var uid: String? = nil
+    var photo: Int = 0
+    @ObservedObject private var store = AvatarStore.shared
 
     var body: some View {
-        Text(initial)
-            .font(.fig(size * 0.4, .bold))
-            .foregroundStyle(hue.deep)
-            .frame(width: size, height: size)
-            .background(hue.tint, in: Circle())
-            .overlay(Circle().strokeBorder(ring ?? .clear, lineWidth: 2))
+        let image = uid.flatMap { photo > 0 ? store.image(uid: $0, version: photo) : nil }
+        ZStack {
+            if let image {
+                Image(uiImage: image).resizable().scaledToFill()
+            } else {
+                Text(initial)
+                    .font(.fig(size * 0.4, .bold))
+                    .foregroundStyle(hue.deep)
+            }
+        }
+        .frame(width: size, height: size)
+        .background(hue.tint)
+        .clipShape(Circle())
+        .overlay(Circle().strokeBorder(ring ?? .clear, lineWidth: 2))
+        .task(id: "\(uid ?? "")-\(photo)") {
+            if let uid, photo > 0 { await store.load(uid: uid, version: photo) }
+        }
     }
 }
 

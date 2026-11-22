@@ -53,6 +53,9 @@ final class AppModel: ObservableObject {
     @Published var socialLoading = false
     @Published var chats: [String: [Social.Message]] = [:]
     @Published var nudgedToday: Set<String> = []
+    /// The friend chat on screen (no alerts for it).
+    @Published var openChat: String?
+    private var askedNotifications = false
 
     // Lessons
     @Published var lessonCache: [String: LessonContent] = [:]
@@ -144,6 +147,7 @@ final class AppModel: ObservableObject {
 
     var socialAvailable: Bool { Backend.isConfigured && signedInUID != nil }
     var friends: [Social.Person] { social?.friends ?? [] }
+    var friendsBadge: Int { social.map(MessageAlerts.unreadCount) ?? 0 }
     func friend(_ id: String) -> Social.Person? { friends.first { $0.uid == id } }
 
     // MARK: - Auth
@@ -281,6 +285,8 @@ final class AppModel: ObservableObject {
         social = nil
         chats = [:]
         nudgedToday = []
+        MessageAlerts.reset()
+        MessageAlerts.setBadge(0)
     }
 
     // MARK: - Languages
@@ -572,8 +578,64 @@ final class AppModel: ObservableObject {
         defer { socialLoading = false }
         do {
             social = try await Social.overview()
+            if let shares = social?.me.sharesActivity, shares != s.settings.shareActivity { s.settings.shareActivity = shares }
         } catch {
             if social == nil { toast = L("Couldn't load friends — %@", Backend.message(for: error)) }
+        }
+    }
+
+    /// Refreshes friends and announces anything new (messages, requests, nudges, invites).
+    func pollSocial() async {
+        guard socialAvailable else { return }
+        await refreshSocial()
+        guard let o = social else { return }
+        UserDefaults.standard.set(s.settings.notifyMessages, forKey: MessageAlerts.enabledKey)
+        if s.settings.notifyMessages && !askedNotifications {
+            askedNotifications = true
+            MessageAlerts.requestPermission()
+        }
+        let events = MessageAlerts.newEvents(in: o, openChat: openChat)
+        MessageAlerts.setBadge(MessageAlerts.unreadCount(o))
+        if s.settings.notifyMessages, let e = events.first {
+            toast = e.friend != nil && e.id.hasPrefix("msg-") ? "\(e.title): \(e.body)" : e.body
+            Haptics.tap()
+        }
+    }
+
+    func setShareActivity(_ on: Bool) {
+        s.settings.shareActivity = on
+        Task {
+            do {
+                try await Social.setPrivacy(shareActivity: on)
+                await refreshSocial()
+            } catch {
+                s.settings.shareActivity = !on
+                toast = Backend.message(for: error)
+            }
+        }
+    }
+
+    func setNotifyMessages(_ on: Bool) {
+        s.settings.notifyMessages = on
+        UserDefaults.standard.set(on, forKey: MessageAlerts.enabledKey)
+        if on { MessageAlerts.requestPermission() }
+    }
+
+    var myPhoto: Int { social?.me.photoVersion ?? 0 }
+
+    /// Uploads a new profile photo (nil removes it).
+    func setPhoto(_ image: UIImage?) async {
+        guard socialAvailable, let uid = signedInUID else { return }
+        do {
+            let jpeg = image.flatMap { AvatarStore.prepare($0) }
+            if image != nil && jpeg == nil { toast = L("That photo is too large."); return }
+            let v = try await Social.setAvatar(jpeg)
+            if let jpeg, let img = UIImage(data: jpeg) { AvatarStore.shared.set(img, uid: uid, version: v) }
+            social?.me.photo = v
+            Haptics.success()
+            await refreshSocial()
+        } catch {
+            toast = Backend.message(for: error)
         }
     }
 
@@ -741,7 +803,14 @@ final class AppModel: ObservableObject {
 
     func loadChat(_ uid: String) async {
         guard socialAvailable else { return }
-        if let m = try? await Social.messages(with: uid) { chats[uid] = m }
+        if let m = try? await Social.messages(with: uid) {
+            chats[uid] = m
+            // Opening the chat marks it read on the server.
+            if let i = social?.friends.firstIndex(where: { $0.uid == uid }), (social?.friends[i].unread ?? 0) > 0 {
+                social?.friends[i].unread = 0
+                MessageAlerts.setBadge(friendsBadge)
+            }
+        }
     }
 
     func sendFriend(_ text: String, to uid: String) async {

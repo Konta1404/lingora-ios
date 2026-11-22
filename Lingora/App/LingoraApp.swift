@@ -1,5 +1,6 @@
 import SwiftUI
 import GoogleSignIn
+import UserNotifications
 
 @main
 struct LingoraApp: App {
@@ -8,8 +9,12 @@ struct LingoraApp: App {
     init() {
         FontRegistrar.registerAll()
         Backend.configure()
+        UNUserNotificationCenter.current().delegate = NotificationRouter.shared
+        MessageAlerts.registerBackgroundRefresh()
         _model = StateObject(wrappedValue: AppModel())
     }
+    @Environment(\.scenePhase) private var scenePhase
+    @ObservedObject private var router = NotificationRouter.shared
 
     var body: some Scene {
         WindowGroup {
@@ -19,6 +24,16 @@ struct LingoraApp: App {
                 .tint(model.theme.a)
                 .preferredColorScheme(.light)
                 .onOpenURL { url in if !model.handle(url: url) { _ = GIDSignIn.sharedInstance.handle(url) } }
+                .onChange(of: scenePhase) { _, phase in
+                    if phase == .background { MessageAlerts.scheduleBackgroundRefresh() }
+                    if phase == .active { Task { await model.pollSocial() } }
+                }
+                .onChange(of: router.openFriend) { _, friend in
+                    guard let friend else { return }
+                    model.tab = .friends
+                    model.friendsPath = friend.isEmpty ? [] : [friend]
+                    router.openFriend = nil
+                }
         }
     }
 }
@@ -93,6 +108,7 @@ struct MainTabView: View {
                     }
             }
             .tabItem { Label(L("Friends"), systemImage: "person.2") }
+            .badge(model.friendsBadge)
             .tag(AppTab.friends)
             NavigationStack(path: $model.mePath) {
                 MeView()
@@ -129,5 +145,12 @@ struct MainTabView: View {
                 .presentationCornerRadius(28)
         }
         .task { await model.adaptTodayIfNeeded() }
+        .task {
+            // Check for new messages, requests and nudges while the app is open.
+            while !Task.isCancelled {
+                await model.pollSocial()
+                try? await Task.sleep(for: .seconds(30))
+            }
+        }
     }
 }

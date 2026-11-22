@@ -75,7 +75,7 @@ struct FriendsView: View {
             VStack(spacing: 0) {
                 ForEach(Array(incoming.enumerated()), id: \.element.id) { i, p in
                     HStack(spacing: 12) {
-                        Avatar(initial: p.initial, hue: Hue(h: p.hue), size: 40)
+                        Avatar(initial: p.initial, hue: Hue(h: p.hue), size: 40, uid: p.uid, photo: p.photoVersion)
                         VStack(alignment: .leading, spacing: 1) {
                             Text(verbatim: p.name).font(.fig(15, .semibold))
                             Text(L("wants to be friends · %@", p.atHandle)).font(.fig(13)).foregroundStyle(theme.muted)
@@ -144,7 +144,7 @@ struct FriendsView: View {
                     VStack(alignment: .leading, spacing: 12) {
                         Button { if !mine { model.friendsPath.append(item.uid) } } label: {
                             HStack(alignment: .top, spacing: 12) {
-                                Avatar(initial: String(item.name.first ?? "?").uppercased(), hue: Hue(h: item.hue), size: 40)
+                                Avatar(initial: String(item.name.first ?? "?").uppercased(), hue: Hue(h: item.hue), size: 40, uid: item.uid, photo: item.photo ?? 0)
                                 VStack(alignment: .leading, spacing: 2) {
                                     (Text(mine ? L("You") : item.firstName).font(.fig(15, .bold)) + Text(verbatim: " " + FeedText.text(item)).font(.fig(15)))
                                         .multilineTextAlignment(.leading)
@@ -190,30 +190,37 @@ struct FriendsView: View {
     private var boardList: some View {
         var rows = model.friends.map {
             BoardRow(id: $0.uid, name: $0.name, initial: $0.initial, hue: $0.hue,
-                     minutes: $0.weekMinutes, streak: $0.streak, today: $0.practisedToday, isMe: false)
+                     minutes: $0.weekMinutes, streak: $0.streak, today: $0.practisedToday, isMe: false,
+                     photo: $0.photoVersion, hidden: $0.sharesActivity == false, unread: $0.unread ?? 0)
         }
         rows.append(BoardRow(id: "me", name: L("You"), initial: model.s.user?.initial ?? "Y", hue: theme.accent.hue,
-                             minutes: model.myWeekMinutes, streak: model.streak, today: model.practisedToday, isMe: true))
+                             minutes: model.myWeekMinutes, streak: model.streak, today: model.practisedToday, isMe: true,
+                             photo: model.myPhoto, hidden: false, unread: 0))
         rows.sort { $0.minutes > $1.minutes }
         return VStack(spacing: 0) {
             ForEach(Array(rows.enumerated()), id: \.element.id) { i, r in
                 let nudged = model.nudgedToday.contains(r.id)
                 HStack(spacing: 12) {
                     Text(verbatim: "\(i + 1)").font(.fig(14, .bold)).foregroundStyle(theme.muted).frame(width: 18)
-                    Avatar(initial: r.initial, hue: Hue(h: r.hue), size: 36)
+                    Avatar(initial: r.initial, hue: Hue(h: r.hue), size: 36, uid: r.isMe ? model.signedInUID : r.id, photo: r.photo)
                     VStack(alignment: .leading, spacing: 1) {
                         Text(verbatim: r.name).font(.fig(15, .semibold))
-                        Text(L("%lld-day streak · %@", r.streak, r.today ? L("practised today") : L("not yet today")))
+                        Text(r.hidden ? L("Keeps activity private") : L("%lld-day streak · %@", r.streak, r.today ? L("practised today") : L("not yet today")))
                             .font(.fig(12)).foregroundStyle(theme.muted)
                     }
                     Spacer(minLength: 0)
-                    if !r.isMe && !r.today {
+                    if r.unread > 0 {
+                        Text(verbatim: "\(r.unread)").font(.fig(12, .bold)).foregroundStyle(.white)
+                            .frame(minWidth: 22, minHeight: 22).background(theme.a, in: Capsule())
+                            .accessibilityLabel(L("%lld unread", r.unread))
+                    }
+                    if !r.isMe && !r.today && !r.hidden {
                         PillButton(title: nudged ? L("Nudged") : L("Nudge"), bg: nudged ? theme.at : theme.chip,
                                    fg: nudged ? theme.ad : theme.text, height: 30) {
                             if !nudged { model.nudge(r.id) }
                         }
                     }
-                    Text(L("%lld min", r.minutes)).font(.fig(14, .semibold))
+                    if !r.hidden { Text(L("%lld min", r.minutes)).font(.fig(14, .semibold)) }
                 }
                 .padding(.horizontal, 14).padding(.vertical, 12)
                 .background(r.isMe ? theme.at : .clear)
@@ -268,6 +275,9 @@ private struct BoardRow: Identifiable {
     var streak: Int
     var today: Bool
     var isMe: Bool
+    var photo: Int
+    var hidden: Bool
+    var unread: Int
 }
 
 /// Turns a feed item (type + params from the backend) into a sentence in the reader's language.
@@ -423,7 +433,7 @@ private struct StartChallengeSheet: View {
                             Haptics.tap()
                         } label: {
                             HStack(spacing: 12) {
-                                Avatar(initial: f.initial, hue: Hue(h: f.hue), size: 36)
+                                Avatar(initial: f.initial, hue: Hue(h: f.hue), size: 36, uid: f.uid, photo: f.photoVersion)
                                 Text(verbatim: f.name).font(.fig(15, .semibold))
                                 Spacer()
                                 Image(systemName: on ? "checkmark.circle.fill" : "circle")
@@ -497,7 +507,7 @@ struct FriendChatView: View {
         VStack(spacing: 0) {
             HStack(spacing: 12) {
                 BackButton { dismiss() }
-                if let f { Avatar(initial: f.initial, hue: Hue(h: f.hue), size: 40) }
+                if let f { Avatar(initial: f.initial, hue: Hue(h: f.hue), size: 40, uid: f.uid, photo: f.photoVersion) }
                 VStack(alignment: .leading, spacing: 0) {
                     Text(verbatim: f?.name ?? "").font(.fig(16, .bold))
                     Text(lang.map { L("Practising %@ together", $0.name) } ?? (f?.atHandle ?? ""))
@@ -566,6 +576,8 @@ struct FriendChatView: View {
             }
         }
         .background(theme.ground)
+        .onAppear { model.openChat = friendID }
+        .onDisappear { if model.openChat == friendID { model.openChat = nil } }
         .task(id: friendID) {
             // Poll while the chat is open.
             while !Task.isCancelled {

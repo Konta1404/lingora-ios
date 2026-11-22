@@ -121,6 +121,25 @@ struct AppSettings: Codable, Equatable {
     var accent: Accent = .sage
     var direction: Direction = .cards
     var languageTints = true
+    /// Friends see my feed, streak and minutes.
+    var shareActivity = true
+    /// Notify me about new messages, friend requests and nudges.
+    var notifyMessages = true
+
+    init() {}
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        let d = AppSettings()
+        func v<T: Decodable>(_ k: CodingKeys, _ fallback: T) -> T { (try? c.decodeIfPresent(T.self, forKey: k)) ?? fallback }
+        adaptDaily = v(.adaptDaily, d.adaptDaily)
+        reminders = v(.reminders, d.reminders)
+        accent = v(.accent, d.accent)
+        direction = v(.direction, d.direction)
+        languageTints = v(.languageTints, d.languageTints)
+        shareActivity = v(.shareActivity, d.shareActivity)
+        notifyMessages = v(.notifyMessages, d.notifyMessages)
+    }
 }
 
 /// Everything the app persists between launches.

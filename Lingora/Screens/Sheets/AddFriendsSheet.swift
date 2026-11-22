@@ -110,7 +110,7 @@ struct AddFriendsSheet: View {
                 ForEach(Array(list.enumerated()), id: \.element.id) { i, p in
                     let rel = relations[p.uid] ?? p.relation ?? "none"
                     HStack(spacing: 12) {
-                        Avatar(initial: p.initial, hue: Hue(h: p.hue), size: 40)
+                        Avatar(initial: p.initial, hue: Hue(h: p.hue), size: 40, uid: p.uid, photo: p.photoVersion)
                         VStack(alignment: .leading, spacing: 1) {
                             Text(verbatim: p.name).font(.fig(15, .semibold))
                             Text(verbatim: subtitle(p)).font(.fig(13)).foregroundStyle(theme.muted).lineLimit(1)

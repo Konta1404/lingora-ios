@@ -14,6 +14,13 @@ enum Social {
         var weekMinutes: Int
         var practisedToday: Bool
         var relation: String?          // none | requested | incoming | friend (search results only)
+        var sharesActivity: Bool? = true
+        var photo: Int? = 0
+        var unread: Int? = 0
+        var lastMessage: String?
+        var lastMessageAt: Double?
+        var lastFromMe: Bool?
+        var photoVersion: Int { photo ?? 0 }
         var id: String { uid }
         var firstName: String { name.split(separator: " ").first.map(String.init) ?? name }
         var initial: String { String(name.first ?? "?").uppercased() }
@@ -31,6 +38,7 @@ enum Social {
         var cheers: Int
         var cheeredByMe: Bool
         var planId: String?
+        var photo: Int?
         var date: Date { Date(timeIntervalSince1970: createdAt / 1000) }
         var firstName: String { name.split(separator: " ").first.map(String.init) ?? name }
     }
@@ -107,6 +115,17 @@ enum Social {
         var payload: [String: Any] = ["day": DateUtil.dayKey(), "days": days]
         if let event { payload["event"] = ["type": event.type, "params": event.params] }
         let _: Ok = try await Backend.call("reportActivity", payload)
+    }
+
+    static func setPrivacy(shareActivity: Bool) async throws {
+        let _: Ok = try await Backend.call("setPrivacy", ["shareActivity": shareActivity])
+    }
+    private struct Photo: Decodable { var photo: Int }
+    /// Uploads a profile photo (nil removes it). Returns the new photo version.
+    static func setAvatar(_ jpeg: Data?) async throws -> Int {
+        let image: Any = jpeg.map { $0.base64EncodedString() } ?? NSNull()
+        let r: Photo = try await Backend.call("setAvatar", ["image": image])
+        return r.photo
     }
 
     // Friends

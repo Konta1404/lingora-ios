@@ -26,6 +26,15 @@
 			</array>
 		</dict>
 	</array>
+	<!-- Checks for new messages in the background (local notifications; no push needed). -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+	</array>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.veselin.lingora.refresh</string>
+	</array>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Lingora uses the microphone when you dictate a reply in the language you're practising.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>

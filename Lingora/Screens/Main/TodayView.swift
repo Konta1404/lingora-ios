@@ -73,7 +73,7 @@ struct TodayView: View {
                         let today = model.friends.filter(\.practisedToday)
                         HStack(spacing: 12) {
                             HStack(spacing: -8) {
-                                ForEach(today.prefix(5)) { f in Avatar(initial: f.initial, hue: Hue(h: f.hue), size: 32, ring: theme.card) }
+                                ForEach(today.prefix(5)) { f in Avatar(initial: f.initial, hue: Hue(h: f.hue), size: 32, ring: theme.card, uid: f.uid, photo: f.photoVersion) }
                             }
                             Text(friendsLine(today.map(\.firstName))).font(.fig(14)).foregroundStyle(theme.text)
                                 .multilineTextAlignment(.leading)
