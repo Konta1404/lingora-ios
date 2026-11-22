@@ -13,7 +13,8 @@
      "words": [
       {
        "t": "Hallo",
-       "en": "hello"
+       "en": "hello",
+       "img": "👋"
       },
       {
        "t": "Guten Morgen",
@@ -37,11 +38,13 @@
       },
       {
        "t": "ja",
-       "en": "yes"
+       "en": "yes",
+       "img": "👍"
       },
       {
        "t": "nein",
-       "en": "no"
+       "en": "no",
+       "img": "👎"
       }
      ],
      "sentences": [
@@ -68,6 +71,36 @@
       {
        "t": "Ja, bitte.",
        "en": "Yes, please."
+      }
+     ],
+     "dialogues": [
+      {
+       "q": {
+        "t": "Wie geht es dir?",
+        "en": "How are you?"
+       },
+       "a": {
+        "t": "Danke, gut.",
+        "en": "Thanks, good."
+       },
+       "wrong": [
+        "Ich heiße Anna.",
+        "Bis morgen!"
+       ]
+      },
+      {
+       "q": {
+        "t": "Guten Morgen!",
+        "en": "Good morning!"
+       },
+       "a": {
+        "t": "Guten Morgen, Herr Weber.",
+        "en": "Good morning, Mr Weber."
+       },
+       "wrong": [
+        "Tschüss!",
+        "Nein, danke."
+       ]
       }
      ]
     },
@@ -134,6 +167,36 @@
        "t": "Du wohnst in Wien.",
        "en": "You live in Vienna."
       }
+     ],
+     "dialogues": [
+      {
+       "q": {
+        "t": "Woher kommst du?",
+        "en": "Where do you come from?"
+       },
+       "a": {
+        "t": "Ich komme aus Italien.",
+        "en": "I come from Italy."
+       },
+       "wrong": [
+        "Ich wohne gern.",
+        "Ich heiße aus Berlin."
+       ]
+      },
+      {
+       "q": {
+        "t": "Wie heißt du?",
+        "en": "What is your name?"
+       },
+       "a": {
+        "t": "Ich heiße Marco.",
+        "en": "My name is Marco."
+       },
+       "wrong": [
+        "Ich komme aus Rom.",
+        "Danke, gut."
+       ]
+      }
      ]
     },
     {
@@ -143,23 +206,28 @@
      "words": [
       {
        "t": "der Kaffee",
-       "en": "the coffee"
+       "en": "the coffee",
+       "img": "☕"
       },
       {
        "t": "der Tee",
-       "en": "the tea"
+       "en": "the tea",
+       "img": "🍵"
       },
       {
        "t": "das Wasser",
-       "en": "the water"
+       "en": "the water",
+       "img": "💧"
       },
       {
        "t": "die Milch",
-       "en": "the milk"
+       "en": "the milk",
+       "img": "🥛"
       },
       {
        "t": "das Brot",
-       "en": "the bread"
+       "en": "the bread",
+       "img": "🍞"
       },
       {
        "t": "ich möchte",
@@ -199,6 +267,36 @@
        "t": "Ich trinke Tee und Wasser.",
        "en": "I drink tea and water."
       }
+     ],
+     "dialogues": [
+      {
+       "q": {
+        "t": "Was möchten Sie?",
+        "en": "What would you like?"
+       },
+       "a": {
+        "t": "Einen Kaffee, bitte.",
+        "en": "A coffee, please."
+       },
+       "wrong": [
+        "Ich wohne in Berlin.",
+        "Guten Abend!"
+       ]
+      },
+      {
+       "q": {
+        "t": "Mit Milch?",
+        "en": "With milk?"
+       },
+       "a": {
+        "t": "Ja, bitte.",
+        "en": "Yes, please."
+       },
+       "wrong": [
+        "Ich bin Anna.",
+        "Es ist drei Uhr."
+       ]
+      }
      ]
     },
     {
@@ -208,23 +306,28 @@
      "words": [
       {
        "t": "die Mutter",
-       "en": "the mother"
+       "en": "the mother",
+       "img": "👩"
       },
       {
        "t": "der Vater",
-       "en": "the father"
+       "en": "the father",
+       "img": "👨"
       },
       {
        "t": "der Bruder",
-       "en": "the brother"
+       "en": "the brother",
+       "img": "👦"
       },
       {
        "t": "die Schwester",
-       "en": "the sister"
+       "en": "the sister",
+       "img": "👧"
       },
       {
        "t": "das Kind",
-       "en": "the child"
+       "en": "the child",
+       "img": "🧒"
       },
       {
        "t": "mein",
@@ -236,7 +339,8 @@
       },
       {
        "t": "die Familie",
-       "en": "the family"
+       "en": "the family",
+       "img": "👨‍👩‍👧"
       }
      ],
      "sentences": [
@@ -264,6 +368,36 @@
        "t": "Meine Familie wohnt in Hamburg.",
        "en": "My family lives in Hamburg."
       }
+     ],
+     "dialogues": [
+      {
+       "q": {
+        "t": "Hast du Geschwister?",
+        "en": "Do you have siblings?"
+       },
+       "a": {
+        "t": "Ja, ich habe einen Bruder.",
+        "en": "Yes, I have a brother."
+       },
+       "wrong": [
+        "Ja, ich habe einen Kaffee.",
+        "Nein, ich wohne in Wien."
+       ]
+      },
+      {
+       "q": {
+        "t": "Wer ist das?",
+        "en": "Who is that?"
+       },
+       "a": {
+        "t": "Das ist meine Mutter.",
+        "en": "That is my mother."
+       },
+       "wrong": [
+        "Das ist drei Uhr.",
+        "Ich bin müde."
+       ]
+      }
      ]
     },
     {
@@ -273,23 +407,28 @@
      "words": [
       {
        "t": "eins",
-       "en": "one"
+       "en": "one",
+       "img": "1️⃣"
       },
       {
        "t": "zwei",
-       "en": "two"
+       "en": "two",
+       "img": "2️⃣"
       },
       {
        "t": "drei",
-       "en": "three"
+       "en": "three",
+       "img": "3️⃣"
       },
       {
        "t": "vier",
-       "en": "four"
+       "en": "four",
+       "img": "4️⃣"
       },
       {
        "t": "fünf",
-       "en": "five"
+       "en": "five",
+       "img": "5️⃣"
       },
       {
        "t": "heute",
@@ -301,7 +440,8 @@
       },
       {
        "t": "die Uhr",
-       "en": "the clock"
+       "en": "the clock",
+       "img": "🕒"
       }
      ],
      "sentences": [
@@ -329,6 +469,36 @@
        "t": "Ich brauche fünf Brötchen.",
        "en": "I need five bread rolls."
       }
+     ],
+     "dialogues": [
+      {
+       "q": {
+        "t": "Wie spät ist es?",
+        "en": "What time is it?"
+       },
+       "a": {
+        "t": "Es ist vier Uhr.",
+        "en": "It is four o'clock."
+       },
+       "wrong": [
+        "Es ist Montag.",
+        "Ich habe vier Kinder."
+       ]
+      },
+      {
+       "q": {
+        "t": "Wann kommst du?",
+        "en": "When are you coming?"
+       },
+       "a": {
+        "t": "Morgen um fünf.",
+        "en": "Tomorrow at five."
+       },
+       "wrong": [
+        "Aus Hamburg.",
+        "Mit Milch."
+       ]
+      }
      ]
     }
    ]
@@ -345,23 +515,28 @@
      "words": [
       {
        "t": "der Apfel",
-       "en": "the apple"
+       "en": "the apple",
+       "img": "🍎"
       },
       {
        "t": "die Banane",
-       "en": "the banana"
+       "en": "the banana",
+       "img": "🍌"
       },
       {
        "t": "der Käse",
-       "en": "the cheese"
+       "en": "the cheese",
+       "img": "🧀"
       },
       {
        "t": "das Ei",
-       "en": "the egg"
+       "en": "the egg",
+       "img": "🥚"
       },
       {
        "t": "kaufen",
-       "en": "to buy"
+       "en": "to buy",
+       "img": "🛒"
       },
       {
        "t": "kosten",
@@ -401,6 +576,36 @@
        "t": "Haben Sie Brot?",
        "en": "Do you have bread?"
       }
+     ],
+     "dialogues": [
+      {
+       "q": {
+        "t": "Was kostet das Brot?",
+        "en": "How much is the bread?"
+       },
+       "a": {
+        "t": "Zwei Euro.",
+        "en": "Two euros."
+       },
+       "wrong": [
+        "Ja, gern.",
+        "Im Sommer."
+       ]
+      },
+      {
+       "q": {
+        "t": "Möchten Sie Käse?",
+        "en": "Would you like cheese?"
+       },
+       "a": {
+        "t": "Nein, danke. Das ist zu teuer.",
+        "en": "No, thanks. That is too expensive."
+       },
+       "wrong": [
+        "Ich heiße Paul.",
+        "Es regnet."
+       ]
+      }
      ]
     },
     {
@@ -410,27 +615,33 @@
      "words": [
       {
        "t": "der Bahnhof",
-       "en": "the train station"
+       "en": "the train station",
+       "img": "🚉"
       },
       {
        "t": "die Straße",
-       "en": "the street"
+       "en": "the street",
+       "img": "🛣️"
       },
       {
        "t": "das Hotel",
-       "en": "the hotel"
+       "en": "the hotel",
+       "img": "🏨"
       },
       {
        "t": "links",
-       "en": "left"
+       "en": "left",
+       "img": "⬅️"
       },
       {
        "t": "rechts",
-       "en": "right"
+       "en": "right",
+       "img": "➡️"
       },
       {
        "t": "geradeaus",
-       "en": "straight ahead"
+       "en": "straight ahead",
+       "img": "⬆️"
       },
       {
        "t": "wo",
@@ -466,6 +677,36 @@
        "t": "Ich suche das Hotel.",
        "en": "I am looking for the hotel."
       }
+     ],
+     "dialogues": [
+      {
+       "q": {
+        "t": "Wo ist der Bahnhof?",
+        "en": "Where is the station?"
+       },
+       "a": {
+        "t": "Gehen Sie geradeaus und dann links.",
+        "en": "Go straight ahead and then left."
+       },
+       "wrong": [
+        "Um drei Uhr.",
+        "Ich mag Bananen."
+       ]
+      },
+      {
+       "q": {
+        "t": "Ist es weit?",
+        "en": "Is it far?"
+       },
+       "a": {
+        "t": "Nein, nur fünf Minuten.",
+        "en": "No, only five minutes."
+       },
+       "wrong": [
+        "Ja, mit Milch.",
+        "Mein Bruder."
+       ]
+      }
      ]
     },
     {
@@ -479,23 +720,28 @@
       },
       {
        "t": "arbeiten",
-       "en": "to work"
+       "en": "to work",
+       "img": "💼"
       },
       {
        "t": "essen",
-       "en": "to eat"
+       "en": "to eat",
+       "img": "🍽️"
       },
       {
        "t": "schlafen",
-       "en": "to sleep"
+       "en": "to sleep",
+       "img": "😴"
       },
       {
        "t": "der Morgen",
-       "en": "the morning"
+       "en": "the morning",
+       "img": "🌅"
       },
       {
        "t": "der Abend",
-       "en": "the evening"
+       "en": "the evening",
+       "img": "🌆"
       },
       {
        "t": "früh",
@@ -531,6 +777,36 @@
        "t": "Es ist schon spät.",
        "en": "It is already late."
       }
+     ],
+     "dialogues": [
+      {
+       "q": {
+        "t": "Wann stehst du auf?",
+        "en": "When do you get up?"
+       },
+       "a": {
+        "t": "Um sieben Uhr.",
+        "en": "At seven o'clock."
+       },
+       "wrong": [
+        "In Berlin.",
+        "Mit meiner Schwester."
+       ]
+      },
+      {
+       "q": {
+        "t": "Arbeitest du heute?",
+        "en": "Are you working today?"
+       },
+       "a": {
+        "t": "Ja, bis fünf Uhr.",
+        "en": "Yes, until five o'clock."
+       },
+       "wrong": [
+        "Ja, ein Wasser.",
+        "Nein, ich heiße Max."
+       ]
+      }
      ]
     },
     {
@@ -540,15 +816,18 @@
      "words": [
       {
        "t": "spielen",
-       "en": "to play"
+       "en": "to play",
+       "img": "🎲"
       },
       {
        "t": "lesen",
-       "en": "to read"
+       "en": "to read",
+       "img": "📖"
       },
       {
        "t": "schwimmen",
-       "en": "to swim"
+       "en": "to swim",
+       "img": "🏊"
       },
       {
        "t": "gern",
@@ -556,15 +835,18 @@
       },
       {
        "t": "der Fußball",
-       "en": "the football"
+       "en": "the football",
+       "img": "⚽"
       },
       {
        "t": "das Buch",
-       "en": "the book"
+       "en": "the book",
+       "img": "📚"
       },
       {
        "t": "die Musik",
-       "en": "the music"
+       "en": "the music",
+       "img": "🎵"
       },
       {
        "t": "das Wochenende",
@@ -596,6 +878,36 @@
        "t": "Was machst du am Wochenende?",
        "en": "What are you doing at the weekend?"
       }
+     ],
+     "dialogues": [
+      {
+       "q": {
+        "t": "Was machst du gern?",
+        "en": "What do you like doing?"
+       },
+       "a": {
+        "t": "Ich lese gern.",
+        "en": "I like to read."
+       },
+       "wrong": [
+        "Ich bin aus Rom.",
+        "Es ist kalt."
+       ]
+      },
+      {
+       "q": {
+        "t": "Spielst du Fußball?",
+        "en": "Do you play football?"
+       },
+       "a": {
+        "t": "Ja, am Wochenende.",
+        "en": "Yes, at the weekend."
+       },
+       "wrong": [
+        "Ja, mit Milch.",
+        "Nein, links."
+       ]
+      }
      ]
     },
     {
@@ -605,31 +917,38 @@
      "words": [
       {
        "t": "das Wetter",
-       "en": "the weather"
+       "en": "the weather",
+       "img": "🌦️"
       },
       {
        "t": "die Sonne",
-       "en": "the sun"
+       "en": "the sun",
+       "img": "☀️"
       },
       {
        "t": "der Regen",
-       "en": "the rain"
+       "en": "the rain",
+       "img": "🌧️"
       },
       {
        "t": "kalt",
-       "en": "cold"
+       "en": "cold",
+       "img": "🥶"
       },
       {
        "t": "warm",
-       "en": "warm"
+       "en": "warm",
+       "img": "🥵"
       },
       {
        "t": "der Sommer",
-       "en": "the summer"
+       "en": "the summer",
+       "img": "🏖️"
       },
       {
        "t": "der Winter",
-       "en": "the winter"
+       "en": "the winter",
+       "img": "⛄"
       },
       {
        "t": "regnen",
@@ -660,6 +979,36 @@
       {
        "t": "Ich mag den Regen nicht.",
        "en": "I don't like the rain."
+      }
+     ],
+     "dialogues": [
+      {
+       "q": {
+        "t": "Wie ist das Wetter?",
+        "en": "What is the weather like?"
+       },
+       "a": {
+        "t": "Es regnet.",
+        "en": "It is raining."
+       },
+       "wrong": [
+        "Es ist mein Vater.",
+        "Ich trinke Tee."
+       ]
+      },
+      {
+       "q": {
+        "t": "Ist es kalt?",
+        "en": "Is it cold?"
+       },
+       "a": {
+        "t": "Nein, es ist warm.",
+        "en": "No, it is warm."
+       },
+       "wrong": [
+        "Nein, ich bin Anna.",
+        "Ja, zwei Euro."
+       ]
       }
      ]
     }

@@ -16,7 +16,7 @@ struct MeView: View {
 
     var body: some View {
         let user = model.s.user
-        ScrollView {
+        ScrollView(.vertical) {
             VStack(alignment: .leading, spacing: 14) {
                 HStack(spacing: 14) {
                     if model.socialAvailable {
@@ -152,11 +152,11 @@ struct MeView: View {
                             LingoraSwitch(isOn: Binding(get: { model.s.settings.shareActivity }, set: { model.setShareActivity($0) }))
                         }
                     }
-                    row(L("Daily XP goal")) {
+                    stackedRow(L("Daily XP goal")) {
                         Picker(L("Daily XP goal"), selection: $model.s.settings.dailyXPGoal) {
                             ForEach([10, 20, 30, 50], id: \.self) { Text(verbatim: "\($0)").tag($0) }
                         }
-                        .pickerStyle(.segmented).frame(maxWidth: 200)
+                        .pickerStyle(.segmented)
                     }
                     row(L("Sound effects"), sub: L("Right, wrong and lesson-complete sounds")) {
                         LingoraSwitch(isOn: $model.s.settings.soundEffects)
@@ -175,11 +175,11 @@ struct MeView: View {
 
                 SectionLabel(text: L("Appearance")).padding(.top, 6)
                 VStack(spacing: 0) {
-                    row(L("Light or dark"), first: true) {
+                    stackedRow(L("Light or dark"), first: true) {
                         Picker(L("Appearance"), selection: $model.s.settings.appearance) {
                             ForEach(Appearance.allCases) { Text($0.label).tag($0) }
                         }
-                        .pickerStyle(.segmented).frame(maxWidth: 220)
+                        .pickerStyle(.segmented)
                     }
                     row(L("Accent")) {
                         HStack(spacing: 10) {
@@ -194,11 +194,11 @@ struct MeView: View {
                             }
                         }
                     }
-                    row(L("Style")) {
+                    stackedRow(L("Style")) {
                         Picker(L("Style"), selection: $model.s.settings.direction) {
                             ForEach(Direction.allCases) { Text($0.label).tag($0) }
                         }
-                        .pickerStyle(.segmented).frame(maxWidth: 180)
+                        .pickerStyle(.segmented)
                     }
                     row(L("Per-language colours")) {
                         LingoraSwitch(isOn: $model.s.settings.languageTints)
@@ -244,6 +244,7 @@ struct MeView: View {
             }
             .padding(.horizontal, 20).padding(.bottom, 24)
         }
+        .scrollBounceBehavior(.basedOnSize, axes: [.horizontal])
         .background(theme.ground)
         .task { await model.refreshChatGPT() }
         .alert(L("Choose a username"), isPresented: $editHandle) {
@@ -376,6 +377,17 @@ struct MeView: View {
             Text(label).font(.fig(12, .semibold)).foregroundStyle(theme.muted).lineLimit(1).minimumScaleFactor(0.8)
         }
         .card(padding: 14)
+    }
+
+    /// Title above a full-width control (segmented pickers don't fit beside long translated titles).
+    private func stackedRow<Content: View>(_ title: String, first: Bool = false, @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(title).font(.fig(15, .semibold))
+            content()
+        }
+        .padding(.horizontal, 16).padding(.vertical, 12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .overlay(alignment: .top) { if !first { Rectangle().fill(theme.line).frame(height: 1) } }
     }
 
     private func row<Trailing: View>(_ title: String, sub: String? = nil, first: Bool = false,

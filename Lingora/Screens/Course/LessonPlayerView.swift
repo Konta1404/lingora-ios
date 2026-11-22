@@ -39,8 +39,19 @@ struct LessonPlayerView: View {
         VStack(spacing: 0) {
             HStack(spacing: 12) {
                 BackButton(systemName: "xmark") { if earned == nil && index > 0 { confirmQuit = true } else { dismiss() } }
-                ProgressBar(value: total == 0 ? 0 : Double(min(index, total)) / Double(total))
-                    .animation(.easeInOut(duration: 0.3), value: index)
+                if lesson.mode == .speed && earned == nil && meanings != nil {
+                    TimelineView(.periodic(from: .now, by: 0.25)) { tl in
+                        let left = max(0, 60 - tl.date.timeIntervalSince(started))
+                        HStack(spacing: 8) {
+                            ProgressBar(value: left / 60, color: left < 10 ? theme.errorText : theme.a)
+                            Text(verbatim: "\(Int(left.rounded(.up)))s").font(.fig(14, .bold)).monospacedDigit().frame(width: 36)
+                        }
+                        .onChange(of: left == 0) { _, over in if over && earned == nil { finishNow() } }
+                    }
+                } else {
+                    ProgressBar(value: total == 0 ? 0 : Double(min(index, total)) / Double(total))
+                        .animation(.easeInOut(duration: 0.3), value: index)
+                }
             }
             .padding(.horizontal, 20).padding(.vertical, 10)
 
@@ -102,6 +113,8 @@ struct LessonPlayerView: View {
         switch ex {
         case .meaning(_, let item, _), .listenPick(_, let item, _), .listenType(_, let item), .buildMeaning(_, let item, _):
             Speaker.shared.say(item.t, lang: lang)
+        case .reply(_, let d, _):
+            Speaker.shared.say(d.q.t, lang: lang, gender: .female)
         default: break
         }
     }
@@ -117,8 +130,11 @@ struct LessonPlayerView: View {
         case .buildTarget(_, let item, let tiles): r = Check.tiles(chosenTiles.map { tiles[$0] }, expected: item.t)
         case .buildMeaning(_, let item, let tiles): r = Check.tiles(chosenTiles.map { tiles[$0] }, expected: item.en)
         case .listenType(_, let item), .typeTarget(_, let item): r = Check.typed(typed, expected: item.t)
-        case .speak(_, let item): r = Check.spoken(heard, expected: item.t)
+        case .speak(_, let item), .speakTranslation(_, let item): r = Check.spoken(heard, expected: item.t)
         case .match: r = .right
+        case .pickPicture(_, let item, _): r = picked == item.t ? .right : .wrong("\(item.img ?? "") \(item.t)")
+        case .pictureCard(_, let item): r = Check.typed(typed, expected: item.t)
+        case .reply(_, let d, _): r = picked == d.a.t ? .right : .wrong(d.a.t)
         }
         result = r
         fieldFocused = false
@@ -138,19 +154,26 @@ struct LessonPlayerView: View {
             if let it, !it.1 { model.recordWord(it.0, right: false, lang: lang) }
             if !missed.contains(ex.id) {
                 missed.insert(ex.id)
-                queue.append(ex)        // comes back once at the end
+                if lesson.mode != .speed { queue.append(ex) }        // comes back once at the end
             }
         }
         // Hear the right answer after a miss.
         if r != .right, let t = target(of: ex) { Speaker.shared.say(t, lang: lang) }
+        // Speed round: no Continue button, straight on.
+        if lesson.mode == .speed {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) { if result != nil && earned == nil { next() } }
+        }
     }
 
     /// The word or sentence an exercise is about, with its original (English) meaning; true = sentence.
     private func item(of ex: Exercise) -> (CourseItem, Bool)? {
         let found: (CourseItem, Bool)?
         switch ex {
-        case .meaning(_, let i, _), .pickWord(_, let i, _), .listenPick(_, let i, _), .typeTarget(_, let i): found = (i, false)
-        case .buildTarget(_, let i, _), .buildMeaning(_, let i, _), .fillBlank(_, let i, _, _), .listenType(_, let i), .speak(_, let i): found = (i, true)
+        case .meaning(_, let i, _), .pickWord(_, let i, _), .listenPick(_, let i, _), .typeTarget(_, let i),
+             .pickPicture(_, let i, _), .pictureCard(_, let i): found = (i, false)
+        case .buildTarget(_, let i, _), .buildMeaning(_, let i, _), .fillBlank(_, let i, _, _), .listenType(_, let i), .speak(_, let i),
+             .speakTranslation(_, let i): found = (i, true)
+        case .reply(_, let d, _): found = (d.a, true)
         case .match: found = nil
         }
         guard var f = found else { return nil }
@@ -160,9 +183,17 @@ struct LessonPlayerView: View {
 
     private func target(of ex: Exercise) -> String? {
         switch ex {
-        case .buildTarget(_, let i, _), .typeTarget(_, let i), .listenType(_, let i), .fillBlank(_, let i, _, _): i.t
+        case .buildTarget(_, let i, _), .typeTarget(_, let i), .listenType(_, let i), .fillBlank(_, let i, _, _),
+             .pictureCard(_, let i), .speakTranslation(_, let i): i.t
+        case .reply(_, let d, _): d.a.t
         default: nil
         }
+    }
+
+    private func finishNow() {
+        SoundFX.play(.done)
+        let secs = Int(Date().timeIntervalSince(started))
+        withAnimation { earned = model.finishLesson(lesson, lang: lang, correct: firstTryRight, total: max(1, index), seconds: secs) }
     }
 
     private func next() {
@@ -180,8 +211,8 @@ struct LessonPlayerView: View {
     private func given(_ ex: Exercise) -> String {
         switch ex {
         case .buildTarget(_, _, let tiles), .buildMeaning(_, _, let tiles): chosenTiles.map { tiles[$0] }.joined(separator: " ")
-        case .listenType, .typeTarget: typed
-        case .speak: heard
+        case .listenType, .typeTarget, .pictureCard: typed
+        case .speak, .speakTranslation: heard
         default: picked ?? ""
         }
     }
@@ -201,10 +232,10 @@ struct LessonPlayerView: View {
     private var canCheck: Bool {
         guard let ex else { return false }
         switch ex {
-        case .meaning, .pickWord, .listenPick, .fillBlank: return picked != nil
+        case .meaning, .pickWord, .listenPick, .fillBlank, .pickPicture, .reply: return picked != nil
         case .buildTarget, .buildMeaning: return !chosenTiles.isEmpty
-        case .listenType, .typeTarget: return !typed.trimmingCharacters(in: .whitespaces).isEmpty
-        case .speak: return !heard.isEmpty && !dictation.isRecording
+        case .listenType, .typeTarget, .pictureCard: return !typed.trimmingCharacters(in: .whitespaces).isEmpty
+        case .speak, .speakTranslation: return !heard.isEmpty && !dictation.isRecording
         case .match(_, let items): return matched.count == items.count
         }
     }
@@ -237,7 +268,7 @@ struct LessonPlayerView: View {
                 Button(L("Continue"), action: next).buttonStyle(.primary)
             } else {
                 HStack(spacing: 10) {
-                    if case .speak = ex {
+                    if ex.isSpeaking {
                         Button(L("Can't speak now")) {
                             model.s.settings.speakingExercises = false
                             next()
@@ -293,26 +324,68 @@ struct LessonPlayerView: View {
         case .typeTarget(_, let item):
             promptCard(item.en, speak: false)
             answerField(L("Type in %@", model.language(lang)?.name ?? ""))
+        case .pickPicture(_, let item, let options):
+            promptCard(item.t, speak: true)
+            HStack(spacing: 10) {
+                ForEach(options, id: \.t) { o in
+                    let on = picked == o.t
+                    Button { if result == nil { picked = o.t; Haptics.tap() } } label: {
+                        VStack(spacing: 6) {
+                            Text(verbatim: o.img ?? "?").font(.system(size: 54))
+                            Text(meanings?[o.en] ?? o.en).font(.fig(13, .semibold)).foregroundStyle(theme.muted)
+                                .lineLimit(2).multilineTextAlignment(.center).opacity(result == nil ? 0 : 1)
+                        }
+                        .frame(maxWidth: .infinity, minHeight: 130)
+                        .background(on ? theme.at : theme.card, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                        .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).strokeBorder(on ? theme.a : theme.line, lineWidth: on ? 2 : 1.5))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        case .pictureCard(let id, let item):
+            Text(verbatim: item.img ?? "").font(.system(size: 96)).frame(maxWidth: .infinity).padding(.vertical, 8).id(id)
+            answerField(L("Type in %@", model.language(lang)?.name ?? ""))
+        case .reply(_, let d, let options):
+            HStack(alignment: .top, spacing: 10) {
+                Avatar(initial: "A", hue: Hue(h: 340), size: 36)
+                Button { Speaker.shared.say(d.q.t, lang: lang, gender: .female) } label: {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Label(d.q.t, systemImage: "speaker.wave.2.fill").font(.fig(17, .semibold)).foregroundStyle(theme.text)
+                        Text(d.q.en).font(.fig(13)).foregroundStyle(theme.muted)
+                    }
+                    .padding(12).frame(maxWidth: .infinity, alignment: .leading)
+                    .background(theme.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                }
+                .buttonStyle(.plain)
+            }
+            choices(options, speak: true)
+        case .speakTranslation(_, let item):
+            promptCard(item.en, speak: false)
+            speechBlock(item.t, hint: L("Hold the mic and say it in %@", model.language(lang)?.name ?? ""))
         case .speak(_, let item):
             promptCard(item.t, speak: true, sub: item.en)
+            speechBlock(item.t, hint: L("Hold the mic and read the sentence"))
+        case .match(_, let items):
+            matchBoard(items)
+        }
+    }
+
+    private func speechBlock(_ expected: String, hint: String) -> some View {
             VStack(spacing: 12) {
                 HoldToTalkButton(dictation: dictation) {
                     heard = ""
                     dictation.press(language: lang) { heard = $0 }
                 }
                 if heard.isEmpty {
-                    Text(L("Hold the mic and read the sentence"))
+                    Text(hint)
                         .font(.fig(15)).foregroundStyle(theme.muted).multilineTextAlignment(.center)
                 } else {
-                    pronunciation(item.t)
+                    pronunciation(expected)
                 }
             }
             .frame(maxWidth: .infinity).padding(.top, 20)
             .onAppear { dictation.prepare(language: lang) }
             .onDisappear { dictation.shutdown() }
-        case .match(_, let items):
-            matchBoard(items)
-        }
     }
 
     /// Each word of the sentence coloured by how well it was heard, plus a score.
@@ -384,7 +457,8 @@ struct LessonPlayerView: View {
                     guard result == nil else { return }
                     picked = o
                     Haptics.tap()
-                    if speak { Speaker.shared.say(o, lang: lang) }
+                    if speak && lesson.mode != .speed { Speaker.shared.say(o, lang: lang) }
+                    if lesson.mode == .speed, let ex { check(ex) }   // speed round: a tap is the answer
                 } label: {
                     Text(o).font(.fig(17, .semibold)).foregroundStyle(on ? theme.ad : theme.text)
                         .frame(maxWidth: .infinity, minHeight: 54)
@@ -518,6 +592,7 @@ struct LessonPlayerView: View {
         switch lesson.mode {
         case .normal: L("Lesson complete!")
         case .practice, .listening, .speaking: L("Practice done!")
+        case .speed: L("%lld right in 60 seconds!", firstTryRight)
         case .jump: passedJump ? L("You jumped ahead!") : L("Not quite yet")
         }
     }

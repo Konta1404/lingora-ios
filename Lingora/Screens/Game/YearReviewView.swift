@@ -7,6 +7,14 @@ struct YearReviewView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var page = 0
 
+    /// "3 h 25 min" in the iPhone's language.
+    static func duration(_ seconds: Int) -> String {
+        let f = DateComponentsFormatter()
+        f.unitsStyle = .abbreviated
+        f.allowedUnits = seconds >= 3600 ? [.hour, .minute] : [.minute]
+        return f.string(from: TimeInterval(max(60, seconds))) ?? ""
+    }
+
     private var year: String { String(DateUtil.dayKey().prefix(4)) }
     private var t: YearTotal { model.s.yearTotals[year] ?? YearTotal() }
 
@@ -15,7 +23,7 @@ struct YearReviewView: View {
         let topName = top.flatMap { model.language($0.key)?.name } ?? "—"
         let cards: [(String, String, String, Color)] = [
             ("calendar", L("Your %@ in Lingora", year), L("Let's look back."), theme.a),
-            ("clock.fill", "\(t.seconds / 3600) h \(t.seconds % 3600 / 60) min", L("spent learning"), .orange),
+            ("clock.fill", Self.duration(t.seconds), L("spent learning"), .orange),
             ("sun.max.fill", "\(t.daysActive.count)", L("days you practised"), .yellow),
             ("bolt.fill", "\(t.xp) XP", L("earned"), theme.a),
             ("book.fill", "\(t.lessons)", L("lessons finished"), .blue),

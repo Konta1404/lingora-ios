@@ -8,6 +8,14 @@ import AVFoundation
 struct CourseItem: Codable, Hashable {
     var t: String     // target language
     var en: String    // meaning (English; shown in the app's language when a translation is available)
+    var img: String? = nil   // picture (emoji) for picture exercises
+}
+
+/// A line and its natural reply, for "pick the right answer in the conversation".
+struct CourseDialogue: Codable, Hashable {
+    var q: CourseItem
+    var a: CourseItem
+    var wrong: [String]
 }
 
 struct CourseUnit: Codable, Identifiable, Hashable {
@@ -16,6 +24,7 @@ struct CourseUnit: Codable, Identifiable, Hashable {
     var tip: String?
     var words: [CourseItem]
     var sentences: [CourseItem]
+    var dialogues: [CourseDialogue]? = nil
 }
 
 struct CourseSection: Codable, Identifiable, Hashable {
@@ -60,6 +69,8 @@ enum LessonMode: Hashable {
     case listening
     /// Only speaking exercises.
     case speaking
+    /// 60-second speed round.
+    case speed
 }
 
 struct CourseLesson: Identifiable, Hashable {
@@ -73,6 +84,7 @@ struct CourseLesson: Identifiable, Hashable {
         case .jump(let s): "jump-\(unit.id)-\(s)"
         case .listening: "listening-\(unit.id)"
         case .speaking: "speaking-\(unit.id)"
+        case .speed: "speed-\(unit.id)"
         }
     }
 }
@@ -118,12 +130,28 @@ enum Exercise: Identifiable, Hashable {
     case typeTarget(id: String, item: CourseItem)
     /// Read the sentence aloud.
     case speak(id: String, item: CourseItem)
+    /// Word shown → pick its picture.
+    case pickPicture(id: String, item: CourseItem, options: [CourseItem])
+    /// Picture shown → type the word.
+    case pictureCard(id: String, item: CourseItem)
+    /// Someone says something → pick the right reply.
+    case reply(id: String, dialogue: CourseDialogue, options: [String])
+    /// Meaning shown → say it in the language.
+    case speakTranslation(id: String, item: CourseItem)
 
     var id: String {
         switch self {
         case .meaning(let id, _, _), .pickWord(let id, _, _), .match(let id, _), .buildTarget(let id, _, _),
              .buildMeaning(let id, _, _), .fillBlank(let id, _, _, _), .listenPick(let id, _, _),
-             .listenType(let id, _), .typeTarget(let id, _), .speak(let id, _): id
+             .listenType(let id, _), .typeTarget(let id, _), .speak(let id, _), .pickPicture(let id, _, _),
+             .pictureCard(let id, _), .reply(let id, _, _), .speakTranslation(let id, _): id
+        }
+    }
+
+    var isSpeaking: Bool {
+        switch self {
+        case .speak, .speakTranslation: true
+        default: false
         }
     }
 
@@ -139,6 +167,10 @@ enum Exercise: Identifiable, Hashable {
         case .listenType: L("Type what you hear")
         case .typeTarget: L("Type this in your new language")
         case .speak: L("Read this aloud")
+        case .pickPicture: L("Which picture is it?")
+        case .pictureCard: L("What is this?")
+        case .reply: L("Choose the right answer")
+        case .speakTranslation: L("Say this in your new language")
         }
     }
 }
@@ -150,6 +182,7 @@ enum LessonBuilder {
         let half = max(1, u.words.count / 2)
         let m: (CourseItem) -> CourseItem = { CourseItem(t: $0.t, en: meanings[$0.en] ?? $0.en) }
         let words = u.words.map(m), sentences = u.sentences.map(m)
+        let md: (CourseDialogue) -> CourseDialogue = { CourseDialogue(q: m($0.q), a: m($0.a), wrong: $0.wrong) }
         var out: [Exercise] = []
         var n = 0
         func next() -> String { n += 1; return "\(lesson.id)-\(n)" }
@@ -165,7 +198,21 @@ enum LessonBuilder {
             out += sentences.shuffled().prefix(5).map { Exercise.listenType(id: next(), item: $0) }
             return out.shuffled()
         case .speaking:
-            return (Array(sentences.shuffled().prefix(6)) + Array(words.shuffled().prefix(3))).map { Exercise.speak(id: next(), item: $0) }
+            var out = (Array(sentences.shuffled().prefix(5)) + Array(words.shuffled().prefix(2))).map { Exercise.speak(id: next(), item: $0) }
+            out += sentences.filter { Check.words($0.t).count <= 6 }.shuffled().prefix(3).map { Exercise.speakTranslation(id: next(), item: $0) }
+            return out.shuffled()
+        case .speed:
+            // Quick taps only; the player stops at 60 seconds.
+            let wordPool = words.map(\.t), meaningPool = words.map(\.en)
+            func three(_ pool: [String], _ x: String) -> [String] { (Array(pool.filter { $0 != x }.shuffled().prefix(2)) + [x]).shuffled() }
+            var out: [Exercise] = []
+            for _ in 0..<3 {
+                for (i, w) in words.shuffled().enumerated() {
+                    out.append(i % 2 == 0 ? Exercise.meaning(id: next(), item: w, options: three(meaningPool, w.en))
+                                          : Exercise.pickWord(id: next(), item: w, options: three(wordPool, w.t)))
+                }
+            }
+            return out
         default:
             return mixed(words: words, sentences: sentences, count: lesson.mode == .practice ? 12 : 15, next: next)
         }
@@ -184,12 +231,21 @@ enum LessonBuilder {
                 out.append(.pickWord(id: next(), item: w, options: (others(words.map(\.t), not: w.t, count: 2) + [w.t]).shuffled()))
             }
             if let w = set.randomElement() { out.append(.typeTarget(id: next(), item: w)) }
+            let pics = words.filter { $0.img != nil }
+            for w in set.filter({ $0.img != nil }).shuffled().prefix(2) where pics.count >= 3 {
+                out.append(.pickPicture(id: next(), item: w, options: (Array(pics.filter { $0.t != w.t }.shuffled().prefix(2)) + [w]).shuffled()))
+            }
+            if let w = set.filter({ $0.img != nil }).randomElement() { out.append(.pictureCard(id: next(), item: w)) }
         case .sentences:
             for s in sentences.prefix(3) { out.append(.buildTarget(id: next(), item: s, tiles: tiles(s.t, extra: words.map(\.t)))) }
             for s in sentences.dropFirst(3).prefix(2) { out.append(.buildMeaning(id: next(), item: s, tiles: tiles(s.en, extra: words.map(\.en)))) }
             if let s = sentences.randomElement() { out.append(fill(s, id: next(), pool: words.map(\.t))) }
             if let s = sentences.randomElement() { out.append(.listenType(id: next(), item: s)) }
             if allowSpeaking, let s = sentences.randomElement() { out.append(.speak(id: next(), item: s)) }
+            for d in (u.dialogues ?? []).map(md) { out.append(.reply(id: next(), dialogue: d, options: (d.wrong + [d.a.t]).shuffled())) }
+            if allowSpeaking, let s = sentences.filter({ Check.words($0.t).count <= 6 }).randomElement() {
+                out.append(.speakTranslation(id: next(), item: s))
+            }
         case .review:
             out.append(.match(id: next(), items: Array(words.shuffled().prefix(5))))
             for w in words.shuffled().prefix(2) { out.append(.typeTarget(id: next(), item: w)) }
@@ -198,6 +254,8 @@ enum LessonBuilder {
             if let s = sentences.randomElement() { out.append(.listenType(id: next(), item: s)) }
             if allowSpeaking, let s = sentences.randomElement() { out.append(.speak(id: next(), item: s)) }
             if let w = words.randomElement() { out.append(.listenPick(id: next(), item: w, options: (others(words.map(\.t), not: w.t, count: 2) + [w.t]).shuffled())) }
+            if let d = (u.dialogues ?? []).randomElement().map(md) { out.append(.reply(id: next(), dialogue: d, options: (d.wrong + [d.a.t]).shuffled())) }
+            if let w = words.filter({ $0.img != nil }).randomElement() { out.append(.pictureCard(id: next(), item: w)) }
         }
         return out
     }

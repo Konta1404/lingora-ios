@@ -12,6 +12,7 @@ struct Story: Codable, Identifiable, Hashable {
         var isQuestion: Bool { q != nil }
     }
     var id: String
+    var kind: String?           // nil = dialogue story, "reading" = text with questions
     var title: String
     var level: String
     var unit: String?           // unlocks after this unit's first lesson

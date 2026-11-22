@@ -60,6 +60,7 @@ struct PracticeView: View {
                              lesson: model.mistakesLesson(lang))
                         tile(L("Listening"), sub: L("Ears only"), icon: "ear.fill", lesson: model.listeningLesson(lang))
                         tile(L("Speaking"), sub: L("Read aloud"), icon: "mic.fill", lesson: model.speakingLesson(lang))
+                        tile(L("Speed round"), sub: L("60 seconds"), icon: "timer", lesson: model.speedLesson(lang))
                     }
                     Button { showWords = true } label: {
                         HStack {
@@ -72,9 +73,34 @@ struct PracticeView: View {
                     }
                     .buttonStyle(.plain)
 
-                    let stories = model.stories(lang)
+                    let all = model.stories(lang)
+                    ForEach([(L("Stories"), all.filter { $0.kind == nil }), (L("Reading"), all.filter { $0.kind == "reading" })], id: \.0) { section in
+                        storyList(section.0, section.1)
+                    }
+                    if !all.isEmpty {
+                        Text(L("Stories open as you finish the matching course units.")).font(.fig(12)).foregroundStyle(theme.muted)
+                    }
+                }
+                .padding(.horizontal, 20).padding(.bottom, 24)
+            }
+        }
+        .background(theme.ground)
+        .fullScreenCover(item: $playing) { l in
+            LessonPlayerView(lesson: l, lang: lang).environmentObject(model).environment(\.theme, model.theme)
+        }
+        .fullScreenCover(item: $story) { st in
+            StoryPlayerView(story: st, lang: lang).environmentObject(model).environment(\.theme, model.theme)
+        }
+        .sheet(isPresented: $showWords) {
+            WordListView(lang: lang).environmentObject(model).environment(\.theme, model.theme)
+                .presentationDetents([.large]).presentationCornerRadius(28)
+        }
+    }
+
+    @ViewBuilder
+    private func storyList(_ title: String, _ stories: [Story]) -> some View {
                     if !stories.isEmpty {
-                        SectionLabel(text: L("Stories")).padding(.top, 6)
+                        SectionLabel(text: title).padding(.top, 6)
                         VStack(spacing: 0) {
                             ForEach(Array(stories.enumerated()), id: \.element.id) { i, st in
                                 let open = model.storyUnlocked(st), done = model.s.storiesDone.contains(st.id)
@@ -100,23 +126,7 @@ struct PracticeView: View {
                             }
                         }
                         .card(padding: 0)
-                        Text(L("Stories open as you finish the matching course units.")).font(.fig(12)).foregroundStyle(theme.muted)
                     }
-                }
-                .padding(.horizontal, 20).padding(.bottom, 24)
-            }
-        }
-        .background(theme.ground)
-        .fullScreenCover(item: $playing) { l in
-            LessonPlayerView(lesson: l, lang: lang).environmentObject(model).environment(\.theme, model.theme)
-        }
-        .fullScreenCover(item: $story) { st in
-            StoryPlayerView(story: st, lang: lang).environmentObject(model).environment(\.theme, model.theme)
-        }
-        .sheet(isPresented: $showWords) {
-            WordListView(lang: lang).environmentObject(model).environment(\.theme, model.theme)
-                .presentationDetents([.large]).presentationCornerRadius(28)
-        }
     }
 
     private func tile(_ title: String, sub: String, icon: String, lesson: CourseLesson?) -> some View {

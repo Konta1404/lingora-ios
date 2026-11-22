@@ -102,7 +102,8 @@ enum Backend {
 
     static func message(for error: Error) -> String {
         let ns = error as NSError
-        if ns.domain == FunctionsErrorDomain, let msg = ns.userInfo[NSLocalizedDescriptionKey] as? String { return msg }
+        // Server messages are English; the app's string catalog carries their translations.
+        if ns.domain == FunctionsErrorDomain, let msg = ns.userInfo[NSLocalizedDescriptionKey] as? String { return L(msg) }
         return error.localizedDescription
     }
 }

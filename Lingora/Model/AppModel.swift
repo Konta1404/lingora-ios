@@ -1128,6 +1128,12 @@ final class AppModel: ObservableObject {
         reviewLesson(lang).map { CourseLesson(unit: $0.unit, kind: .review, mode: .listening) }
     }
 
+    func speedLesson(_ lang: String) -> CourseLesson? {
+        guard let w = wordsLesson(lang) else { return nil }
+        let unit = CourseUnit(id: "speed-\(lang)", title: "Speed round", tip: nil, words: learnedWords(lang), sentences: [])
+        return w.unit.words.count >= 4 ? CourseLesson(unit: unit, kind: .review, mode: .speed) : nil
+    }
+
     func speakingLesson(_ lang: String) -> CourseLesson? {
         reviewLesson(lang).map { CourseLesson(unit: $0.unit, kind: .review, mode: .speaking) }
     }
