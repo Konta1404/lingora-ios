@@ -225,7 +225,7 @@
 				DEVELOPMENT_TEAM = 3T5357J877;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				GOOGLE_REVERSED_CLIENT_ID = "com.googleusercontent.apps.REPLACE-WITH-YOUR-REVERSED-CLIENT-ID";
+				GOOGLE_REVERSED_CLIENT_ID = "com.googleusercontent.apps.550654206602-5gucgvp3409jr1449kbrftlbql6f8v47";
 				INFOPLIST_FILE = Config/Info.plist;
 				LINGORA_API_URL = "https://lingora-backend-67bv.onrender.com";
 				INFOPLIST_KEY_CFBundleDisplayName = Lingora;
@@ -259,7 +259,7 @@
 				DEVELOPMENT_TEAM = 3T5357J877;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				GOOGLE_REVERSED_CLIENT_ID = "com.googleusercontent.apps.REPLACE-WITH-YOUR-REVERSED-CLIENT-ID";
+				GOOGLE_REVERSED_CLIENT_ID = "com.googleusercontent.apps.550654206602-5gucgvp3409jr1449kbrftlbql6f8v47";
 				INFOPLIST_FILE = Config/Info.plist;
 				LINGORA_API_URL = "https://lingora-backend-67bv.onrender.com";
 				INFOPLIST_KEY_CFBundleDisplayName = Lingora;
