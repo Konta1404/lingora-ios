@@ -60,7 +60,7 @@ struct TutorView: View {
                             case .correction:
                                 CorrectionBubble(wrong: m.wrong ?? "", right: m.right ?? "", note: m.note ?? "")
                             default:
-                                ChatBubble(text: m.text, mine: m.role == .me, speakLang: lang?.key)
+                                ChatBubble(text: m.text, mine: m.role == .me, speakLang: lang?.key, showRomanization: model.s.settings.showRomanization)
                             }
                         }
                         if model.tutorTyping {

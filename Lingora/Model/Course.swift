@@ -188,6 +188,22 @@ enum LessonBuilder {
         func next() -> String { n += 1; return "\(lesson.id)-\(n)" }
         func others<T: Equatable>(_ pool: [T], not x: T, count: Int) -> [T] { Array(pool.filter { $0 != x }.shuffled().prefix(count)) }
 
+        // Alphabet practice: letter ↔ sound, by ear and by matching (no typing in another script).
+        if u.id.hasPrefix("alphabet-") {
+            let chars = u.words.map(\.t), sounds = u.words.map(\.en)
+            func three(_ pool: [String], _ x: String) -> [String] { (Array(pool.filter { $0 != x }.shuffled().prefix(2)) + [x]).shuffled() }
+            var out: [Exercise] = []
+            for (i, w) in u.words.shuffled().enumerated() {
+                switch i % 3 {
+                case 0: out.append(.meaning(id: next(), item: w, options: three(sounds, w.en)))
+                case 1: out.append(.pickWord(id: next(), item: w, options: three(chars, w.t)))
+                default: out.append(.listenPick(id: next(), item: w, options: three(chars, w.t)))
+                }
+            }
+            out.insert(.match(id: next(), items: Array(u.words.shuffled().prefix(5))), at: min(3, out.count))
+            return out
+        }
+
         switch lesson.mode {
         case .normal: break
         case .listening:

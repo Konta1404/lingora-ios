@@ -85,6 +85,7 @@ final class AppModel: ObservableObject {
         $s.dropFirst()
             .debounce(for: .milliseconds(600), scheduler: RunLoop.main)
             .sink { [weak self] state in
+                Haptics.enabled = state.settings.haptics
                 if let data = try? JSONEncoder().encode(state) { try? data.write(to: Self.file("lingora-state.json"), options: .atomic) }
                 if let uid = self?.signedInUID, self?.cloudLoaded == true { CloudSync.save(state: state, uid: uid) }
             }
@@ -101,6 +102,7 @@ final class AppModel: ObservableObject {
             signedInUID = Auth.auth().currentUser?.uid
             if signedInUID != nil { prepareInviteQR() }
         }
+        Haptics.enabled = s.settings.haptics
         maintainStreak()
         if Backend.isConfigured {
             authHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
@@ -543,11 +545,15 @@ final class AppModel: ObservableObject {
     private func addXP(_ n: Int) {
         let k = DateUtil.dayKey()
         let before = s.days[k]?.xp ?? 0
+        let n = n > 0 && doubleXPActive ? n * 2 : n
         s.days[k, default: DayStat()].xp = max(0, before + n)
         s.totalXP = max(0, s.totalXP + n)
         s.yearTotals[String(k.prefix(4)), default: YearTotal()].xp += n
         let goal = s.settings.dailyXPGoal
-        if before < goal && before + n >= goal { celebration = .dailyGoal(goal) }
+        if before < goal && before + n >= goal {
+            celebration = .dailyGoal(goal)
+            s.gems += 5
+        }
         if s.days.count > 120, let cutoff = DateUtil.calendar.date(byAdding: .day, value: -100, to: Date()) {
             let c = DateUtil.dayKey(cutoff)
             s.days = s.days.filter { $0.key >= c }
@@ -571,6 +577,7 @@ final class AppModel: ObservableObject {
         for q in todaysQuests where !questDone(q) && q.progress(today, minutes: todayMinutes) >= q.target {
             s.claimedQuests.insert("\(k)|\(q.id)")
             s.days[k, default: DayStat()].quests += 1
+            s.gems += 10
             addXP(q.reward)
             celebration = .quest(q.title, q.reward)
         }
@@ -578,6 +585,7 @@ final class AppModel: ObservableObject {
             let cutoff = DateUtil.dayKey(DateUtil.calendar.date(byAdding: .day, value: -40, to: Date()) ?? Date())
             s.claimedQuests = s.claimedQuests.filter { $0 >= cutoff }
         }
+        checkMonthly()
         if let r = s.repairDay, today.lessons >= 2 {
             s.frozenDays.insert(r)
             s.repairDay = nil
@@ -617,6 +625,92 @@ final class AppModel: ObservableObject {
         s.claimedQuests.insert(friendsQuestKey)
         addXP(25)
         celebration = .quest(L("Friends Quest"), 25)
+    }
+
+    /// Progress, settings and word memory as one JSON file.
+    var exportData: Data {
+        let e = JSONEncoder()
+        e.outputFormatting = [.prettyPrinted, .sortedKeys]
+        e.dateEncodingStrategy = .iso8601
+        var out: [String: Any] = [:]
+        if let st = try? e.encode(s), let j = try? JSONSerialization.jsonObject(with: st) { out["progress"] = j }
+        var slim = vocab
+        slim.translations = [:]
+        if let v = try? e.encode(slim), let j = try? JSONSerialization.jsonObject(with: v) { out["germanWords"] = j }
+        out["exportedAt"] = ISO8601DateFormatter().string(from: Date())
+        return (try? JSONSerialization.data(withJSONObject: out, options: [.prettyPrinted, .sortedKeys])) ?? Data()
+    }
+
+    // MARK: - Gems & shop
+
+    var doubleXPActive: Bool { (s.doubleXPUntil ?? .distantPast) > Date() }
+    var chestReady: Bool { today.xp >= s.settings.dailyXPGoal && s.chestDay != DateUtil.dayKey() }
+
+    func canBuy(_ item: ShopItem) -> Bool {
+        guard s.gems >= item.price else { return false }
+        switch item {
+        case .freeze: return s.streakFreezes < 2
+        case .doubleXP: return !doubleXPActive
+        case .repair: return s.repairDay != nil
+        }
+    }
+
+    func buy(_ item: ShopItem) {
+        guard canBuy(item) else { return }
+        s.gems -= item.price
+        switch item {
+        case .freeze: s.streakFreezes += 1
+        case .doubleXP: s.doubleXPUntil = Date().addingTimeInterval(15 * 60)
+        case .repair:
+            if let r = s.repairDay { s.frozenDays.insert(r) }
+            s.repairDay = nil
+            celebration = .repaired
+        }
+        SoundFX.play(.right)
+        Haptics.success()
+    }
+
+    /// The daily chest: gems, sometimes 15 minutes of Double XP.
+    func openChest() -> (gems: Int, doubleXP: Bool) {
+        guard chestReady else { return (0, false) }
+        s.chestDay = DateUtil.dayKey()
+        let roll = Int.random(in: 0..<100)
+        if roll < 15 && !doubleXPActive {
+            s.doubleXPUntil = Date().addingTimeInterval(15 * 60)
+            return (0, true)
+        }
+        let g = [5, 10, 10, 15, 20, 30].randomElement() ?? 10
+        s.gems += g
+        return (g, false)
+    }
+
+    // Monthly challenge & events
+
+    var monthQuests: Int { s.claimedQuests.filter { $0.hasPrefix(MonthlyChallenge.month) }.count }
+
+    func checkMonthly() {
+        let m = MonthlyChallenge.month
+        if monthQuests >= MonthlyChallenge.goal && !s.monthlyBadges.contains(m) {
+            s.monthlyBadges.insert(m)
+            s.gems += 100
+            celebration = .quest(L("%@ challenge", MonthlyChallenge.title(m)), 100)
+        }
+    }
+
+    func eventProgress(_ e: LingoraEvent) -> Int {
+        let days = s.days.filter { $0.key >= e.start && $0.key <= e.end }.values
+        switch e.goal {
+        case .lessons: return days.reduce(0) { $0 + $1.lessons }
+        case .xp: return days.reduce(0) { $0 + $1.xp }
+        }
+    }
+
+    func claimEvent(_ e: LingoraEvent) {
+        guard eventProgress(e) >= e.target, !s.eventRewards.contains(e.id) else { return }
+        s.eventRewards.insert(e.id)
+        s.gems += e.gems
+        SoundFX.play(.done)
+        Haptics.success()
     }
 
     /// On launch and when the app comes back: use a freeze for a missed yesterday, or offer a repair.
@@ -1229,6 +1323,7 @@ final class AppModel: ObservableObject {
     /// Records a finished lesson: practice time, level points and a feed update.
     /// Returns the points, or nil when a jump test wasn't passed.
     func finishLesson(_ l: CourseLesson, lang: String, correct: Int, total: Int, seconds: Int) -> Int {
+        if l.unit.id.hasPrefix("alphabet-") { s.courseDone.insert(l.unit.id) }
         if l.mode != .normal {
             let passed = total > 0 && Double(correct) / Double(total) >= 0.8
             if case .jump(let section) = l.mode, passed, let c = course(lang) {
@@ -1242,6 +1337,7 @@ final class AppModel: ObservableObject {
             return xp
         }
         bumpDay { $0.lessons += 1; if correct == total { $0.perfect += 1 } }
+        s.gems += correct == total ? 10 : 5
         let first = !isDone(l)
         s.courseDone.insert(l.id)
         let xp = 10 + correct + (first ? 5 : 0)

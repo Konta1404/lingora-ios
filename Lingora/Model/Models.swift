@@ -130,6 +130,9 @@ struct AppSettings: Codable, Equatable {
     var speakingExercises = true
     var soundEffects = true
     var dailyXPGoal = 20
+    var haptics = true
+    var listeningExercises = true
+    var showRomanization = true
 
     init() {}
 
@@ -148,6 +151,9 @@ struct AppSettings: Codable, Equatable {
         speakingExercises = v(.speakingExercises, d.speakingExercises)
         soundEffects = v(.soundEffects, d.soundEffects)
         dailyXPGoal = v(.dailyXPGoal, d.dailyXPGoal)
+        haptics = v(.haptics, d.haptics)
+        listeningExercises = v(.listeningExercises, d.listeningExercises)
+        showRomanization = v(.showRomanization, d.showRomanization)
     }
 }
 
@@ -186,6 +192,12 @@ struct PersistedState: Codable {
     var freezeAwardedAt = 0
     var claimedQuests: Set<String> = []
     var storiesDone: Set<String> = []
+    // Gems & shop
+    var gems = 50
+    var doubleXPUntil: Date? = nil
+    var chestDay: String? = nil
+    var monthlyBadges: Set<String> = []
+    var eventRewards: Set<String> = []
     /// What the tutor remembers about the learner, per language.
     var tutorMemory: [String: [String]] = [:]
     /// Totals per calendar year ("2026") for the year in review.
@@ -231,6 +243,11 @@ struct PersistedState: Codable {
         claimedQuests = v(.claimedQuests, d.claimedQuests)
         repairDay = (try? c.decodeIfPresent(String.self, forKey: .repairDay)) ?? nil
         storiesDone = v(.storiesDone, d.storiesDone)
+        gems = v(.gems, d.gems)
+        doubleXPUntil = (try? c.decodeIfPresent(Date.self, forKey: .doubleXPUntil)) ?? nil
+        chestDay = (try? c.decodeIfPresent(String.self, forKey: .chestDay)) ?? nil
+        monthlyBadges = v(.monthlyBadges, d.monthlyBadges)
+        eventRewards = v(.eventRewards, d.eventRewards)
         tutorMemory = v(.tutorMemory, d.tutorMemory)
         yearTotals = v(.yearTotals, d.yearTotals)
         wordMemory = v(.wordMemory, d.wordMemory)

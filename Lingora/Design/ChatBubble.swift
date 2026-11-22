@@ -10,6 +10,7 @@ struct ChatBubble: View {
     var translatable = true
     /// Language key to read the message in (nil = no Listen option).
     var speakLang: String? = nil
+    var showRomanization = false
 
     @State private var showTranslation = false
     @State private var translated: String?
@@ -28,6 +29,9 @@ struct ChatBubble: View {
                 Text(text)
                     .font(.fig(15))
                     .foregroundStyle(mine ? .white : theme.text)
+                if let speakLang, showRomanization, let r = Romanize.latin(text, lang: speakLang) {
+                    Text(r).font(.fig(12)).italic().foregroundStyle(mine ? Color.white.opacity(0.8) : theme.muted)
+                }
                 if showTranslation {
                     Rectangle().fill(mine ? Color.white.opacity(0.35) : theme.line).frame(height: 1)
                     Group {

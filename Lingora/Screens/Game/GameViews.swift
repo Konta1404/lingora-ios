@@ -5,6 +5,8 @@ struct DailyGoalCard: View {
     @EnvironmentObject private var model: AppModel
     @Environment(\.theme) private var theme
     @State private var showStreak = false
+    @State private var showShop = false
+    @State private var chestResult: String?
 
     var body: some View {
         let xp = model.today.xp, goal = max(1, model.s.settings.dailyXPGoal)
@@ -23,7 +25,13 @@ struct DailyGoalCard: View {
                 }
                 .frame(width: 70, height: 70)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(xp >= goal ? L("Daily goal reached") : L("Daily goal")).font(.fig(16, .bold))
+                    HStack(spacing: 8) {
+                        Text(xp >= goal ? L("Daily goal reached") : L("Daily goal")).font(.fig(16, .bold))
+                        if model.doubleXPActive {
+                            Text(verbatim: "2× XP").font(.fig(11, .bold)).foregroundStyle(.white)
+                                .padding(.horizontal, 6).frame(height: 20).background(Color.orange, in: Capsule())
+                        }
+                    }
                     Button { showStreak = true } label: {
                         HStack(spacing: 6) {
                             Image(systemName: "flame.fill").foregroundStyle(model.practisedToday ? Color.orange : theme.muted)
@@ -39,6 +47,28 @@ struct DailyGoalCard: View {
                     .accessibilityLabel(L("Streak calendar"))
                 }
                 Spacer(minLength: 0)
+                Button { showShop = true } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "diamond.fill").foregroundStyle(Color.cyan)
+                        Text(verbatim: "\(model.s.gems)").font(.fig(15, .bold)).foregroundStyle(theme.text)
+                    }
+                    .padding(.horizontal, 10).frame(height: 32).background(theme.chip, in: Capsule())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(L("Shop · %lld gems", model.s.gems))
+            }
+            if model.chestReady {
+                Button {
+                    let r = model.openChest()
+                    chestResult = r.doubleXP ? L("Double XP for 15 minutes!") : L("+%lld gems", r.gems)
+                    SoundFX.play(.done)
+                    Haptics.success()
+                } label: {
+                    Label(L("Open today's chest"), systemImage: "gift.fill").frame(maxWidth: .infinity)
+                }
+                .buttonStyle(PrimaryButtonStyle(kind: .accent, height: 44))
+            } else if let chestResult {
+                Label(chestResult, systemImage: "gift.fill").font(.fig(14, .semibold)).foregroundStyle(theme.ad)
             }
             if let r = model.s.repairDay {
                 HStack(alignment: .top, spacing: 10) {
@@ -54,6 +84,10 @@ struct DailyGoalCard: View {
             ForEach(model.todaysQuests) { q in QuestRow(quest: q) }
         }
         .card()
+        .sheet(isPresented: $showShop) {
+            ShopView().environmentObject(model).environment(\.theme, model.theme)
+                .presentationDetents([.medium, .large]).presentationCornerRadius(28)
+        }
         .sheet(isPresented: $showStreak) {
             StreakView()
                 .environmentObject(model)
@@ -373,5 +407,101 @@ struct FriendsQuestCard: View {
             }
             .card()
         }
+    }
+}
+
+struct ShopView: View {
+    @EnvironmentObject private var model: AppModel
+    @Environment(\.theme) private var theme
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 14) {
+                HStack {
+                    Text(L("Shop")).font(.fig(24, .bold))
+                    Spacer()
+                    HStack(spacing: 4) {
+                        Image(systemName: "diamond.fill").foregroundStyle(Color.cyan)
+                        Text(verbatim: "\(model.s.gems)").font(.fig(17, .bold))
+                    }
+                    BackButton(systemName: "xmark") { dismiss() }
+                }
+                .padding(.top, 20)
+                ForEach(ShopItem.allCases) { item in
+                    HStack(spacing: 12) {
+                        Image(systemName: item.icon).font(.system(size: 18, weight: .bold)).foregroundStyle(.white)
+                            .frame(width: 46, height: 46).background(theme.a, in: Circle())
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(item.title).font(.fig(15, .bold))
+                            Text(item.detail).font(.fig(12)).foregroundStyle(theme.muted)
+                        }
+                        Spacer(minLength: 4)
+                        Button { model.buy(item) } label: {
+                            HStack(spacing: 3) {
+                                Image(systemName: "diamond.fill").font(.system(size: 11))
+                                Text(verbatim: "\(item.price)").font(.fig(14, .bold))
+                            }
+                            .foregroundStyle(model.canBuy(item) ? .white : theme.muted)
+                            .padding(.horizontal, 12).frame(height: 34)
+                            .background(model.canBuy(item) ? theme.a : theme.chip, in: Capsule())
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(!model.canBuy(item))
+                    }
+                    .card(padding: 14)
+                }
+                Text(L("Earn gems by finishing lessons, quests and your daily goal, and from the daily chest."))
+                    .font(.fig(13)).foregroundStyle(theme.muted)
+            }
+            .padding(.horizontal, 20).padding(.bottom, 24)
+        }
+        .background(theme.ground)
+    }
+}
+
+/// Today: this month's quest challenge and any running events.
+struct ChallengesCard: View {
+    @EnvironmentObject private var model: AppModel
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        let m = MonthlyChallenge.month
+        let n = model.monthQuests, goal = MonthlyChallenge.goal
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 10) {
+                Image(systemName: model.s.monthlyBadges.contains(m) ? "rosette" : "calendar").font(.system(size: 16, weight: .bold))
+                    .foregroundStyle(.white).frame(width: 36, height: 36).background(Color.purple, in: Circle())
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(L("%@ challenge", MonthlyChallenge.title(m))).font(.fig(15, .bold))
+                    Text(L("Complete %lld daily quests this month for a badge", goal)).font(.fig(12)).foregroundStyle(theme.muted)
+                }
+                Spacer(minLength: 0)
+                Text(verbatim: "\(min(n, goal))/\(goal)").font(.fig(13, .bold)).foregroundStyle(theme.muted)
+            }
+            ProgressBar(value: Double(n) / Double(goal), color: .purple, height: 6)
+            ForEach(LingoraEvent.active()) { e in
+                let p = model.eventProgress(e), claimed = model.s.eventRewards.contains(e.id)
+                Rectangle().fill(theme.line).frame(height: 1)
+                HStack(spacing: 10) {
+                    Image(systemName: e.icon).font(.system(size: 15, weight: .bold)).foregroundStyle(.white)
+                        .frame(width: 36, height: 36).background(Color.orange, in: Circle())
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(e.title).font(.fig(15, .bold))
+                        Text("\(e.detail) · +\(e.gems) 💎").font(.fig(12)).foregroundStyle(theme.muted)
+                    }
+                    Spacer(minLength: 0)
+                    if claimed {
+                        Image(systemName: "checkmark.seal.fill").foregroundStyle(theme.a)
+                    } else if p >= e.target {
+                        PillButton(title: L("Claim"), bg: theme.a, fg: .white, height: 32) { model.claimEvent(e) }
+                    } else {
+                        Text(verbatim: "\(p)/\(e.target)").font(.fig(13, .bold)).foregroundStyle(theme.muted)
+                    }
+                }
+                if !claimed { ProgressBar(value: Double(p) / Double(e.target), color: .orange, height: 6) }
+            }
+        }
+        .card()
     }
 }

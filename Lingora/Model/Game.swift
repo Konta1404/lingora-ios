@@ -141,3 +141,92 @@ struct YearTotal: Codable, Hashable {
     var daysActive: Set<String> = []
     var xpByLanguage: [String: Int] = [:]
 }
+
+// MARK: - Shop
+
+enum ShopItem: String, CaseIterable, Identifiable {
+    case freeze, doubleXP, repair
+    var id: String { rawValue }
+    var price: Int {
+        switch self {
+        case .freeze: 50
+        case .doubleXP: 100
+        case .repair: 200
+        }
+    }
+    var icon: String {
+        switch self {
+        case .freeze: "snowflake"
+        case .doubleXP: "bolt.fill"
+        case .repair: "bandage.fill"
+        }
+    }
+    var title: String {
+        switch self {
+        case .freeze: L("Streak freeze")
+        case .doubleXP: L("Double XP · 15 min")
+        case .repair: L("Repair streak now")
+        }
+    }
+    var detail: String {
+        switch self {
+        case .freeze: L("Covers one missed day. You can hold two.")
+        case .doubleXP: L("Every XP you earn counts twice for 15 minutes.")
+        case .repair: L("Brings back the streak you lost yesterday.")
+        }
+    }
+}
+
+// MARK: - Monthly challenge & events
+
+enum MonthlyChallenge {
+    static let goal = 30   // daily quests in a month
+    static var month: String { String(DateUtil.dayKey().prefix(7)) }
+    static func title(_ month: String) -> String { DateUtil.format(DateUtil.date(month + "-15"), "MMMM") }
+}
+
+/// Time-limited events with a goal over the event's days.
+struct LingoraEvent: Identifiable {
+    enum Goal { case lessons(Int), xp(Int) }
+    var id: String
+    var title: String
+    var icon: String
+    var start: String
+    var end: String
+    var goal: Goal
+    var gems: Int
+
+    var target: Int {
+        switch goal {
+        case .lessons(let n), .xp(let n): n
+        }
+    }
+    var detail: String {
+        switch goal {
+        case .lessons(let n): L("Finish %lld lessons", n)
+        case .xp(let n): L("Earn %lld XP", n)
+        }
+    }
+
+    /// The weekend challenge every Saturday–Sunday, plus seasonal events.
+    static func active(on day: String = DateUtil.dayKey()) -> [LingoraEvent] {
+        let cal = DateUtil.calendar
+        let date = DateUtil.date(day)
+        var out: [LingoraEvent] = []
+        let wd = DateUtil.weekdayIndex(date)   // 0 = Monday
+        if wd >= 5 {
+            let sat = DateUtil.dayKey(cal.date(byAdding: .day, value: -(wd - 5), to: date) ?? date)
+            let sun = DateUtil.dayKey(cal.date(byAdding: .day, value: 1, to: DateUtil.date(sat)) ?? date)
+            out.append(LingoraEvent(id: "weekend-\(sat)", title: L("Weekend challenge"), icon: "sparkles",
+                                    start: sat, end: sun, goal: .lessons(5), gems: 50))
+        }
+        let y = String(day.prefix(4))
+        let seasonal = [
+            LingoraEvent(id: "winter-\(y)", title: L("Winter challenge"), icon: "snowflake", start: "\(y)-12-01", end: "\(y)-12-31", goal: .lessons(25), gems: 150),
+            LingoraEvent(id: "newyear-\(y)", title: L("New year, new words"), icon: "party.popper.fill", start: "\(y)-01-01", end: "\(y)-01-14", goal: .xp(500), gems: 150),
+            LingoraEvent(id: "summer-\(y)", title: L("Summer sprint"), icon: "sun.max.fill", start: "\(y)-07-01", end: "\(y)-07-31", goal: .lessons(25), gems: 150),
+        ]
+        out += seasonal.filter { $0.start <= day && day <= $0.end }
+        return out
+    }
+}

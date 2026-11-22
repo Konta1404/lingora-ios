@@ -507,8 +507,12 @@ struct FlowLayout: Layout {
 // MARK: - Haptics
 
 enum Haptics {
-    static func tap() { UIImpactFeedbackGenerator(style: .light).impactOccurred() }
-    static func success() { UINotificationFeedbackGenerator().notificationOccurred(.success) }
+    /// Me → Vibrations.
+    nonisolated(unsafe) static var enabled = true
+    static func tap() { if enabled { UIImpactFeedbackGenerator(style: .light).impactOccurred() } }
+    static func success() { if enabled { UINotificationFeedbackGenerator().notificationOccurred(.success) } }
+    static func error() { if enabled { UINotificationFeedbackGenerator().notificationOccurred(.error) } }
+    static func warning() { if enabled { UINotificationFeedbackGenerator().notificationOccurred(.warning) } }
     private static let heavy: UIImpactFeedbackGenerator = {
         let g = UIImpactFeedbackGenerator(style: .heavy)
         g.prepare()
@@ -516,11 +520,13 @@ enum Haptics {
     }()
     /// Recording started: one firm tap (generator kept ready so it fires without delay).
     static func recordStart() {
+        guard enabled else { return }
         heavy.impactOccurred(intensity: 1)
         heavy.prepare()
     }
     /// Recording stopped: two soft taps, so it feels different from the start.
     static func recordStop() {
+        guard enabled else { return }
         let g = UIImpactFeedbackGenerator(style: .medium)
         g.impactOccurred()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) { g.impactOccurred(intensity: 0.7) }

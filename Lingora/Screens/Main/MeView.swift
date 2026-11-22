@@ -13,6 +13,7 @@ struct MeView: View {
     @State private var photoBusy = false
     @State private var removing: Social.Person?
     @State private var showYear = false
+    @State private var showHelp = false
 
     var body: some View {
         let user = model.s.user
@@ -162,6 +163,17 @@ struct MeView: View {
                         }
                         .pickerStyle(.segmented)
                     }
+                    row(L("Vibrations")) {
+                        LingoraSwitch(isOn: $model.s.settings.haptics)
+                    }
+                    row(L("Listening exercises"), sub: L("Turn off when you can't use sound")) {
+                        LingoraSwitch(isOn: $model.s.settings.listeningExercises)
+                    }
+                    if model.languages.contains(where: { Romanize.needs($0.key) }) {
+                        row(L("Show romanization"), sub: L("Latin letters under other scripts")) {
+                            LingoraSwitch(isOn: $model.s.settings.showRomanization)
+                        }
+                    }
                     row(L("Sound effects"), sub: L("Right, wrong and lesson-complete sounds")) {
                         LingoraSwitch(isOn: $model.s.settings.soundEffects)
                     }
@@ -234,6 +246,29 @@ struct MeView: View {
                 }
                 .card(padding: 0)
 
+                VStack(spacing: 0) {
+                    Button { showHelp = true } label: {
+                        HStack {
+                            Label(L("Help & support"), systemImage: "questionmark.circle").font(.fig(15, .semibold))
+                            Spacer()
+                            Image(systemName: "chevron.forward").font(.system(size: 12, weight: .semibold)).foregroundStyle(theme.muted)
+                        }
+                        .padding(.horizontal, 16).frame(minHeight: 52).contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    ShareLink(item: ExportFile(make: { [model] in await MainActor.run { model.exportData } }), preview: SharePreview("lingora-export.json")) {
+                        HStack {
+                            Label(L("Export my data"), systemImage: "square.and.arrow.up").font(.fig(15, .semibold))
+                            Spacer()
+                        }
+                        .padding(.horizontal, 16).frame(minHeight: 52).contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .overlay(alignment: .top) { Rectangle().fill(theme.line).frame(height: 1) }
+                }
+                .foregroundStyle(theme.text)
+                .card(padding: 0)
+
                 Button(L("Log out")) { confirmLogout = true }
                     .font(.fig(16, .semibold))
                     .foregroundStyle(theme.errorText)
@@ -283,6 +318,10 @@ struct MeView: View {
             }
         } message: {
             Text(L("You'll stop seeing each other's activity and chat. You can add each other again later."))
+        }
+        .sheet(isPresented: $showHelp) {
+            HelpView().environmentObject(model).environment(\.theme, model.theme)
+                .presentationDetents([.large]).presentationCornerRadius(28)
         }
         .fullScreenCover(isPresented: $showYear) {
             YearReviewView().environmentObject(model).environment(\.theme, model.theme)

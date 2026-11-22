@@ -8,6 +8,7 @@ struct CourseMapView: View {
     @State var lang: String
     @State private var playing: CourseLesson?
     @State private var openTip: String?
+    @State private var alphabet: String?
 
     var body: some View {
         let language = model.language(lang)
@@ -37,6 +38,22 @@ struct CourseMapView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
+                            if let a = Alphabet.forLanguage(lang) {
+                                Button { alphabet = a.lang } label: {
+                                    HStack(spacing: 12) {
+                                        Text(verbatim: a.letters.first?.char ?? "").font(.system(size: 24, weight: .bold)).foregroundStyle(.white)
+                                            .frame(width: 44, height: 44).background(h.base, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                        VStack(alignment: .leading, spacing: 1) {
+                                            Text(a.name).font(.fig(16, .bold))
+                                            Text(L("Learn to read and write the letters")).font(.fig(13)).foregroundStyle(theme.muted)
+                                        }
+                                        Spacer()
+                                        Image(systemName: "chevron.forward").font(.system(size: 12, weight: .semibold)).foregroundStyle(theme.muted)
+                                    }
+                                    .card(padding: 12)
+                                }
+                                .buttonStyle(.plain)
+                            }
                             practiceRow(hue: h)
                             ForEach(Array(course.sections.enumerated()), id: \.element.id) { si, section in
                                 sectionHeader(section, index: si, course: course, hue: h)
@@ -92,6 +109,11 @@ struct CourseMapView: View {
             }
         }
         .background(theme.ground)
+        .fullScreenCover(isPresented: Binding(get: { alphabet != nil }, set: { if !$0 { alphabet = nil } })) {
+            if let a = alphabet.flatMap(Alphabet.forLanguage) {
+                AlphabetView(alphabet: a).environmentObject(model).environment(\.theme, model.theme)
+            }
+        }
         .fullScreenCover(item: $playing) { lesson in
             LessonPlayerView(lesson: lesson, lang: lang)
                 .environmentObject(model)

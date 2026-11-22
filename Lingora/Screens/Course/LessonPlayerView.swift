@@ -75,7 +75,8 @@ struct LessonPlayerView: View {
             }
         }
         .background(theme.ground)
-        .modifier(TextTranslator(texts: lesson.unit.words.map(\.en) + lesson.unit.sentences.map(\.en), done: { meanings = $0; build() }))
+        .modifier(TextTranslator(texts: lesson.unit.id.hasPrefix("alphabet-") ? [] : lesson.unit.words.map(\.en) + lesson.unit.sentences.map(\.en),
+                                 done: { meanings = $0; build() }))
         .confirmationDialog(L("Quit this lesson?"), isPresented: $confirmQuit, titleVisibility: .visible) {
             Button(L("Quit"), role: .destructive) { dismiss() }
         } message: {
@@ -94,8 +95,11 @@ struct LessonPlayerView: View {
 
     private func build() {
         SoundFX.enabled = model.s.settings.soundEffects
-        let list = LessonBuilder.exercises(for: lesson, meanings: meanings ?? [:],
+        var list = LessonBuilder.exercises(for: lesson, meanings: meanings ?? [:],
                                            allowSpeaking: model.s.settings.speakingExercises)
+        if !model.s.settings.listeningExercises && lesson.mode != .listening {
+            list.removeAll { if case .listenPick = $0 { return true }; if case .listenType = $0 { return true }; return false }
+        }
         queue = list
         total = list.count
         started = Date()
@@ -148,7 +152,7 @@ struct LessonPlayerView: View {
             if lesson.mode == .practice, let it { model.clearMistake(it.0, lang: lang) }
             if let it, !it.1 { model.recordWord(it.0, right: true, lang: lang) }
         case .wrong:
-            UINotificationFeedbackGenerator().notificationOccurred(.error)
+            Haptics.error()
             SoundFX.play(.wrong)
             if let it { model.noteMistake(it.0, sentence: it.1, lang: lang) }
             if let it, !it.1 { model.recordWord(it.0, right: false, lang: lang) }
@@ -425,6 +429,9 @@ struct LessonPlayerView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text(text).font(.fig(20, .semibold))
                     .onTapGesture { if speak { Speaker.shared.say(text, lang: lang) } }
+                if speak, model.s.settings.showRomanization, !lesson.unit.id.hasPrefix("alphabet-"), let r = Romanize.latin(text, lang: lang) {
+                    Text(r).font(.fig(14)).italic().foregroundStyle(theme.muted)
+                }
                 if let sub { Text(sub).font(.fig(14)).foregroundStyle(theme.muted) }
             }
             Spacer(minLength: 0)
@@ -557,7 +564,7 @@ struct LessonPlayerView: View {
             matched.insert(l)
             Haptics.tap()
         } else {
-            UINotificationFeedbackGenerator().notificationOccurred(.warning)
+            Haptics.warning()
             withAnimation(.default) { matchMiss.toggle() }
         }
         matchLeft = nil
