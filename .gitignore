@@ -7,5 +7,3 @@ build/
 *.dSYM.zip
 Secrets.xcconfig
 GoogleService-Info.plist
-backend/functions/node_modules/
-backend/functions/lib/

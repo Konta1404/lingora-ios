@@ -9,4 +9,4 @@ python3 build_vocab.py out.json
 ```
 
 The scripts expect the Goethe word-list repo cloned next to them (see paths at the top of each script).
-Copy the result to `Lingora/Resources/vocab_de.json` and `backend/functions/data/vocab_de.json`.
+Copy the result to `Lingora/Resources/vocab_de.json` and `functions/data/vocab_de.json` in the lingora-backend repo.

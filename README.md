@@ -4,10 +4,11 @@ A calm, low-pressure language-learning app. ChatGPT builds a weekly plan for eve
 
 ```
 Lingora/            iOS app (SwiftUI, iOS 17+)
-backend/            Firebase: Cloud Functions (OpenAI proxy), Firestore rules
 tools/vocab/        Scripts that built the German word list
 tools/l10n/         Translations + script that builds Localizable.xcstrings
 ```
+
+The backend lives in its own repo: **[lingora-backend](https://github.com/Konta1404/lingora-backend)** (Firebase Cloud Functions + Firestore rules).
 
 ## What's new in this version
 
@@ -44,33 +45,7 @@ Without `GoogleService-Info.plist` the app runs in **offline mode**:
 
 ## 3. Deploy the backend
 
-```bash
-npm install -g firebase-tools
-cd backend
-firebase login
-firebase use --add                      # pick your project
-firebase functions:secrets:set OPENAI_API_KEY   # paste your OpenAI key
-cd functions && npm install && cd ..
-firebase deploy --only functions,firestore
-```
-
-Optional settings, in `backend/functions/.env.<project-id>`:
-
-```
-OPENAI_MODEL=gpt-5-mini
-DAILY_AI_LIMIT=300
-```
-
-### Optional: pre-translate the word list
-
-The game translates words on the fly in small batches. To fill the cache ahead of time, for example for Serbian:
-
-```bash
-cd backend/functions
-export GOOGLE_APPLICATION_CREDENTIALS=~/Downloads/service-account.json   # Project settings → Service accounts
-export OPENAI_API_KEY=sk-...
-npm run seed -- sr-Latn A1
-```
+Follow the setup in [lingora-backend](https://github.com/Konta1404/lingora-backend). In short: set the `OPENAI_API_KEY` secret, then run `firebase deploy`.
 
 ## 4. Sign-in providers
 
