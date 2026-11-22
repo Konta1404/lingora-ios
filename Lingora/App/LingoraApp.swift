@@ -45,13 +45,17 @@ struct RootView: View {
     var body: some View {
         ZStack(alignment: .top) {
             theme.ground.ignoresSafeArea()
-            if model.s.user != nil && model.s.onboarded {
-                MainTabView()
-                    .transition(.opacity)
-            } else {
-                OnboardingFlow()
-                    .transition(.opacity)
+            Group {
+                if model.s.user != nil && model.s.onboarded {
+                    MainTabView()
+                } else {
+                    OnboardingFlow()
+                }
             }
+            .transition(.opacity)
+            // iPad: keep a comfortable reading width instead of stretching phone layouts edge to edge.
+            .frame(maxWidth: UIDevice.current.userInterfaceIdiom == .pad ? 720 : .infinity)
+            .frame(maxWidth: .infinity)
             if let toast = model.toast {
                 ToastView(text: toast)
                     .transition(.move(edge: .top).combined(with: .opacity))
