@@ -97,6 +97,7 @@ final class AppModel: ObservableObject {
 
         if Backend.isConfigured {
             signedInUID = Auth.auth().currentUser?.uid
+            if signedInUID != nil { prepareInviteQR() }
             authHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
                 Task { @MainActor in self?.authChanged(uid: user?.uid) }
             }
@@ -569,10 +570,7 @@ final class AppModel: ObservableObject {
         guard socialAvailable, let name = s.user?.name else { return }
         if let handle = try? await Social.sync(name: name, langs: s.learning) {
             s.user?.handle = "@" + handle
-            if let base = Backend.apiBaseURL {
-                let link = base.appendingPathComponent("u").appendingPathComponent(handle).absoluteString
-                Task.detached(priority: .utility) { _ = QRCode.image(for: link) }
-            }
+            prepareInviteQR()
             syncedProfile = "\(name)|\(s.learning.joined(separator: ","))"
         }
     }
@@ -645,9 +643,23 @@ final class AppModel: ObservableObject {
         }
     }
 
+    /// The invite link for my username (also encoded in my QR code).
+    var inviteLink: String? {
+        let h = (s.user?.handle ?? "").replacingOccurrences(of: "@", with: "")
+        guard !h.isEmpty else { return nil }
+        if let base = Backend.apiBaseURL { return base.appendingPathComponent("u").appendingPathComponent(h).absoluteString }
+        return "lingora://add/\(h)"
+    }
+
+    /// Makes the QR once per username and saves it on the device; afterwards it just loads.
+    func prepareInviteQR() {
+        if let link = inviteLink { QRCode.prepare(link) }
+    }
+
     func changeHandle(_ handle: String) async -> String? {
         do {
             s.user?.handle = "@" + (try await Social.setHandle(handle))
+            prepareInviteQR()
             await refreshSocial()
             return nil
         } catch {

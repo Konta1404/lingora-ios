@@ -18,12 +18,7 @@ struct AddFriendsSheet: View {
     @State private var qr: UIImage?
 
     private var handle: String { model.s.user?.handle ?? "" }
-    private var inviteURL: URL? {
-        let h = handle.replacingOccurrences(of: "@", with: "")
-        guard !h.isEmpty else { return nil }
-        if let base = Backend.apiBaseURL { return base.appendingPathComponent("u").appendingPathComponent(h) }
-        return URL(string: "lingora://add/\(h)")
-    }
+    private var inviteURL: URL? { model.inviteLink.flatMap(URL.init(string:)) }
 
     var body: some View {
         ScrollView {
@@ -186,13 +181,21 @@ struct AddFriendsSheet: View {
     }
 }
 
-/// QR codes for invite links. Core Image setup is slow (~0.5 s the first time), so codes are made off the
-/// main thread with one shared context and cached; the app prepares yours right after sign-in.
+/// QR codes for invite links. Made once — when the account gets its username — and saved as a PNG on the
+/// device, so later they load from disk instead of being rebuilt (Core Image setup is slow).
 enum QRCode {
     private static let context = CIContext(options: [.cacheIntermediates: false])
     private static let lock = NSLock()
     nonisolated(unsafe) private static var cache: [String: UIImage] = [:]
 
+    private static func file(_ string: String) -> URL {
+        let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("qr", isDirectory: true)
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        return dir.appendingPathComponent(String(Social.sha256(string).prefix(24)) + ".png")
+    }
+
+    /// Memory only — safe to call while drawing.
     static func cached(_ string: String) -> UIImage? {
         lock.lock(); defer { lock.unlock() }
         return cache[string]
@@ -203,15 +206,31 @@ enum QRCode {
         return await Task.detached(priority: .userInitiated) { image(for: string) }.value
     }
 
+    /// Memory → saved file → generate and save. Call off the main thread.
     static func image(for string: String) -> UIImage? {
         if let c = cached(string) { return c }
+        let url = file(string)
+        if let data = try? Data(contentsOf: url), let img = UIImage(data: data) {
+            remember(img, for: string)
+            return img
+        }
         let filter = CIFilter.qrCodeGenerator()
         filter.message = Data(string.utf8)
         filter.correctionLevel = "M"
         guard let output = filter.outputImage?.transformed(by: CGAffineTransform(scaleX: 8, y: 8)),
               let cg = context.createCGImage(output, from: output.extent) else { return nil }
         let img = UIImage(cgImage: cg)
-        lock.lock(); cache[string] = img; lock.unlock()
+        try? img.pngData()?.write(to: url, options: .atomic)
+        remember(img, for: string)
         return img
+    }
+
+    /// Makes (or loads) the code in the background so it's ready before the sheet opens.
+    static func prepare(_ string: String) {
+        Task.detached(priority: .utility) { _ = image(for: string) }
+    }
+
+    private static func remember(_ img: UIImage, for string: String) {
+        lock.lock(); cache[string] = img; lock.unlock()
     }
 }
