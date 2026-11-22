@@ -1148,52 +1148,104 @@ final class AppModel: ObservableObject {
 
     // MARK: - Course
 
-    /// Built-in units first, then the ones ChatGPT wrote for this learner.
+    /// The course for a language: every CEFR topic (A1–C2) as a unit. Built-in content fills its topics,
+    /// units ChatGPT wrote fill theirs, the rest are placeholders the learner can have written.
     func course(_ lang: String) -> Course? {
-        let extra = s.generatedUnits[lang] ?? []
-        var c = CourseLibrary.builtIn(lang) ?? Course(lang: lang, sections: [])
-        if !extra.isEmpty {
-            c.sections.append(CourseSection(id: "\(lang)-more", title: "Written for you", level: level(lang).code, units: extra))
+        let builtIn = CourseLibrary.builtIn(lang)?.sections.flatMap(\.units) ?? []
+        var byTopic: [String: CourseUnit] = [:]
+        for var u in builtIn {
+            guard let t = Curriculum.builtInTopics[u.id] else { continue }
+            u.topic = t
+            byTopic[t] = u
         }
-        return c.sections.isEmpty && !canWriteUnits ? nil : c
+        for u in s.generatedUnits[lang] ?? [] { if let t = u.topic, byTopic[t] == nil { byTopic[t] = u } }
+        if byTopic.isEmpty && !canWriteUnits { return nil }
+        var sections: [CourseSection] = []
+        for l in Curriculum.shared.levels {
+            for c in l.categories {
+                let units = c.topics.map { t in
+                    byTopic[t.id] ?? CourseUnit(id: "\(lang)-\(t.id)", title: t.en, tip: nil, words: [], sentences: [], topic: t.id)
+                }
+                sections.append(CourseSection(id: "\(lang)-\(c.id)", title: c.name.en, level: l.level, units: units))
+            }
+        }
+        // Units written before the curriculum existed.
+        let legacy = (s.generatedUnits[lang] ?? []).filter { $0.topic == nil }
+        if !legacy.isEmpty {
+            sections.append(CourseSection(id: "\(lang)-more", title: "Written for you", level: level(lang).code, units: legacy))
+        }
+        return Course(lang: lang, sections: sections)
     }
 
     var canWriteUnits: Bool { Backend.isConfigured && signedInUID != nil }
 
     var courseLanguages: [Language] { languages.filter { course($0.key) != nil } }
 
-    @Published var writingUnit = false
+    @Published var writingUnit: String?
 
-    /// Asks the backend for the next unit (cached for everyone, or written by the learner's ChatGPT plan).
-    func writeNextUnit(_ lang: String) async {
-        guard let l = language(lang), !writingUnit else { return }
-        writingUnit = true
-        defer { writingUnit = false }
-        let built = CourseLibrary.builtIn(lang)?.sections.flatMap(\.units) ?? []
-        let mine = s.generatedUnits[lang] ?? []
+    func isDone(_ l: CourseLesson) -> Bool { s.courseDone.contains(l.id) }
+
+    func unitDone(_ u: CourseUnit) -> Bool {
+        !u.isPlaceholder && LessonKind.allCases.allSatisfy { isDone(CourseLesson(unit: u, kind: $0)) }
+    }
+
+    /// Index of the first unit at the learner's level: everything up to it is open.
+    private func placementStart(_ units: [(CourseUnit, String)], lang: String) -> Int {
+        let code = level(lang).code
+        return units.firstIndex { $0.1 == code } ?? 0
+    }
+
+    /// A unit opens when the unit before it is finished; units up to your level are open from the start.
+    func unitOpen(_ u: CourseUnit, in course: Course) -> Bool {
+        let units = course.sections.flatMap { s in s.units.map { ($0, s.level) } }
+        guard let i = units.firstIndex(where: { $0.0.id == u.id }) else { return false }
+        if i <= placementStart(units, lang: course.lang) { return true }
+        return unitDone(units[i - 1].0)
+    }
+
+    /// Lessons inside an open unit go in order.
+    func isUnlocked(_ l: CourseLesson, in course: Course) -> Bool {
+        guard !l.unit.isPlaceholder, unitOpen(l.unit, in: course) else { return false }
+        guard let k = LessonKind(rawValue: l.kind.rawValue - 1) else { return true }
+        return isDone(CourseLesson(unit: l.unit, kind: k))
+    }
+
+    func nextLesson(_ lang: String) -> CourseLesson? {
+        guard let c = course(lang) else { return nil }
+        let open = CourseLibrary.lessons(c).filter { !isDone($0) && isUnlocked($0, in: c) }
+        let startCode = level(lang).code
+        let atLevel = c.sections.filter { $0.level >= startCode }.flatMap(\.units).map(\.id)
+        return open.first { atLevel.contains($0.unit.id) } ?? open.first
+    }
+
+    /// The next topic that's open and not written yet.
+    func nextPlaceholder(_ lang: String) -> CourseUnit? {
+        guard let c = course(lang) else { return nil }
+        return c.sections.flatMap(\.units).first { $0.isPlaceholder && unitOpen($0, in: c) }
+    }
+
+    /// Has ChatGPT write the unit for a topic (shared cache first, so most learners get it instantly).
+    func writeUnit(_ unit: CourseUnit, lang: String) async {
+        guard let l = language(lang), let topicId = unit.topic, let found = Curriculum.shared.topic(topicId), writingUnit == nil else { return }
+        let (topic, lvl) = found
+        writingUnit = unit.id
+        defer { writingUnit = nil }
         do {
-            var unit = try await ai.courseUnit(language: l, level: level(lang), index: built.count + mine.count,
-                                               previous: (built + mine).map(\.title))
-            if mine.contains(where: { $0.id == unit.id }) { unit.id += "-\(mine.count)" }
-            s.generatedUnits[lang, default: []].append(unit)
+            var u = try await ai.courseUnit(language: l, level: Level.from(code: lvl.level) ?? level(lang), topic: topic.en, topicId: topic.id)
+            u.id = unit.id
+            u.topic = topic.id
+            s.generatedUnits[lang, default: []].removeAll { $0.id == u.id }
+            s.generatedUnits[lang, default: []].append(u)
             Haptics.success()
         } catch {
             toast = chatGPTMessage(error)
         }
     }
 
-    func isDone(_ l: CourseLesson) -> Bool { s.courseDone.contains(l.id) }
-
-    /// A lesson opens once the one before it is done.
-    func isUnlocked(_ l: CourseLesson, in course: Course) -> Bool {
-        let all = CourseLibrary.lessons(course)
-        guard let i = all.firstIndex(where: { $0.id == l.id }) else { return false }
-        return i == 0 || isDone(all[i - 1])
-    }
-
-    func nextLesson(_ lang: String) -> CourseLesson? {
-        guard let c = course(lang) else { return nil }
-        return CourseLibrary.lessons(c).first { !isDone($0) }
+    /// Display names: the curriculum's (Serbian or English), built-in titles through the string catalog.
+    func unitTitle(_ u: CourseUnit) -> String {
+        if let t = u.topic, let (topic, _) = Curriculum.shared.topic(t) { return Curriculum.name(topic) }
+        return L(u.title)
     }
 
     func courseProgress(_ lang: String) -> (done: Int, total: Int) {

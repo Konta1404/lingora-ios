@@ -25,6 +25,9 @@ struct CourseUnit: Codable, Identifiable, Hashable {
     var words: [CourseItem]
     var sentences: [CourseItem]
     var dialogues: [CourseDialogue]? = nil
+    /// Curriculum topic id; a unit without words is a topic not written yet.
+    var topic: String? = nil
+    var isPlaceholder: Bool { words.isEmpty }
 }
 
 struct CourseSection: Codable, Identifiable, Hashable {
@@ -103,7 +106,7 @@ enum CourseLibrary {
     }
 
     static func lessons(_ course: Course) -> [CourseLesson] {
-        course.sections.flatMap { $0.units }.flatMap { u in LessonKind.allCases.map { CourseLesson(unit: u, kind: $0) } }
+        course.sections.flatMap { $0.units }.filter { !$0.isPlaceholder }.flatMap { u in LessonKind.allCases.map { CourseLesson(unit: u, kind: $0) } }
     }
 }
 

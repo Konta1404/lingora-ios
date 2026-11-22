@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// The course path for one language: sections → units → lessons, unlocked in order.
+/// The course path for one language: CEFR levels → categories → topics (units) → 4 lessons each.
 struct CourseMapView: View {
     @EnvironmentObject private var model: AppModel
     @Environment(\.theme) private var theme
@@ -9,6 +9,16 @@ struct CourseMapView: View {
     @State private var playing: CourseLesson?
     @State private var openTip: String?
     @State private var alphabet: String?
+    @State private var names: [String: String] = [:]
+
+    /// English names shown in another app language go through Apple Translation once.
+    private var needsNames: Bool {
+        let code = Locale.current.language.languageCode?.identifier ?? "en"
+        return code != "en" && code != "sr"
+    }
+    private func show(_ english: String, _ native: String) -> String {
+        Curriculum.usesSerbian ? native : (names[english] ?? english)
+    }
 
     var body: some View {
         let language = model.language(lang)
@@ -37,66 +47,35 @@ struct CourseMapView: View {
             if let course = model.course(lang) {
                 ScrollViewReader { proxy in
                     ScrollView {
-                        VStack(alignment: .leading, spacing: 16) {
-                            if let a = Alphabet.forLanguage(lang) {
-                                Button { alphabet = a.lang } label: {
-                                    HStack(spacing: 12) {
-                                        Text(verbatim: a.letters.first?.char ?? "").font(.system(size: 24, weight: .bold)).foregroundStyle(.white)
-                                            .frame(width: 44, height: 44).background(h.base, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-                                        VStack(alignment: .leading, spacing: 1) {
-                                            Text(a.name).font(.fig(16, .bold))
-                                            Text(L("Learn to read and write the letters")).font(.fig(13)).foregroundStyle(theme.muted)
-                                        }
-                                        Spacer()
-                                        Image(systemName: "chevron.forward").font(.system(size: 12, weight: .semibold)).foregroundStyle(theme.muted)
-                                    }
-                                    .card(padding: 12)
-                                }
-                                .buttonStyle(.plain)
-                            }
+                        LazyVStack(alignment: .leading, spacing: 14) {
+                            if let a = Alphabet.forLanguage(lang) { alphabetCard(a, hue: h) }
                             practiceRow(hue: h)
                             ForEach(Array(course.sections.enumerated()), id: \.element.id) { si, section in
+                                if si == 0 || course.sections[si - 1].level != section.level {
+                                    levelHeader(section.level, hue: h).id("level-\(section.level)")
+                                }
                                 sectionHeader(section, index: si, course: course, hue: h)
-                                ForEach(Array(section.units.enumerated()), id: \.element.id) { i, unit in
-                                    unitCard(unit, number: i + 1, course: course, hue: h).id(unit.id)
+                                ForEach(section.units) { unit in
+                                    Group {
+                                        if unit.isPlaceholder {
+                                            placeholderCard(unit, course: course, hue: h)
+                                        } else {
+                                            unitCard(unit, course: course, hue: h)
+                                        }
+                                    }
+                                    .id(unit.id)
                                 }
-                            }
-                            if Speaker.hasOnlyBasicVoice(lang) {
-                                HStack(alignment: .top, spacing: 10) {
-                                    Image(systemName: "speaker.wave.2").padding(.top, 2)
-                                    Text(L("For a more natural voice: Settings → Accessibility → Read & Speak → Voices → %@ → download an Enhanced voice.", language?.name ?? ""))
-                                        .font(.fig(13))
-                                }
-                                .tintedNote(theme.at, theme.ad, radius: theme.radius)
-                            }
-                            if model.canWriteUnits {
-                                Button {
-                                    Task { await model.writeNextUnit(lang) }
-                                } label: {
-                                    Label(model.writingUnit ? L("ChatGPT is writing the next unit…") : L("Write the next unit"),
-                                          systemImage: "sparkles")
-                                }
-                                .buttonStyle(PrimaryButtonStyle(kind: model.nextLesson(lang) == nil ? .accent : .chip))
-                                .disabled(model.writingUnit)
-                                .padding(.top, 4)
-                                Text(L("New units are written by ChatGPT for your level, then saved for everyone learning this language."))
-                                    .font(.fig(12)).foregroundStyle(theme.muted).frame(maxWidth: .infinity)
-                            } else {
-                                Text(L("More units are on the way."))
-                                    .font(.fig(13)).foregroundStyle(theme.muted).frame(maxWidth: .infinity).padding(.vertical, 8)
                             }
                         }
                         .padding(.horizontal, 20).padding(.bottom, 24)
                     }
+                    .scrollBounceBehavior(.basedOnSize, axes: [.horizontal])
                     .onAppear {
-                        if let next = model.nextLesson(lang) { proxy.scrollTo(next.unit.id, anchor: .center) }
+                        let target = model.nextLesson(lang)?.unit.id ?? model.nextPlaceholder(lang)?.id
+                        if let target { DispatchQueue.main.async { proxy.scrollTo(target, anchor: .center) } }
                     }
                 }
-                if let next = model.nextLesson(lang) {
-                    Button(L("Continue: %@", L(next.unit.title))) { playing = next }
-                        .buttonStyle(.primary)
-                        .padding(.horizontal, 20).padding(.vertical, 10)
-                }
+                bottomButton()
             } else {
                 Spacer()
                 VStack(spacing: 10) {
@@ -109,6 +88,7 @@ struct CourseMapView: View {
             }
         }
         .background(theme.ground)
+        .modifier(TextTranslator(texts: needsNames ? allEnglishNames : [], done: { names = $0 }))
         .fullScreenCover(isPresented: Binding(get: { alphabet != nil }, set: { if !$0 { alphabet = nil } })) {
             if let a = alphabet.flatMap(Alphabet.forLanguage) {
                 AlphabetView(alphabet: a).environmentObject(model).environment(\.theme, model.theme)
@@ -121,20 +101,103 @@ struct CourseMapView: View {
         }
     }
 
+    private var allEnglishNames: [String] {
+        Curriculum.shared.levels.flatMap { l in [l.name.en, l.description.en] + l.categories.flatMap { [$0.name.en] + $0.topics.map(\.en) } }
+    }
+
+    @ViewBuilder
+    private func bottomButton() -> some View {
+        if let next = model.nextLesson(lang) {
+            Button(L("Continue: %@", model.unitTitle(next.unit))) { playing = next }
+                .buttonStyle(.primary)
+                .padding(.horizontal, 20).padding(.vertical, 10)
+        } else if let p = model.nextPlaceholder(lang), model.canWriteUnits {
+            Button(model.writingUnit != nil ? L("ChatGPT is writing the next unit…") : L("Write the next unit")) {
+                Task { await model.writeUnit(p, lang: lang) }
+            }
+            .buttonStyle(.primary)
+            .disabled(model.writingUnit != nil)
+            .padding(.horizontal, 20).padding(.vertical, 10)
+        }
+    }
+
+    private func alphabetCard(_ a: Alphabet, hue: Hue) -> some View {
+        Button { alphabet = a.lang } label: {
+            HStack(spacing: 12) {
+                Text(verbatim: a.letters.first?.char ?? "").font(.system(size: 24, weight: .bold)).foregroundStyle(.white)
+                    .frame(width: 44, height: 44).background(hue.base, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(a.name).font(.fig(16, .bold))
+                    Text(L("Learn to read and write the letters")).font(.fig(13)).foregroundStyle(theme.muted)
+                }
+                Spacer()
+                Image(systemName: "chevron.forward").font(.system(size: 12, weight: .semibold)).foregroundStyle(theme.muted)
+            }
+            .card(padding: 12)
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func levelHeader(_ code: String, hue: Hue) -> some View {
+        let lv = Curriculum.shared.levels.first { $0.level == code }
+        let mine = model.level(lang).code == code
+        return VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 10) {
+                Text(verbatim: code).font(.fig(20, .heavy)).foregroundStyle(.white)
+                    .padding(.horizontal, 12).frame(height: 36).background(hue.deep, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(lv.map { show($0.name.en, $0.name.sr) } ?? code).font(.fig(18, .bold))
+                    if mine { Text(L("Your level")).font(.fig(12, .semibold)).foregroundStyle(hue.deep) }
+                }
+            }
+            if let lv { Text(show(lv.description.en, lv.description.sr)).font(.fig(13)).foregroundStyle(theme.muted) }
+        }
+        .padding(.top, 18)
+    }
+
     private func sectionHeader(_ s: CourseSection, index: Int, course: Course, hue: Hue) -> some View {
-        let firstLocked = s.units.first.map { !model.isUnlocked(CourseLesson(unit: $0, kind: .words1), in: course) } ?? false
+        let cat = Curriculum.shared.levels.flatMap(\.categories).first { s.id.hasSuffix("-\($0.id)") }
+        let firstLocked = s.units.first.map { !model.unitOpen($0, in: course) } ?? false
+        let realUnits = s.units.filter { !$0.isPlaceholder }
+        let done = realUnits.filter(model.unitDone).count
         return HStack(spacing: 10) {
-            Text(verbatim: s.level).font(.fig(12, .bold)).foregroundStyle(.white)
-                .padding(.horizontal, 10).frame(height: 24).background(hue.base, in: Capsule())
-            Text(L(s.title)).font(.fig(17, .bold))
+            VStack(alignment: .leading, spacing: 1) {
+                Text(cat.map { show($0.name.en, $0.name.sr) } ?? L(s.title)).font(.fig(16, .bold))
+                Text(L("%lld of %lld topics", done, s.units.count)).font(.fig(12)).foregroundStyle(theme.muted)
+            }
             Spacer()
-            if index > 0 && firstLocked {
+            if index > 0 && firstLocked && !s.units.allSatisfy(\.isPlaceholder) {
                 PillButton(title: L("Jump here"), icon: "forward.fill", bg: hue.tint, fg: hue.deep, height: 32) {
                     playing = model.jumpLesson(lang, to: index)
                 }
             }
         }
-        .padding(.top, 8)
+        .padding(.top, 6)
+    }
+
+    private func placeholderCard(_ u: CourseUnit, course: Course, hue: Hue) -> some View {
+        let open = model.unitOpen(u, in: course)
+        let writing = model.writingUnit == u.id
+        let title = u.topic.flatMap { Curriculum.shared.topic($0) }.map { show($0.0.en, $0.0.sr) } ?? u.title
+        return HStack(spacing: 12) {
+            Image(systemName: open ? "sparkles" : "lock.fill").font(.system(size: 15, weight: .bold))
+                .foregroundStyle(open ? hue.deep : theme.muted)
+                .frame(width: 40, height: 40).background(open ? hue.tint : theme.chip, in: Circle())
+            Text(title).font(.fig(15, .semibold)).foregroundStyle(open ? theme.text : theme.muted)
+            Spacer(minLength: 4)
+            if open && model.canWriteUnits {
+                if writing {
+                    ProgressView()
+                } else {
+                    PillButton(title: L("Write"), icon: "sparkles", bg: hue.base, fg: .white, height: 32) {
+                        Task { await model.writeUnit(u, lang: lang) }
+                    }
+                    .disabled(model.writingUnit != nil)
+                }
+            }
+        }
+        .padding(.horizontal, 14).padding(.vertical, 10)
+        .background(theme.card.opacity(open ? 1 : 0.6), in: RoundedRectangle(cornerRadius: theme.radius, style: .continuous))
     }
 
     @ViewBuilder
@@ -162,15 +225,13 @@ struct CourseMapView: View {
         .buttonStyle(.plain)
     }
 
-    private func unitCard(_ u: CourseUnit, number: Int, course: Course, hue: Hue) -> some View {
+    private func unitCard(_ u: CourseUnit, course: Course, hue: Hue) -> some View {
         let lessons = LessonKind.allCases.map { CourseLesson(unit: u, kind: $0) }
         let done = lessons.filter(model.isDone).count
+        let title = u.topic.flatMap { Curriculum.shared.topic($0) }.map { show($0.0.en, $0.0.sr) } ?? L(u.title)
         return VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(L("Unit %lld", number)).font(.fig(12, .semibold)).foregroundStyle(theme.muted)
-                    Text(L(u.title)).font(.fig(17, .bold))
-                }
+                Text(title).font(.fig(17, .bold))
                 Spacer()
                 if u.tip != nil {
                     Button {
@@ -230,7 +291,6 @@ struct CourseMapView: View {
     }
 }
 
-/// Today: where you are in a language's course, one tap to continue.
 struct CourseSummaryCard: View {
     @EnvironmentObject private var model: AppModel
     @Environment(\.theme) private var theme
@@ -246,7 +306,9 @@ struct CourseSummaryCard: View {
                     CodeBadge(code: lang.code, hue: h, size: 40, filled: true)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(L("%@ course", lang.name)).font(.fig(16, .bold))
-                        Text(next.map { "\(L($0.unit.title)) · \($0.kind.title)" } ?? (p.total == 0 ? L("ChatGPT writes your first unit") : L("Course complete")))
+                        Text(next.map { "\(model.unitTitle($0.unit)) · \($0.kind.title)" }
+                             ?? model.nextPlaceholder(lang.key).map { L("Next: %@", model.unitTitle($0)) }
+                             ?? (p.total == 0 ? L("ChatGPT writes your first unit") : L("Course complete")))
                             .font(.fig(13)).foregroundStyle(theme.muted).lineLimit(1)
                     }
                     Spacer(minLength: 0)

@@ -38,10 +38,10 @@ struct AIService {
     struct ChatGPTStatus: Decodable, Equatable { var connected: Bool; var email: String?; var model: String? }
 
     /// Next course unit (words + sentences), written by ChatGPT or taken from the shared cache.
-    func courseUnit(language: Language, level: Level, index: Int, previous: [String]) async throws -> CourseUnit {
+    func courseUnit(language: Language, level: Level, topic: String, topicId: String) async throws -> CourseUnit {
         try await Backend.call("courseUnit", [
             "language": ["name": language.name, "key": language.key, "isCustom": language.isCustom],
-            "level": level.code, "index": index, "previous": previous,
+            "level": level.code, "topic": topic, "topicId": topicId, "uiLanguage": AppLocale.tag,
         ])
     }
 

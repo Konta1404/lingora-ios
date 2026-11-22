@@ -1,0 +1,1842 @@
+{
+ "levels": [
+  {
+   "level": "A1",
+   "name": {
+    "sr": "Početni nivo",
+    "en": "Beginner"
+   },
+   "description": {
+    "sr": "Osnovne riječi, predmeti, ljudi i svakodnevne situacije",
+    "en": "Basic words, objects, people and everyday situations"
+   },
+   "categories": [
+    {
+     "id": "a1-1",
+     "name": {
+      "sr": "Lični podaci i ljudi",
+      "en": "Personal details and people"
+     },
+     "topics": [
+      {
+       "id": "a1-greetings-and-goodbyes",
+       "sr": "Pozdravi i rastanci",
+       "en": "Greetings and goodbyes"
+      },
+      {
+       "id": "a1-introducing-yourself",
+       "sr": "Predstavljanje sebe",
+       "en": "Introducing yourself"
+      },
+      {
+       "id": "a1-personal-details",
+       "sr": "Lični podaci",
+       "en": "Personal details"
+      },
+      {
+       "id": "a1-first-and-last-names",
+       "sr": "Imena i prezimena",
+       "en": "First and last names"
+      },
+      {
+       "id": "a1-age-and-birthdays",
+       "sr": "Godine i rođendani",
+       "en": "Age and birthdays"
+      },
+      {
+       "id": "a1-countries-and-nationalities",
+       "sr": "Države i nacionalnosti",
+       "en": "Countries and nationalities"
+      },
+      {
+       "id": "a1-languages",
+       "sr": "Jezici",
+       "en": "Languages"
+      },
+      {
+       "id": "a1-family-members",
+       "sr": "Članovi porodice",
+       "en": "Family members"
+      },
+      {
+       "id": "a1-relatives",
+       "sr": "Rodbinski odnosi",
+       "en": "Relatives"
+      },
+      {
+       "id": "a1-friends-and-acquaintances",
+       "sr": "Prijatelji i poznanici",
+       "en": "Friends and acquaintances"
+      },
+      {
+       "id": "a1-jobs",
+       "sr": "Zanimanja",
+       "en": "Jobs"
+      },
+      {
+       "id": "a1-appearance",
+       "sr": "Fizički izgled",
+       "en": "Appearance"
+      },
+      {
+       "id": "a1-basic-personality-traits",
+       "sr": "Osnovne osobine ličnosti",
+       "en": "Basic personality traits"
+      }
+     ]
+    },
+    {
+     "id": "a1-2",
+     "name": {
+      "sr": "Dom i svakodnevni život",
+      "en": "Home and daily life"
+     },
+     "topics": [
+      {
+       "id": "a1-types-of-homes",
+       "sr": "Vrste stanova i kuća",
+       "en": "Types of homes"
+      },
+      {
+       "id": "a1-rooms-in-the-house",
+       "sr": "Sobe u kući",
+       "en": "Rooms in the house"
+      },
+      {
+       "id": "a1-furniture",
+       "sr": "Namještaj",
+       "en": "Furniture"
+      },
+      {
+       "id": "a1-bedroom-things",
+       "sr": "Predmeti u spavaćoj sobi",
+       "en": "Bedroom things"
+      },
+      {
+       "id": "a1-living-room-things",
+       "sr": "Predmeti u dnevnoj sobi",
+       "en": "Living room things"
+      },
+      {
+       "id": "a1-kitchen-things",
+       "sr": "Predmeti u kuhinji",
+       "en": "Kitchen things"
+      },
+      {
+       "id": "a1-bathroom-and-hygiene",
+       "sr": "Kupatilo i higijena",
+       "en": "Bathroom and hygiene"
+      },
+      {
+       "id": "a1-household-appliances",
+       "sr": "Kućni aparati",
+       "en": "Household appliances"
+      },
+      {
+       "id": "a1-daily-activities",
+       "sr": "Svakodnevne aktivnosti",
+       "en": "Daily activities"
+      },
+      {
+       "id": "a1-morning-routine",
+       "sr": "Jutarnja rutina",
+       "en": "Morning routine"
+      }
+     ]
+    },
+    {
+     "id": "a1-3",
+     "name": {
+      "sr": "Hrana i kupovina",
+      "en": "Food and shopping"
+     },
+     "topics": [
+      {
+       "id": "a1-basic-food",
+       "sr": "Osnovna hrana",
+       "en": "Basic food"
+      },
+      {
+       "id": "a1-fruit",
+       "sr": "Voće",
+       "en": "Fruit"
+      },
+      {
+       "id": "a1-vegetables",
+       "sr": "Povrće",
+       "en": "Vegetables"
+      },
+      {
+       "id": "a1-meat-and-fish",
+       "sr": "Meso i riba",
+       "en": "Meat and fish"
+      },
+      {
+       "id": "a1-dairy-products",
+       "sr": "Mliječni proizvodi",
+       "en": "Dairy products"
+      },
+      {
+       "id": "a1-bread-and-pastries",
+       "sr": "Hljeb i peciva",
+       "en": "Bread and pastries"
+      },
+      {
+       "id": "a1-drinks",
+       "sr": "Pića",
+       "en": "Drinks"
+      },
+      {
+       "id": "a1-meals-of-the-day",
+       "sr": "Obroci u toku dana",
+       "en": "Meals of the day"
+      },
+      {
+       "id": "a1-restaurants-and-cafes",
+       "sr": "Restorani i kafići",
+       "en": "Restaurants and cafés"
+      },
+      {
+       "id": "a1-shops-and-supermarkets",
+       "sr": "Prodavnice i supermarketi",
+       "en": "Shops and supermarkets"
+      },
+      {
+       "id": "a1-money-and-prices",
+       "sr": "Novac i cijene",
+       "en": "Money and prices"
+      },
+      {
+       "id": "a1-clothes-and-shoes",
+       "sr": "Odjeća i obuća",
+       "en": "Clothes and shoes"
+      }
+     ]
+    },
+    {
+     "id": "a1-4",
+     "name": {
+      "sr": "Vrijeme, priroda i prostor",
+      "en": "Time, nature and places"
+     },
+     "topics": [
+      {
+       "id": "a1-numbers",
+       "sr": "Brojevi",
+       "en": "Numbers"
+      },
+      {
+       "id": "a1-colours",
+       "sr": "Boje",
+       "en": "Colours"
+      },
+      {
+       "id": "a1-days-of-the-week",
+       "sr": "Dani u nedjelji",
+       "en": "Days of the week"
+      },
+      {
+       "id": "a1-months-of-the-year",
+       "sr": "Mjeseci u godini",
+       "en": "Months of the year"
+      },
+      {
+       "id": "a1-seasons",
+       "sr": "Godišnja doba",
+       "en": "Seasons"
+      },
+      {
+       "id": "a1-telling-the-time",
+       "sr": "Vrijeme na satu",
+       "en": "Telling the time"
+      },
+      {
+       "id": "a1-dates",
+       "sr": "Datumi",
+       "en": "Dates"
+      },
+      {
+       "id": "a1-weather",
+       "sr": "Vrijeme i vremenske prilike",
+       "en": "Weather"
+      },
+      {
+       "id": "a1-animals",
+       "sr": "Životinje",
+       "en": "Animals"
+      },
+      {
+       "id": "a1-parts-of-the-body",
+       "sr": "Dijelovi tijela",
+       "en": "Parts of the body"
+      },
+      {
+       "id": "a1-places-in-town",
+       "sr": "Mjesta u gradu",
+       "en": "Places in town"
+      },
+      {
+       "id": "a1-transport",
+       "sr": "Prevozna sredstva",
+       "en": "Transport"
+      },
+      {
+       "id": "a1-basic-directions-and-locations",
+       "sr": "Osnovni pravci i lokacije",
+       "en": "Basic directions and locations"
+      }
+     ]
+    },
+    {
+     "id": "a1-5",
+     "name": {
+      "sr": "Učenje i slobodno vrijeme",
+      "en": "Learning and free time"
+     },
+     "topics": [
+      {
+       "id": "a1-school-supplies",
+       "sr": "Školski pribor",
+       "en": "School supplies"
+      },
+      {
+       "id": "a1-the-classroom",
+       "sr": "Učionica",
+       "en": "The classroom"
+      },
+      {
+       "id": "a1-basic-verbs-of-movement",
+       "sr": "Osnovni glagoli kretanja",
+       "en": "Basic verbs of movement"
+      },
+      {
+       "id": "a1-sports",
+       "sr": "Sportovi",
+       "en": "Sports"
+      },
+      {
+       "id": "a1-hobbies-and-interests",
+       "sr": "Hobiji i interesovanja",
+       "en": "Hobbies and interests"
+      },
+      {
+       "id": "a1-basic-feelings",
+       "sr": "Osnovna osjećanja",
+       "en": "Basic feelings"
+      },
+      {
+       "id": "a1-describing-things-simply",
+       "sr": "Jednostavni opisi predmeta",
+       "en": "Describing things simply"
+      },
+      {
+       "id": "a1-basic-opposites",
+       "sr": "Osnovne suprotnosti",
+       "en": "Basic opposites"
+      },
+      {
+       "id": "a1-simple-questions-and-answers",
+       "sr": "Jednostavna pitanja i odgovori",
+       "en": "Simple questions and answers"
+      },
+      {
+       "id": "a1-basic-polite-phrases",
+       "sr": "Osnovne fraze ljubaznosti",
+       "en": "Basic polite phrases"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "level": "A2",
+   "name": {
+    "sr": "Osnovni nivo",
+    "en": "Elementary"
+   },
+   "description": {
+    "sr": "Samostalno snalaženje u poznatim svakodnevnim situacijama",
+    "en": "Getting by on your own in familiar everyday situations"
+   },
+   "categories": [
+    {
+     "id": "a2-1",
+     "name": {
+      "sr": "Porodica, stanovanje i obaveze",
+      "en": "Family, home and chores"
+     },
+     "topics": [
+      {
+       "id": "a2-family-activities",
+       "sr": "Porodične aktivnosti",
+       "en": "Family activities"
+      },
+      {
+       "id": "a2-family-celebrations",
+       "sr": "Porodične proslave",
+       "en": "Family celebrations"
+      },
+      {
+       "id": "a2-friendship-and-going-out",
+       "sr": "Prijateljstva i druženje",
+       "en": "Friendship and going out"
+      },
+      {
+       "id": "a2-describing-character",
+       "sr": "Opis karaktera ljudi",
+       "en": "Describing character"
+      },
+      {
+       "id": "a2-city-and-country-life",
+       "sr": "Život u gradu i na selu",
+       "en": "City and country life"
+      },
+      {
+       "id": "a2-renting-a-flat",
+       "sr": "Iznajmljivanje stana",
+       "en": "Renting a flat"
+      },
+      {
+       "id": "a2-describing-a-flat",
+       "sr": "Opisivanje stana",
+       "en": "Describing a flat"
+      },
+      {
+       "id": "a2-housework",
+       "sr": "Kućni poslovi",
+       "en": "Housework"
+      },
+      {
+       "id": "a2-cleaning-and-upkeep",
+       "sr": "Čišćenje i održavanje",
+       "en": "Cleaning and upkeep"
+      },
+      {
+       "id": "a2-home-repairs",
+       "sr": "Popravke u kući",
+       "en": "Home repairs"
+      },
+      {
+       "id": "a2-neighbours-and-neighbourhood",
+       "sr": "Komšije i komšiluk",
+       "en": "Neighbours and neighbourhood"
+      }
+     ]
+    },
+    {
+     "id": "a2-2",
+     "name": {
+      "sr": "Hrana, zdravlje i kupovina",
+      "en": "Food, health and shopping"
+     },
+     "topics": [
+      {
+       "id": "a2-cooking",
+       "sr": "Kuvanje i priprema hrane",
+       "en": "Cooking"
+      },
+      {
+       "id": "a2-recipes-and-ingredients",
+       "sr": "Recepti i sastojci",
+       "en": "Recipes and ingredients"
+      },
+      {
+       "id": "a2-kitchen-tools",
+       "sr": "Kuhinjski pribor",
+       "en": "Kitchen tools"
+      },
+      {
+       "id": "a2-ordering-food",
+       "sr": "Naručivanje hrane",
+       "en": "Ordering food"
+      },
+      {
+       "id": "a2-eating-habits",
+       "sr": "Prehrambene navike",
+       "en": "Eating habits"
+      },
+      {
+       "id": "a2-healthy-eating",
+       "sr": "Zdrava ishrana",
+       "en": "Healthy eating"
+      },
+      {
+       "id": "a2-buying-clothes",
+       "sr": "Kupovina odjeće",
+       "en": "Buying clothes"
+      },
+      {
+       "id": "a2-sizes-and-materials",
+       "sr": "Veličine i materijali",
+       "en": "Sizes and materials"
+      },
+      {
+       "id": "a2-complaints-and-returns",
+       "sr": "Reklamacije i vraćanje robe",
+       "en": "Complaints and returns"
+      },
+      {
+       "id": "a2-body-and-symptoms",
+       "sr": "Dijelovi tijela i simptomi",
+       "en": "Body and symptoms"
+      },
+      {
+       "id": "a2-common-illnesses",
+       "sr": "Uobičajene bolesti",
+       "en": "Common illnesses"
+      },
+      {
+       "id": "a2-doctor-and-pharmacy",
+       "sr": "Ljekar i apoteka",
+       "en": "Doctor and pharmacy"
+      }
+     ]
+    },
+    {
+     "id": "a2-3",
+     "name": {
+      "sr": "Putovanje i grad",
+      "en": "Travel and the city"
+     },
+     "topics": [
+      {
+       "id": "a2-planning-a-trip",
+       "sr": "Planiranje putovanja",
+       "en": "Planning a trip"
+      },
+      {
+       "id": "a2-at-the-airport",
+       "sr": "Aerodrom",
+       "en": "At the airport"
+      },
+      {
+       "id": "a2-at-the-train-station",
+       "sr": "Željeznička stanica",
+       "en": "At the train station"
+      },
+      {
+       "id": "a2-at-the-bus-station",
+       "sr": "Autobuska stanica",
+       "en": "At the bus station"
+      },
+      {
+       "id": "a2-hotels-and-bookings",
+       "sr": "Hoteli i rezervacije",
+       "en": "Hotels and bookings"
+      },
+      {
+       "id": "a2-sightseeing",
+       "sr": "Razgledanje grada",
+       "en": "Sightseeing"
+      },
+      {
+       "id": "a2-asking-for-and-giving-directions",
+       "sr": "Traženje i davanje uputstava",
+       "en": "Asking for and giving directions"
+      },
+      {
+       "id": "a2-public-transport",
+       "sr": "Javni prevoz",
+       "en": "Public transport"
+      },
+      {
+       "id": "a2-driving",
+       "sr": "Vožnja automobila",
+       "en": "Driving"
+      },
+      {
+       "id": "a2-road-signs",
+       "sr": "Saobraćajni znakovi",
+       "en": "Road signs"
+      },
+      {
+       "id": "a2-holidays",
+       "sr": "Odmor i ljetovanje",
+       "en": "Holidays"
+      },
+      {
+       "id": "a2-beach-and-sea",
+       "sr": "Plaža i more",
+       "en": "Beach and sea"
+      }
+     ]
+    },
+    {
+     "id": "a2-4",
+     "name": {
+      "sr": "Škola, posao i komunikacija",
+      "en": "School, work and communication"
+     },
+     "topics": [
+      {
+       "id": "a2-school-subjects",
+       "sr": "Školski predmeti",
+       "en": "School subjects"
+      },
+      {
+       "id": "a2-education-and-grades",
+       "sr": "Obrazovanje i ocjene",
+       "en": "Education and grades"
+      },
+      {
+       "id": "a2-learning-languages",
+       "sr": "Učenje stranih jezika",
+       "en": "Learning languages"
+      },
+      {
+       "id": "a2-the-workplace",
+       "sr": "Radno mjesto",
+       "en": "The workplace"
+      },
+      {
+       "id": "a2-working-hours",
+       "sr": "Radno vrijeme",
+       "en": "Working hours"
+      },
+      {
+       "id": "a2-simple-work-tasks",
+       "sr": "Jednostavni poslovni zadaci",
+       "en": "Simple work tasks"
+      },
+      {
+       "id": "a2-phone-calls",
+       "sr": "Telefonski razgovori",
+       "en": "Phone calls"
+      },
+      {
+       "id": "a2-messages-and-emails",
+       "sr": "Poruke i e-mailovi",
+       "en": "Messages and emails"
+      },
+      {
+       "id": "a2-internet-and-social-media",
+       "sr": "Internet i društvene mreže",
+       "en": "Internet and social media"
+      },
+      {
+       "id": "a2-computers-and-phones",
+       "sr": "Računari i telefoni",
+       "en": "Computers and phones"
+      }
+     ]
+    },
+    {
+     "id": "a2-5",
+     "name": {
+      "sr": "Slobodno vrijeme i iskustva",
+      "en": "Free time and experiences"
+     },
+     "topics": [
+      {
+       "id": "a2-films-and-series",
+       "sr": "Filmovi i serije",
+       "en": "Films and series"
+      },
+      {
+       "id": "a2-music-and-instruments",
+       "sr": "Muzika i instrumenti",
+       "en": "Music and instruments"
+      },
+      {
+       "id": "a2-books-and-reading",
+       "sr": "Knjige i čitanje",
+       "en": "Books and reading"
+      },
+      {
+       "id": "a2-sport-and-exercise",
+       "sr": "Sport i fizička aktivnost",
+       "en": "Sport and exercise"
+      },
+      {
+       "id": "a2-weekend-activities",
+       "sr": "Vikend aktivnosti",
+       "en": "Weekend activities"
+      },
+      {
+       "id": "a2-invitations-and-plans",
+       "sr": "Pozivnice i dogovori",
+       "en": "Invitations and plans"
+      },
+      {
+       "id": "a2-talking-about-the-past",
+       "sr": "Opis prošlih događaja",
+       "en": "Talking about the past"
+      },
+      {
+       "id": "a2-plans-for-the-future",
+       "sr": "Planovi za budućnost",
+       "en": "Plans for the future"
+      },
+      {
+       "id": "a2-emotions-and-mood",
+       "sr": "Emocije i raspoloženje",
+       "en": "Emotions and mood"
+      },
+      {
+       "id": "a2-holidays-and-traditions",
+       "sr": "Praznici i tradicije",
+       "en": "Holidays and traditions"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "level": "B1",
+   "name": {
+    "sr": "Srednji nivo",
+    "en": "Intermediate"
+   },
+   "description": {
+    "sr": "Samostalno razgovaranje, iskustva, mišljenja i svakodnevni problemi",
+    "en": "Talking on your own about experiences, opinions and everyday problems"
+   },
+   "categories": [
+    {
+     "id": "b1-1",
+     "name": {
+      "sr": "Odnosi i društvo",
+      "en": "Relationships and society"
+     },
+     "topics": [
+      {
+       "id": "b1-relationships-between-people",
+       "sr": "Međuljudski odnosi",
+       "en": "Relationships between people"
+      },
+      {
+       "id": "b1-romantic-relationships",
+       "sr": "Partnerski odnosi",
+       "en": "Romantic relationships"
+      },
+      {
+       "id": "b1-marriage-and-living-together",
+       "sr": "Brak i zajednički život",
+       "en": "Marriage and living together"
+      },
+      {
+       "id": "b1-parenting",
+       "sr": "Roditeljstvo i vaspitanje",
+       "en": "Parenting"
+      },
+      {
+       "id": "b1-generation-gaps",
+       "sr": "Generacijske razlike",
+       "en": "Generation gaps"
+      },
+      {
+       "id": "b1-conflicts-and-misunderstandings",
+       "sr": "Sukobi i nesporazumi",
+       "en": "Conflicts and misunderstandings"
+      },
+      {
+       "id": "b1-resolving-conflicts",
+       "sr": "Rješavanje konflikata",
+       "en": "Resolving conflicts"
+      },
+      {
+       "id": "b1-personal-values",
+       "sr": "Lične vrijednosti",
+       "en": "Personal values"
+      },
+      {
+       "id": "b1-social-norms",
+       "sr": "Društvene norme",
+       "en": "Social norms"
+      },
+      {
+       "id": "b1-volunteering-and-community",
+       "sr": "Volontiranje i zajednica",
+       "en": "Volunteering and community"
+      },
+      {
+       "id": "b1-cultural-differences",
+       "sr": "Kulturne razlike",
+       "en": "Cultural differences"
+      }
+     ]
+    },
+    {
+     "id": "b1-2",
+     "name": {
+      "sr": "Obrazovanje i karijera",
+      "en": "Education and career"
+     },
+     "topics": [
+      {
+       "id": "b1-school-systems",
+       "sr": "Školski sistemi",
+       "en": "School systems"
+      },
+      {
+       "id": "b1-university-life",
+       "sr": "Univerzitet i studiranje",
+       "en": "University life"
+      },
+      {
+       "id": "b1-exams-and-preparation",
+       "sr": "Ispiti i priprema",
+       "en": "Exams and preparation"
+      },
+      {
+       "id": "b1-study-methods",
+       "sr": "Metode učenja",
+       "en": "Study methods"
+      },
+      {
+       "id": "b1-choosing-a-career",
+       "sr": "Izbor karijere",
+       "en": "Choosing a career"
+      },
+      {
+       "id": "b1-job-hunting",
+       "sr": "Traženje posla",
+       "en": "Job hunting"
+      },
+      {
+       "id": "b1-cv-and-cover-letter",
+       "sr": "CV i motivaciono pismo",
+       "en": "CV and cover letter"
+      },
+      {
+       "id": "b1-job-interviews",
+       "sr": "Razgovor za posao",
+       "en": "Job interviews"
+      },
+      {
+       "id": "b1-working-conditions",
+       "sr": "Uslovi rada",
+       "en": "Working conditions"
+      },
+      {
+       "id": "b1-pay-and-benefits",
+       "sr": "Plate i beneficije",
+       "en": "Pay and benefits"
+      },
+      {
+       "id": "b1-working-from-home",
+       "sr": "Rad od kuće",
+       "en": "Working from home"
+      },
+      {
+       "id": "b1-worklife-balance",
+       "sr": "Ravnoteža posla i života",
+       "en": "Work–life balance"
+      }
+     ]
+    },
+    {
+     "id": "b1-3",
+     "name": {
+      "sr": "Zdravlje i životni stil",
+      "en": "Health and lifestyle"
+     },
+     "topics": [
+      {
+       "id": "b1-healthy-habits",
+       "sr": "Zdrave navike",
+       "en": "Healthy habits"
+      },
+      {
+       "id": "b1-nutrition-and-diets",
+       "sr": "Ishrana i dijete",
+       "en": "Nutrition and diets"
+      },
+      {
+       "id": "b1-gym-and-training",
+       "sr": "Teretana i treninzi",
+       "en": "Gym and training"
+      },
+      {
+       "id": "b1-mental-health",
+       "sr": "Mentalno zdravlje",
+       "en": "Mental health"
+      },
+      {
+       "id": "b1-stress-and-tiredness",
+       "sr": "Stres i umor",
+       "en": "Stress and tiredness"
+      },
+      {
+       "id": "b1-sleep-and-rest",
+       "sr": "Spavanje i odmor",
+       "en": "Sleep and rest"
+      },
+      {
+       "id": "b1-illness-and-treatment",
+       "sr": "Bolesti i liječenje",
+       "en": "Illness and treatment"
+      },
+      {
+       "id": "b1-the-health-system",
+       "sr": "Zdravstveni sistem",
+       "en": "The health system"
+      },
+      {
+       "id": "b1-addiction-and-prevention",
+       "sr": "Zavisnosti i prevencija",
+       "en": "Addiction and prevention"
+      },
+      {
+       "id": "b1-personal-growth",
+       "sr": "Lični razvoj",
+       "en": "Personal growth"
+      }
+     ]
+    },
+    {
+     "id": "b1-4",
+     "name": {
+      "sr": "Tehnologija, mediji i novac",
+      "en": "Technology, media and money"
+     },
+     "topics": [
+      {
+       "id": "b1-online-safety",
+       "sr": "Internet bezbjednost",
+       "en": "Online safety"
+      },
+      {
+       "id": "b1-social-media-and-influence",
+       "sr": "Društvene mreže i uticaj",
+       "en": "Social media and influence"
+      },
+      {
+       "id": "b1-digital-communication",
+       "sr": "Digitalna komunikacija",
+       "en": "Digital communication"
+      },
+      {
+       "id": "b1-online-shopping",
+       "sr": "Kupovina preko interneta",
+       "en": "Online shopping"
+      },
+      {
+       "id": "b1-media-and-news",
+       "sr": "Mediji i vijesti",
+       "en": "Media and news"
+      },
+      {
+       "id": "b1-advertising",
+       "sr": "Oglašavanje",
+       "en": "Advertising"
+      },
+      {
+       "id": "b1-banks-and-accounts",
+       "sr": "Banke i bankovni računi",
+       "en": "Banks and accounts"
+      },
+      {
+       "id": "b1-saving-and-budgeting",
+       "sr": "Štednja i planiranje budžeta",
+       "en": "Saving and budgeting"
+      },
+      {
+       "id": "b1-cost-of-living",
+       "sr": "Troškovi života",
+       "en": "Cost of living"
+      },
+      {
+       "id": "b1-insurance",
+       "sr": "Osiguranje",
+       "en": "Insurance"
+      },
+      {
+       "id": "b1-consumer-rights",
+       "sr": "Potrošačka prava",
+       "en": "Consumer rights"
+      }
+     ]
+    },
+    {
+     "id": "b1-5",
+     "name": {
+      "sr": "Svijet oko nas",
+      "en": "The world around us"
+     },
+     "topics": [
+      {
+       "id": "b1-protecting-the-environment",
+       "sr": "Zaštita životne sredine",
+       "en": "Protecting the environment"
+      },
+      {
+       "id": "b1-recycling-and-waste",
+       "sr": "Recikliranje i otpad",
+       "en": "Recycling and waste"
+      },
+      {
+       "id": "b1-climate-change-basics",
+       "sr": "Klimatske promjene – osnove",
+       "en": "Climate change basics"
+      },
+      {
+       "id": "b1-public-transport-and-mobility",
+       "sr": "Javni saobraćaj i mobilnost",
+       "en": "Public transport and mobility"
+      },
+      {
+       "id": "b1-tourism-and-its-impact",
+       "sr": "Turizam i njegov uticaj",
+       "en": "Tourism and its impact"
+      },
+      {
+       "id": "b1-traditions-and-customs",
+       "sr": "Tradicija i običaji",
+       "en": "Traditions and customs"
+      },
+      {
+       "id": "b1-culture-and-festivals",
+       "sr": "Kultura i festivali",
+       "en": "Culture and festivals"
+      },
+      {
+       "id": "b1-historical-events",
+       "sr": "Istorijski događaji",
+       "en": "Historical events"
+      },
+      {
+       "id": "b1-sport-and-competitions",
+       "sr": "Sport i takmičenja",
+       "en": "Sport and competitions"
+      },
+      {
+       "id": "b1-books-and-genres",
+       "sr": "Knjige i književni žanrovi",
+       "en": "Books and genres"
+      },
+      {
+       "id": "b1-giving-opinions-and-reasons",
+       "sr": "Izražavanje mišljenja i argumentovanje",
+       "en": "Giving opinions and reasons"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "level": "B2",
+   "name": {
+    "sr": "Viši srednji nivo",
+    "en": "Upper-intermediate"
+   },
+   "description": {
+    "sr": "Rasprave, kompleksniji problemi i preciznije izražavanje mišljenja",
+    "en": "Discussions, complex problems and precise opinions"
+   },
+   "categories": [
+    {
+     "id": "b2-1",
+     "name": {
+      "sr": "Društvo i savremeni život",
+      "en": "Society and modern life"
+     },
+     "topics": [
+      {
+       "id": "b2-social-inequality",
+       "sr": "Društvena nejednakost",
+       "en": "Social inequality"
+      },
+      {
+       "id": "b2-human-rights",
+       "sr": "Ljudska prava",
+       "en": "Human rights"
+      },
+      {
+       "id": "b2-migration-and-integration",
+       "sr": "Migracije i integracija",
+       "en": "Migration and integration"
+      },
+      {
+       "id": "b2-globalisation",
+       "sr": "Globalizacija",
+       "en": "Globalisation"
+      },
+      {
+       "id": "b2-political-systems",
+       "sr": "Politički sistemi",
+       "en": "Political systems"
+      },
+      {
+       "id": "b2-democracy-and-elections",
+       "sr": "Demokratija i izbori",
+       "en": "Democracy and elections"
+      },
+      {
+       "id": "b2-media-manipulation",
+       "sr": "Medijska manipulacija",
+       "en": "Media manipulation"
+      },
+      {
+       "id": "b2-disinformation-and-fake-news",
+       "sr": "Dezinformacije i lažne vijesti",
+       "en": "Disinformation and fake news"
+      },
+      {
+       "id": "b2-gender-equality",
+       "sr": "Rodna ravnopravnost",
+       "en": "Gender equality"
+      },
+      {
+       "id": "b2-multiculturalism",
+       "sr": "Multikulturalizam",
+       "en": "Multiculturalism"
+      }
+     ]
+    },
+    {
+     "id": "b2-2",
+     "name": {
+      "sr": "Ekonomija i poslovni svijet",
+      "en": "Economy and business"
+     },
+     "topics": [
+      {
+       "id": "b2-the-job-market",
+       "sr": "Tržište rada",
+       "en": "The job market"
+      },
+      {
+       "id": "b2-entrepreneurship",
+       "sr": "Preduzetništvo",
+       "en": "Entrepreneurship"
+      },
+      {
+       "id": "b2-starting-a-business",
+       "sr": "Pokretanje biznisa",
+       "en": "Starting a business"
+      },
+      {
+       "id": "b2-management-and-leadership",
+       "sr": "Menadžment i liderstvo",
+       "en": "Management and leadership"
+      },
+      {
+       "id": "b2-business-negotiations",
+       "sr": "Poslovni pregovori",
+       "en": "Business negotiations"
+      },
+      {
+       "id": "b2-financial-planning",
+       "sr": "Finansijsko planiranje",
+       "en": "Financial planning"
+      },
+      {
+       "id": "b2-loans-and-debt",
+       "sr": "Krediti i dugovi",
+       "en": "Loans and debt"
+      },
+      {
+       "id": "b2-inflation-and-purchasing-power",
+       "sr": "Inflacija i kupovna moć",
+       "en": "Inflation and purchasing power"
+      },
+      {
+       "id": "b2-marketing-and-consumer-behaviour",
+       "sr": "Marketing i ponašanje potrošača",
+       "en": "Marketing and consumer behaviour"
+      },
+      {
+       "id": "b2-international-trade",
+       "sr": "Međunarodna trgovina",
+       "en": "International trade"
+      }
+     ]
+    },
+    {
+     "id": "b2-3",
+     "name": {
+      "sr": "Nauka, tehnologija i okruženje",
+      "en": "Science, technology and environment"
+     },
+     "topics": [
+      {
+       "id": "b2-artificial-intelligence",
+       "sr": "Vještačka inteligencija",
+       "en": "Artificial intelligence"
+      },
+      {
+       "id": "b2-automation-and-robotics",
+       "sr": "Automatizacija i robotika",
+       "en": "Automation and robotics"
+      },
+      {
+       "id": "b2-digital-privacy",
+       "sr": "Digitalna privatnost",
+       "en": "Digital privacy"
+      },
+      {
+       "id": "b2-cybersecurity",
+       "sr": "Sajber bezbjednost",
+       "en": "Cybersecurity"
+      },
+      {
+       "id": "b2-scientific-research",
+       "sr": "Naučna istraživanja",
+       "en": "Scientific research"
+      },
+      {
+       "id": "b2-renewable-energy",
+       "sr": "Obnovljivi izvori energije",
+       "en": "Renewable energy"
+      },
+      {
+       "id": "b2-pollution-and-sustainability",
+       "sr": "Zagađenje i održivost",
+       "en": "Pollution and sustainability"
+      },
+      {
+       "id": "b2-biodiversity",
+       "sr": "Biodiverzitet",
+       "en": "Biodiversity"
+      },
+      {
+       "id": "b2-urban-development",
+       "sr": "Urbani razvoj",
+       "en": "Urban development"
+      },
+      {
+       "id": "b2-the-future-of-transport",
+       "sr": "Budućnost transporta",
+       "en": "The future of transport"
+      }
+     ]
+    },
+    {
+     "id": "b2-4",
+     "name": {
+      "sr": "Kultura i psihologija",
+      "en": "Culture and psychology"
+     },
+     "topics": [
+      {
+       "id": "b2-behavioural-psychology",
+       "sr": "Psihologija ponašanja",
+       "en": "Behavioural psychology"
+      },
+      {
+       "id": "b2-motivation-and-discipline",
+       "sr": "Motivacija i disciplina",
+       "en": "Motivation and discipline"
+      },
+      {
+       "id": "b2-personality-and-identity",
+       "sr": "Ličnost i identitet",
+       "en": "Personality and identity"
+      },
+      {
+       "id": "b2-prejudice-and-stereotypes",
+       "sr": "Predrasude i stereotipi",
+       "en": "Prejudice and stereotypes"
+      },
+      {
+       "id": "b2-ethics-and-moral-dilemmas",
+       "sr": "Etika i moralne dileme",
+       "en": "Ethics and moral dilemmas"
+      },
+      {
+       "id": "b2-art-and-society",
+       "sr": "Umjetnost i društvo",
+       "en": "Art and society"
+      },
+      {
+       "id": "b2-film-and-book-reviews",
+       "sr": "Filmska i književna kritika",
+       "en": "Film and book reviews"
+      },
+      {
+       "id": "b2-cultural-heritage",
+       "sr": "Kulturno nasljeđe",
+       "en": "Cultural heritage"
+      },
+      {
+       "id": "b2-contemporary-art",
+       "sr": "Savremena umjetnost",
+       "en": "Contemporary art"
+      },
+      {
+       "id": "b2-communication-and-body-language",
+       "sr": "Komunikacija i govor tijela",
+       "en": "Communication and body language"
+      }
+     ]
+    },
+    {
+     "id": "b2-5",
+     "name": {
+      "sr": "Napredna svakodnevna i profesionalna komunikacija",
+      "en": "Advanced everyday and professional communication"
+     },
+     "topics": [
+      {
+       "id": "b2-formal-communication",
+       "sr": "Formalna komunikacija",
+       "en": "Formal communication"
+      },
+      {
+       "id": "b2-business-meetings",
+       "sr": "Poslovni sastanci",
+       "en": "Business meetings"
+      },
+      {
+       "id": "b2-presentations",
+       "sr": "Javne prezentacije",
+       "en": "Presentations"
+      },
+      {
+       "id": "b2-solving-complex-problems",
+       "sr": "Rješavanje kompleksnih problema",
+       "en": "Solving complex problems"
+      },
+      {
+       "id": "b2-negotiation-and-compromise",
+       "sr": "Pregovaranje i kompromis",
+       "en": "Negotiation and compromise"
+      },
+      {
+       "id": "b2-arguments-and-counterarguments",
+       "sr": "Iznošenje argumenata i kontraargumenata",
+       "en": "Arguments and counterarguments"
+      },
+      {
+       "id": "b2-making-hypotheses",
+       "sr": "Iznošenje pretpostavki",
+       "en": "Making hypotheses"
+      },
+      {
+       "id": "b2-cause-and-effect",
+       "sr": "Analiza uzroka i posljedica",
+       "en": "Cause and effect"
+      },
+      {
+       "id": "b2-comparing-perspectives",
+       "sr": "Poređenje različitih perspektiva",
+       "en": "Comparing perspectives"
+      },
+      {
+       "id": "b2-writing-formal-reports",
+       "sr": "Pisanje formalnih izvještaja",
+       "en": "Writing formal reports"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "level": "C1",
+   "name": {
+    "sr": "Napredni nivo",
+    "en": "Advanced"
+   },
+   "description": {
+    "sr": "Akademski, stručni i apstraktni govor uz jezičku preciznost",
+    "en": "Academic, professional and abstract language with precision"
+   },
+   "categories": [
+    {
+     "id": "c1-1",
+     "name": {
+      "sr": "Filozofija i društvena pitanja",
+      "en": "Philosophy and social questions"
+     },
+     "topics": [
+      {
+       "id": "c1-philosophical-theories",
+       "sr": "Filozofske teorije",
+       "en": "Philosophical theories"
+      },
+      {
+       "id": "c1-free-will-and-determinism",
+       "sr": "Slobodna volja i determinizam",
+       "en": "Free will and determinism"
+      },
+      {
+       "id": "c1-identity-and-consciousness",
+       "sr": "Identitet i svijest",
+       "en": "Identity and consciousness"
+      },
+      {
+       "id": "c1-ethics-in-modern-society",
+       "sr": "Etika savremenog društva",
+       "en": "Ethics in modern society"
+      },
+      {
+       "id": "c1-justice-and-equality",
+       "sr": "Pravda i jednakost",
+       "en": "Justice and equality"
+      },
+      {
+       "id": "c1-social-responsibility",
+       "sr": "Društvena odgovornost",
+       "en": "Social responsibility"
+      },
+      {
+       "id": "c1-ideologies-and-worldviews",
+       "sr": "Ideologije i svjetonazori",
+       "en": "Ideologies and worldviews"
+      },
+      {
+       "id": "c1-public-discourse-and-rhetoric",
+       "sr": "Javni diskurs i retorika",
+       "en": "Public discourse and rhetoric"
+      },
+      {
+       "id": "c1-critical-thinking",
+       "sr": "Kritičko razmišljanje",
+       "en": "Critical thinking"
+      }
+     ]
+    },
+    {
+     "id": "c1-2",
+     "name": {
+      "sr": "Politika, ekonomija i pravo",
+      "en": "Politics, economics and law"
+     },
+     "topics": [
+      {
+       "id": "c1-international-relations",
+       "sr": "Međunarodni odnosi",
+       "en": "International relations"
+      },
+      {
+       "id": "c1-geopolitics",
+       "sr": "Geopolitika",
+       "en": "Geopolitics"
+      },
+      {
+       "id": "c1-economic-models",
+       "sr": "Ekonomski modeli",
+       "en": "Economic models"
+      },
+      {
+       "id": "c1-monetary-and-fiscal-policy",
+       "sr": "Monetarna i fiskalna politika",
+       "en": "Monetary and fiscal policy"
+      },
+      {
+       "id": "c1-financial-markets",
+       "sr": "Finansijska tržišta",
+       "en": "Financial markets"
+      },
+      {
+       "id": "c1-corporate-governance",
+       "sr": "Korporativno upravljanje",
+       "en": "Corporate governance"
+      },
+      {
+       "id": "c1-labour-and-business-law",
+       "sr": "Radno i privredno pravo",
+       "en": "Labour and business law"
+      },
+      {
+       "id": "c1-legislation-and-regulation",
+       "sr": "Zakonodavstvo i regulativa",
+       "en": "Legislation and regulation"
+      },
+      {
+       "id": "c1-public-policy-and-institutions",
+       "sr": "Javne politike i institucije",
+       "en": "Public policy and institutions"
+      }
+     ]
+    },
+    {
+     "id": "c1-3",
+     "name": {
+      "sr": "Nauka, istraživanja i tehnologija",
+      "en": "Science, research and technology"
+     },
+     "topics": [
+      {
+       "id": "c1-scientific-method",
+       "sr": "Naučna metodologija",
+       "en": "Scientific method"
+      },
+      {
+       "id": "c1-research-hypotheses",
+       "sr": "Istraživačke hipoteze",
+       "en": "Research hypotheses"
+      },
+      {
+       "id": "c1-statistics-and-data",
+       "sr": "Statistika i interpretacija podataka",
+       "en": "Statistics and data"
+      },
+      {
+       "id": "c1-biotechnology",
+       "sr": "Biotehnologija",
+       "en": "Biotechnology"
+      },
+      {
+       "id": "c1-genetics-and-bioethics",
+       "sr": "Genetika i bioetika",
+       "en": "Genetics and bioethics"
+      },
+      {
+       "id": "c1-neuroscience-research",
+       "sr": "Neurološka istraživanja",
+       "en": "Neuroscience research"
+      },
+      {
+       "id": "c1-advanced-ai",
+       "sr": "Napredna vještačka inteligencija",
+       "en": "Advanced AI"
+      },
+      {
+       "id": "c1-technological-innovation",
+       "sr": "Tehnološke inovacije",
+       "en": "Technological innovation"
+      },
+      {
+       "id": "c1-environmental-policy",
+       "sr": "Ekološka politika",
+       "en": "Environmental policy"
+      }
+     ]
+    },
+    {
+     "id": "c1-4",
+     "name": {
+      "sr": "Kultura, književnost i jezik",
+      "en": "Culture, literature and language"
+     },
+     "topics": [
+      {
+       "id": "c1-literary-analysis",
+       "sr": "Književna analiza",
+       "en": "Literary analysis"
+      },
+      {
+       "id": "c1-style-and-literary-movements",
+       "sr": "Stil i književni pravci",
+       "en": "Style and literary movements"
+      },
+      {
+       "id": "c1-symbolism-and-metaphor",
+       "sr": "Simbolika i metafore",
+       "en": "Symbolism and metaphor"
+      },
+      {
+       "id": "c1-art-history",
+       "sr": "Istorija umjetnosti",
+       "en": "Art history"
+      },
+      {
+       "id": "c1-aesthetics",
+       "sr": "Estetika",
+       "en": "Aesthetics"
+      },
+      {
+       "id": "c1-sociolinguistics",
+       "sr": "Sociolingvistika",
+       "en": "Sociolinguistics"
+      },
+      {
+       "id": "c1-language-registers",
+       "sr": "Jezički registri",
+       "en": "Language registers"
+      },
+      {
+       "id": "c1-intercultural-communication",
+       "sr": "Interkulturalna komunikacija",
+       "en": "Intercultural communication"
+      },
+      {
+       "id": "c1-media-criticism",
+       "sr": "Medijska kritika",
+       "en": "Media criticism"
+      }
+     ]
+    },
+    {
+     "id": "c1-5",
+     "name": {
+      "sr": "Stručno izražavanje",
+      "en": "Professional expression"
+     },
+     "topics": [
+      {
+       "id": "c1-academic-writing",
+       "sr": "Akademsko pisanje",
+       "en": "Academic writing"
+      },
+      {
+       "id": "c1-professional-reports",
+       "sr": "Stručni izvještaji",
+       "en": "Professional reports"
+      },
+      {
+       "id": "c1-argumentative-essays",
+       "sr": "Argumentativni eseji",
+       "en": "Argumentative essays"
+      },
+      {
+       "id": "c1-public-speaking-and-debate",
+       "sr": "Javni govor i debata",
+       "en": "Public speaking and debate"
+      },
+      {
+       "id": "c1-diplomatic-communication",
+       "sr": "Diplomatska komunikacija",
+       "en": "Diplomatic communication"
+      },
+      {
+       "id": "c1-crisis-management",
+       "sr": "Upravljanje krizama",
+       "en": "Crisis management"
+      },
+      {
+       "id": "c1-strategic-planning",
+       "sr": "Strateško planiranje",
+       "en": "Strategic planning"
+      },
+      {
+       "id": "c1-complex-negotiation",
+       "sr": "Kompleksno pregovaranje",
+       "en": "Complex negotiation"
+      },
+      {
+       "id": "c1-rhetorical-techniques",
+       "sr": "Retoričke tehnike",
+       "en": "Rhetorical techniques"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "level": "C2",
+   "name": {
+    "sr": "Ekspertski nivo",
+    "en": "Proficient"
+   },
+   "description": {
+    "sr": "Nijanse, specijalizovani diskurs, stil i potpuno prilagođavanje kontekstu",
+    "en": "Nuance, specialised discourse, style and full adaptation to context"
+   },
+   "categories": [
+    {
+     "id": "c2-1",
+     "name": {
+      "sr": "Jezik, stil i značenje",
+      "en": "Language, style and meaning"
+     },
+     "topics": [
+      {
+       "id": "c2-shades-of-meaning-and-connotation",
+       "sr": "Nijanse značenja i konotacije",
+       "en": "Shades of meaning and connotation"
+      },
+      {
+       "id": "c2-idioms-and-set-phrases",
+       "sr": "Idiomi i ustaljeni izrazi",
+       "en": "Idioms and set phrases"
+      },
+      {
+       "id": "c2-advanced-collocations",
+       "sr": "Kolokacije visoke složenosti",
+       "en": "Advanced collocations"
+      },
+      {
+       "id": "c2-irony-sarcasm-and-satire",
+       "sr": "Ironija, sarkazam i satira",
+       "en": "Irony, sarcasm and satire"
+      },
+      {
+       "id": "c2-humour-and-wordplay",
+       "sr": "Humor i igre riječima",
+       "en": "Humour and wordplay"
+      },
+      {
+       "id": "c2-regional-dialects",
+       "sr": "Regionalni dijalekti",
+       "en": "Regional dialects"
+      },
+      {
+       "id": "c2-archaisms-and-historical-language",
+       "sr": "Arhaizmi i istorijski jezik",
+       "en": "Archaisms and historical language"
+      },
+      {
+       "id": "c2-formal-and-informal-style",
+       "sr": "Formalni i neformalni stil",
+       "en": "Formal and informal style"
+      },
+      {
+       "id": "c2-pragmatics-and-implied-meaning",
+       "sr": "Pragmatika i implicitno značenje",
+       "en": "Pragmatics and implied meaning"
+      }
+     ]
+    },
+    {
+     "id": "c2-2",
+     "name": {
+      "sr": "Književnost i umjetnost",
+      "en": "Literature and art"
+     },
+     "topics": [
+      {
+       "id": "c2-classic-literature",
+       "sr": "Klasična književnost",
+       "en": "Classic literature"
+      },
+      {
+       "id": "c2-experimental-literature",
+       "sr": "Savremena eksperimentalna književnost",
+       "en": "Experimental literature"
+      },
+      {
+       "id": "c2-literary-theory-and-criticism",
+       "sr": "Književna teorija i kritika",
+       "en": "Literary theory and criticism"
+      },
+      {
+       "id": "c2-intertextuality",
+       "sr": "Intertekstualnost",
+       "en": "Intertextuality"
+      },
+      {
+       "id": "c2-poetics-and-stylistics",
+       "sr": "Poetika i stilistika",
+       "en": "Poetics and stylistics"
+      },
+      {
+       "id": "c2-philosophy-of-art",
+       "sr": "Filozofija umjetnosti",
+       "en": "Philosophy of art"
+      },
+      {
+       "id": "c2-literary-translation",
+       "sr": "Prevođenje književnih tekstova",
+       "en": "Literary translation"
+      }
+     ]
+    },
+    {
+     "id": "c2-3",
+     "name": {
+      "sr": "Filozofija, etika i društvo",
+      "en": "Philosophy, ethics and society"
+     },
+     "topics": [
+      {
+       "id": "c2-epistemology",
+       "sr": "Epistemologija i teorija znanja",
+       "en": "Epistemology"
+      },
+      {
+       "id": "c2-metaphysics-and-ontology",
+       "sr": "Metafizika i ontologija",
+       "en": "Metaphysics and ontology"
+      },
+      {
+       "id": "c2-political-philosophy",
+       "sr": "Politička filozofija",
+       "en": "Political philosophy"
+      },
+      {
+       "id": "c2-ethics-of-science-and-technology",
+       "sr": "Etika nauke i tehnologije",
+       "en": "Ethics of science and technology"
+      },
+      {
+       "id": "c2-complex-social-paradoxes",
+       "sr": "Kompleksni društveni paradoksi",
+       "en": "Complex social paradoxes"
+      },
+      {
+       "id": "c2-cultural-hegemony",
+       "sr": "Kulturna hegemonija",
+       "en": "Cultural hegemony"
+      },
+      {
+       "id": "c2-philosophy-of-language",
+       "sr": "Filozofija jezika",
+       "en": "Philosophy of language"
+      }
+     ]
+    },
+    {
+     "id": "c2-4",
+     "name": {
+      "sr": "Ekspertska profesionalna i akademska komunikacija",
+      "en": "Expert professional and academic communication"
+     },
+     "topics": [
+      {
+       "id": "c2-specialised-scientific-terms",
+       "sr": "Specijalizovana naučna terminologija",
+       "en": "Specialised scientific terms"
+      },
+      {
+       "id": "c2-legal-and-regulatory-language",
+       "sr": "Pravni i regulatorni diskurs",
+       "en": "Legal and regulatory language"
+      },
+      {
+       "id": "c2-economic-and-geopolitical-analysis",
+       "sr": "Ekonomske i geopolitičke analize",
+       "en": "Economic and geopolitical analysis"
+      },
+      {
+       "id": "c2-academic-argument",
+       "sr": "Akademska argumentacija",
+       "en": "Academic argument"
+      },
+      {
+       "id": "c2-expert-debate",
+       "sr": "Stručna polemika i debata",
+       "en": "Expert debate"
+      },
+      {
+       "id": "c2-diplomatic-negotiation",
+       "sr": "Diplomatsko pregovaranje",
+       "en": "Diplomatic negotiation"
+      }
+     ]
+    },
+    {
+     "id": "c2-5",
+     "name": {
+      "sr": "Vrhunsko izražavanje",
+      "en": "Masterful expression"
+     },
+     "topics": [
+      {
+       "id": "c2-rewriting-in-another-style",
+       "sr": "Stilska transformacija teksta",
+       "en": "Rewriting in another style"
+      },
+      {
+       "id": "c2-essays-and-critical-reviews",
+       "sr": "Pisanje eseja i kritičkih osvrta",
+       "en": "Essays and critical reviews"
+      },
+      {
+       "id": "c2-rhetorical-manipulation-and-spotting-it",
+       "sr": "Retorička manipulacija i prepoznavanje manipulacije",
+       "en": "Rhetorical manipulation and spotting it"
+      },
+      {
+       "id": "c2-expressing-complex-emotions",
+       "sr": "Precizno izražavanje složenih emocija",
+       "en": "Expressing complex emotions"
+      },
+      {
+       "id": "c2-reading-ambiguous-messages",
+       "sr": "Interpretacija dvosmislenih poruka",
+       "en": "Reading ambiguous messages"
+      },
+      {
+       "id": "c2-disagreeing-subtly",
+       "sr": "Suptilno izražavanje neslaganja",
+       "en": "Disagreeing subtly"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

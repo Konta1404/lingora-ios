@@ -43,11 +43,12 @@ struct Language: Codable, Hashable, Identifiable {
 }
 
 enum Level: Int, Codable, CaseIterable, Identifiable {
-    case a1, a2, b1, b2, c1
+    case a1, a2, b1, b2, c1, c2
     var id: Int { rawValue }
-    var code: String { ["A1", "A2", "B1", "B2", "C1"][rawValue] }
-    var label: String { [L("Beginner"), L("Elementary"), L("Intermediate"), L("Upper-intermediate"), L("Advanced")][rawValue] }
-    var next: Level { Level(rawValue: min(rawValue + 1, 4)) ?? .c1 }
+    var code: String { ["A1", "A2", "B1", "B2", "C1", "C2"][rawValue] }
+    var label: String { [L("Beginner"), L("Elementary"), L("Intermediate"), L("Upper-intermediate"), L("Advanced"), L("Proficient")][rawValue] }
+    var next: Level { Level(rawValue: min(rawValue + 1, 5)) ?? .c2 }
+    static func from(code: String) -> Level? { allCases.first { $0.code == code } }
 }
 
 enum TaskType: String, Codable, CaseIterable {
