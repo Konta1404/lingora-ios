@@ -147,6 +147,8 @@ final class AppModel: ObservableObject {
 
     var socialAvailable: Bool { Backend.isConfigured && signedInUID != nil }
     var friends: [Social.Person] { social?.friends ?? [] }
+    /// A screen with the mic button is showing (friend chat or Tutor).
+    var chatOnScreen: Bool { (tab == .friends && openChat != nil) || (tab == .tutor && lessonTask == nil && !showWords) }
     var friendsBadge: Int { social.map(MessageAlerts.unreadCount) ?? 0 }
     func friend(_ id: String) -> Social.Person? { friends.first { $0.uid == id } }
 

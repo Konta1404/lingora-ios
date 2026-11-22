@@ -370,23 +370,58 @@ struct HoldToTalkButton: View {
             .animation(.spring(duration: 0.18, bounce: 0.4), value: on)
             .zIndex(1)
             .contentShape(Circle())
-            .gesture(
-                DragGesture(minimumDistance: 0)
-                    .onChanged { _ in
+            // Raw UIKit touches: SwiftUI gestures can wait for the swipe-back gesture at the left edge to fail.
+            .overlay {
+                TouchDownCatcher(
+                    began: {
                         guard !holding else { return }
                         // Feedback on touch-down, before any audio work.
                         Haptics.recordStart()
                         withAnimation(.spring(duration: 0.18, bounce: 0.4)) { holding = true }
                         onPress()
-                    }
-                    .onEnded { _ in
+                    },
+                    ended: {
+                        guard holding else { return }
                         holding = false
                         dictation.release()
-                    }
-            )
+                    })
+                .frame(width: 64, height: 64)
+            }
             .accessibilityLabel(L("Hold to talk"))
             .accessibilityAddTraits(.isButton)
             .accessibilityAction { if dictation.isRecording { dictation.release() } else { onPress() } }
+    }
+}
+
+/// Delivers touch-down / touch-up the moment UIKit gets them, and logs how long iOS held the touch back.
+struct TouchDownCatcher: UIViewRepresentable {
+    var began: () -> Void
+    var ended: () -> Void
+
+    final class PressView: UIView {
+        var began: () -> Void = {}
+        var ended: () -> Void = {}
+        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+            if let t = touches.first {
+                let lag = (ProcessInfo.processInfo.systemUptime - t.timestamp) * 1000
+                print(String(format: "[Dictation] touch reached the app %.0f ms after the finger went down", lag))
+            }
+            began()
+        }
+        override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) { ended() }
+        override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { ended() }
+    }
+
+    func makeUIView(context: Context) -> PressView {
+        let v = PressView()
+        v.backgroundColor = .clear
+        v.isMultipleTouchEnabled = false
+        return v
+    }
+
+    func updateUIView(_ v: PressView, context: Context) {
+        v.began = began
+        v.ended = ended
     }
 }
 
@@ -433,7 +468,6 @@ struct ChatInputBar: View {
                     .onTapGesture { dictation.error = nil }
             }
         }
-        .defersSystemGestures(on: .bottom)
         .onAppear { dictation.prepare(language: speechLanguage) }
         .onDisappear { dictation.shutdown() }
     }

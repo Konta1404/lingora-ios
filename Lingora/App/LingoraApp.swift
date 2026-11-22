@@ -65,6 +65,7 @@ struct RootView: View {
                     }
             }
         }
+        .defersSystemGestures(on: model.chatOnScreen ? .bottom : [])
         .font(.fig(15))
         .foregroundStyle(theme.text)
         .animation(.easeInOut(duration: 0.25), value: model.s.onboarded)
