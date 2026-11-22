@@ -15,6 +15,7 @@ struct AddFriendsSheet: View {
     @State private var contactsBusy = false
     @State private var contactsNote: String?
     @State private var relations: [String: String] = [:]
+    @State private var qr: UIImage?
 
     private var handle: String { model.s.user?.handle ?? "" }
     private var inviteURL: URL? {
@@ -80,12 +81,17 @@ struct AddFriendsSheet: View {
 
                 if let inviteURL {
                     VStack(spacing: 12) {
-                        if let qr = QRCode.image(for: inviteURL.absoluteString) {
-                            Image(uiImage: qr).interpolation(.none).resizable().scaledToFit()
-                                .frame(width: 170, height: 170)
-                                .padding(12).background(.white, in: RoundedRectangle(cornerRadius: 16))
-                                .accessibilityLabel(L("QR code for your invite link"))
+                        Group {
+                            if let qr = qr ?? QRCode.cached(inviteURL.absoluteString) {
+                                Image(uiImage: qr).interpolation(.none).resizable().scaledToFit()
+                                    .accessibilityLabel(L("QR code for your invite link"))
+                            } else {
+                                ProgressView()
+                            }
                         }
+                        .frame(width: 170, height: 170)
+                        .padding(12).background(.white, in: RoundedRectangle(cornerRadius: 16))
+                        .task(id: inviteURL) { qr = await QRCode.make(inviteURL.absoluteString) }
                         Text(L("Scan to add %@", handle)).font(.fig(15, .semibold))
                         ShareLink(item: inviteURL, message: Text(L("Learn languages with me on Lingora"))) {
                             Label(L("Share"), systemImage: "square.and.arrow.up").font(.fig(14, .semibold))
@@ -180,13 +186,32 @@ struct AddFriendsSheet: View {
     }
 }
 
+/// QR codes for invite links. Core Image setup is slow (~0.5 s the first time), so codes are made off the
+/// main thread with one shared context and cached; the app prepares yours right after sign-in.
 enum QRCode {
+    private static let context = CIContext(options: [.cacheIntermediates: false])
+    private static let lock = NSLock()
+    nonisolated(unsafe) private static var cache: [String: UIImage] = [:]
+
+    static func cached(_ string: String) -> UIImage? {
+        lock.lock(); defer { lock.unlock() }
+        return cache[string]
+    }
+
+    static func make(_ string: String) async -> UIImage? {
+        if let c = cached(string) { return c }
+        return await Task.detached(priority: .userInitiated) { image(for: string) }.value
+    }
+
     static func image(for string: String) -> UIImage? {
+        if let c = cached(string) { return c }
         let filter = CIFilter.qrCodeGenerator()
         filter.message = Data(string.utf8)
         filter.correctionLevel = "M"
         guard let output = filter.outputImage?.transformed(by: CGAffineTransform(scaleX: 8, y: 8)),
-              let cg = CIContext().createCGImage(output, from: output.extent) else { return nil }
-        return UIImage(cgImage: cg)
+              let cg = context.createCGImage(output, from: output.extent) else { return nil }
+        let img = UIImage(cgImage: cg)
+        lock.lock(); cache[string] = img; lock.unlock()
+        return img
     }
 }

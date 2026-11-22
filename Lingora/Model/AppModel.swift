@@ -569,6 +569,10 @@ final class AppModel: ObservableObject {
         guard socialAvailable, let name = s.user?.name else { return }
         if let handle = try? await Social.sync(name: name, langs: s.learning) {
             s.user?.handle = "@" + handle
+            if let base = Backend.apiBaseURL {
+                let link = base.appendingPathComponent("u").appendingPathComponent(handle).absoluteString
+                Task.detached(priority: .utility) { _ = QRCode.image(for: link) }
+            }
             syncedProfile = "\(name)|\(s.learning.joined(separator: ","))"
         }
     }
