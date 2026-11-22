@@ -129,6 +129,7 @@ struct AppSettings: Codable, Equatable {
     /// Speaking exercises in course lessons ("Can't speak now" turns them off).
     var speakingExercises = true
     var soundEffects = true
+    var dailyXPGoal = 20
 
     init() {}
 
@@ -146,6 +147,7 @@ struct AppSettings: Codable, Equatable {
         appearance = v(.appearance, d.appearance)
         speakingExercises = v(.speakingExercises, d.speakingExercises)
         soundEffects = v(.soundEffects, d.soundEffects)
+        dailyXPGoal = v(.dailyXPGoal, d.dailyXPGoal)
     }
 }
 
@@ -175,6 +177,16 @@ struct PersistedState: Codable {
     /// Words and sentences the learner got wrong, per language (newest last).
     var mistakeWords: [String: [CourseItem]] = [:]
     var mistakeSentences: [String: [CourseItem]] = [:]
+    // Game layer
+    var days: [String: DayStat] = [:]
+    var totalXP = 0
+    var bestStreak = 0
+    var frozenDays: Set<String> = []
+    var streakFreezes = 1
+    var freezeAwardedAt = 0
+    var claimedQuests: Set<String> = []
+    /// Yesterday's date when the streak broke and can still be repaired today.
+    var repairDay: String? = nil
     var settings = AppSettings()
 
     init() {}
@@ -203,6 +215,14 @@ struct PersistedState: Codable {
         generatedUnits = v(.generatedUnits, d.generatedUnits)
         mistakeWords = v(.mistakeWords, d.mistakeWords)
         mistakeSentences = v(.mistakeSentences, d.mistakeSentences)
+        days = v(.days, d.days)
+        totalXP = v(.totalXP, d.totalXP)
+        bestStreak = v(.bestStreak, d.bestStreak)
+        frozenDays = v(.frozenDays, d.frozenDays)
+        streakFreezes = v(.streakFreezes, d.streakFreezes)
+        freezeAwardedAt = v(.freezeAwardedAt, d.freezeAwardedAt)
+        claimedQuests = v(.claimedQuests, d.claimedQuests)
+        repairDay = (try? c.decodeIfPresent(String.self, forKey: .repairDay)) ?? nil
         settings = v(.settings, d.settings)
     }
 }
@@ -212,14 +232,17 @@ enum Progress {
     /// Points needed to move from one level to the next.
     static let pointsPerLevel = 600
 
-    static func streak(_ activity: [String: Int], today: Date = Date()) -> Int {
+    /// Consecutive practice days up to today (or yesterday). A frozen day keeps the streak alive without adding to it.
+    static func streak(_ activity: [String: Int], frozen: Set<String> = [], today: Date = Date()) -> Int {
         let cal = DateUtil.calendar
         var d = cal.startOfDay(for: today)
         if (activity[DateUtil.dayKey(d)] ?? 0) < 60 { d = cal.date(byAdding: .day, value: -1, to: d) ?? d }
         var n = 0
-        while (activity[DateUtil.dayKey(d)] ?? 0) >= 60 {
-            n += 1
+        while true {
+            let k = DateUtil.dayKey(d)
+            if (activity[k] ?? 0) >= 60 { n += 1 } else if !frozen.contains(k) { break }
             d = cal.date(byAdding: .day, value: -1, to: d) ?? d
+            if n > 4000 { break }
         }
         return n
     }

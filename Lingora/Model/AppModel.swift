@@ -100,6 +100,9 @@ final class AppModel: ObservableObject {
         if Backend.isConfigured {
             signedInUID = Auth.auth().currentUser?.uid
             if signedInUID != nil { prepareInviteQR() }
+        }
+        maintainStreak()
+        if Backend.isConfigured {
             authHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
                 Task { @MainActor in self?.authChanged(uid: user?.uid) }
             }
@@ -140,7 +143,7 @@ final class AppModel: ObservableObject {
     func isDone(_ t: PlanTask) -> Bool { s.done["\(DateUtil.dayKey())|\(t.id)"] == true }
 
     var doneMinutesToday: Int { todayTasks.filter(isDone).reduce(0) { $0 + $1.minutes } }
-    var streak: Int { Progress.streak(s.activity) }
+    var streak: Int { Progress.streak(s.activity, frozen: s.frozenDays) }
     var myWeekMinutes: Int { Progress.minutes(s.activity, since: DateUtil.weekStart()) }
     var practisedToday: Bool { (s.activity[DateUtil.dayKey()] ?? 0) >= 60 }
     /// 0…1 toward the next level, from finished tasks and vocabulary answers.
@@ -451,6 +454,8 @@ final class AppModel: ObservableObject {
         let today = DateUtil.dayKey()
         s.activity[today] = max(0, (s.activity[today] ?? 0) + seconds)
         if let lang, points != 0 { s.xp[lang] = max(0, (s.xp[lang] ?? 0) + points) }
+        if points != 0 { addXP(points) }
+        afterProgress()
         // Keep about three months.
         if s.activity.count > 100, let cutoff = DateUtil.calendar.date(byAdding: .day, value: -95, to: Date()) {
             let c = DateUtil.dayKey(cutoff)
@@ -467,6 +472,91 @@ final class AppModel: ObservableObject {
                 if Task.isCancelled { return }
                 try? await Social.report(days: Progress.recentMinutes(self.s.activity), event: nil)
             }
+        }
+    }
+
+    // MARK: - XP, streak, quests
+
+    @Published var celebration: Celebration?
+
+    enum Celebration: Equatable, Identifiable {
+        case dailyGoal(Int), streak(Int), quest(String, Int), repaired
+        var id: String { "\(self)" }
+    }
+
+    var today: DayStat { s.days[DateUtil.dayKey()] ?? DayStat() }
+    var todayMinutes: Int { (s.activity[DateUtil.dayKey()] ?? 0) / 60 }
+    var todaysQuests: [Quest] { Quest.forDay(DateUtil.dayKey()) }
+    func questDone(_ q: Quest) -> Bool { s.claimedQuests.contains("\(DateUtil.dayKey())|\(q.id)") }
+    var questsCompleted: Int { s.claimedQuests.count }
+    var lessonsCompleted: Int { s.days.values.reduce(0) { $0 + $1.lessons } }
+    var perfectLessons: Int { s.days.values.reduce(0) { $0 + $1.perfect } }
+    var wordsMastered: Int { vocab.words.values.filter { $0.box >= 3 }.count + s.courseDone.filter { $0.hasSuffix("#0") || $0.hasSuffix("#1") }.count * 4 }
+
+    private func addXP(_ n: Int) {
+        let k = DateUtil.dayKey()
+        let before = s.days[k]?.xp ?? 0
+        s.days[k, default: DayStat()].xp = max(0, before + n)
+        s.totalXP = max(0, s.totalXP + n)
+        let goal = s.settings.dailyXPGoal
+        if before < goal && before + n >= goal { celebration = .dailyGoal(goal) }
+        if s.days.count > 120, let cutoff = DateUtil.calendar.date(byAdding: .day, value: -100, to: Date()) {
+            let c = DateUtil.dayKey(cutoff)
+            s.days = s.days.filter { $0.key >= c }
+        }
+    }
+
+    func bumpDay(_ change: (inout DayStat) -> Void) {
+        change(&s.days[DateUtil.dayKey(), default: DayStat()])
+        afterProgress()
+    }
+
+    /// Claims finished quests, keeps best streak, earns freezes, completes a streak repair.
+    func afterProgress() {
+        let k = DateUtil.dayKey()
+        for q in todaysQuests where !questDone(q) && q.progress(today, minutes: todayMinutes) >= q.target {
+            s.claimedQuests.insert("\(k)|\(q.id)")
+            s.days[k, default: DayStat()].quests += 1
+            addXP(q.reward)
+            celebration = .quest(q.title, q.reward)
+        }
+        if s.claimedQuests.count > 400 {
+            let cutoff = DateUtil.dayKey(DateUtil.calendar.date(byAdding: .day, value: -40, to: Date()) ?? Date())
+            s.claimedQuests = s.claimedQuests.filter { $0 >= cutoff }
+        }
+        if let r = s.repairDay, today.lessons >= 2 {
+            s.frozenDays.insert(r)
+            s.repairDay = nil
+            celebration = .repaired
+        }
+        let st = streak
+        if st > s.bestStreak {
+            s.bestStreak = st
+            if [3, 7, 14, 30, 50, 100, 200, 365].contains(st) { celebration = .streak(st) }
+        }
+        // One freeze for every 7 days of streak, up to 2 in reserve.
+        if st >= 7, st / 7 > s.freezeAwardedAt / 7 {
+            s.freezeAwardedAt = st
+            s.streakFreezes = min(2, s.streakFreezes + 1)
+        }
+    }
+
+    /// On launch and when the app comes back: use a freeze for a missed yesterday, or offer a repair.
+    func maintainStreak() {
+        let cal = DateUtil.calendar
+        guard let y = cal.date(byAdding: .day, value: -1, to: Date()), let yy = cal.date(byAdding: .day, value: -2, to: Date()) else { return }
+        let yesterday = DateUtil.dayKey(y)
+        if let r = s.repairDay, r != yesterday { s.repairDay = nil }
+        guard (s.activity[yesterday] ?? 0) < 60, !s.frozenDays.contains(yesterday) else { return }
+        // Was there a streak going into yesterday?
+        let dayBefore = DateUtil.dayKey(yy)
+        guard (s.activity[dayBefore] ?? 0) >= 60 || s.frozenDays.contains(dayBefore) else { return }
+        if s.streakFreezes > 0 {
+            s.streakFreezes -= 1
+            s.frozenDays.insert(yesterday)
+            toast = L("A streak freeze saved your streak yesterday.")
+        } else if s.repairDay == nil {
+            s.repairDay = yesterday
         }
     }
 
@@ -532,6 +622,7 @@ final class AppModel: ObservableObject {
         var msgs = tutorMessages(key)
         msgs.append(ChatMessage(role: .me, text: t))
         s.tutorThreads[key] = msgs
+        bumpDay { $0.tutor += 1 }
         logActivity(seconds: 45, lang: key, points: 2)
         tutorTyping = true
         defer { tutorTyping = false }
@@ -988,9 +1079,11 @@ final class AppModel: ObservableObject {
                 }
             }
             let xp = 5 + correct
+            bumpDay { $0.practice += 1; if correct == total { $0.perfect += 1 } }
             logActivity(seconds: max(60, seconds), lang: lang, points: xp)
             return xp
         }
+        bumpDay { $0.lessons += 1; if correct == total { $0.perfect += 1 } }
         let first = !isDone(l)
         s.courseDone.insert(l.id)
         let xp = 10 + correct + (first ? 5 : 0)

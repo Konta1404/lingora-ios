@@ -47,7 +47,7 @@ struct MeView: View {
                 .padding(.top, 10)
 
                 HStack(spacing: 10) {
-                    stat("\(model.streak)", L("day streak"), icon: "flame")
+                    stat("\(model.s.totalXP)", L("total XP"), icon: "bolt.fill")
                     stat("\(model.myWeekMinutes)", L("min this week"), icon: "clock")
                     Button { model.mePath.append(.friends) } label: {
                         stat("\(model.friends.count)", L("friends"), icon: "person.2", chevron: true)
@@ -104,6 +104,8 @@ struct MeView: View {
                 }
                 .buttonStyle(.plain)
 
+                AchievementsSection()
+
                 if model.socialAvailable { friendsSection }
 
                 SectionLabel(text: L("Settings")).padding(.top, 6)
@@ -133,6 +135,12 @@ struct MeView: View {
                             : L("Hidden — friends only see your name and photo")) {
                             LingoraSwitch(isOn: Binding(get: { model.s.settings.shareActivity }, set: { model.setShareActivity($0) }))
                         }
+                    }
+                    row(L("Daily XP goal")) {
+                        Picker(L("Daily XP goal"), selection: $model.s.settings.dailyXPGoal) {
+                            ForEach([10, 20, 30, 50], id: \.self) { Text(verbatim: "\($0)").tag($0) }
+                        }
+                        .pickerStyle(.segmented).frame(maxWidth: 200)
                     }
                     row(L("Sound effects"), sub: L("Right, wrong and lesson-complete sounds")) {
                         LingoraSwitch(isOn: $model.s.settings.soundEffects)

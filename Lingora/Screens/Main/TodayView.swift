@@ -84,6 +84,8 @@ struct TodayView: View {
                     }
                     .buttonStyle(.plain)
 
+                    DailyGoalCard()
+
                     ForEach(model.courseLanguages) { l in
                         CourseSummaryCard(lang: l)
                     }

@@ -145,6 +145,15 @@ enum DateUtil {
         return f.string(from: d)
     }
 
+    /// "yyyy-MM-dd" → noon that day (safe across time zones).
+    static func date(_ key: String) -> Date {
+        let f = DateFormatter()
+        f.calendar = calendar
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.dateFormat = "yyyy-MM-dd"
+        return f.date(from: key).flatMap { calendar.date(byAdding: .hour, value: 12, to: $0) } ?? Date()
+    }
+
     static func format(_ d: Date, _ template: String) -> String {
         let f = DateFormatter()
         f.locale = .current

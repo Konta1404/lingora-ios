@@ -72,6 +72,8 @@ struct LessonPlayerView: View {
 
     // MARK: Flow
 
+    private var isJump: Bool { if case .jump = lesson.mode { true } else { false } }
+
     private var passedJump: Bool { total > 0 && Double(firstTryRight) / Double(total) >= 0.8 }
 
     private func build() {
@@ -430,7 +432,7 @@ struct LessonPlayerView: View {
             Image(systemName: "star.fill").font(.system(size: 44)).foregroundStyle(.white)
                 .frame(width: 104, height: 104).background(theme.a, in: Circle())
             Text(finishTitle).font(.fig(28, .bold)).multilineTextAlignment(.center)
-            if case .jump = lesson.mode {
+            if isJump {
                 Text(passedJump ? L("Everything before this section is now marked as done.")
                                 : L("You need 80% to jump ahead. Keep going from where you are — you'll get there."))
                     .font(.fig(15)).foregroundStyle(theme.muted).multilineTextAlignment(.center)

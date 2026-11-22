@@ -26,7 +26,10 @@ struct LingoraApp: App {
                 .onOpenURL { url in if !model.handle(url: url) { _ = GIDSignIn.sharedInstance.handle(url) } }
                 .onChange(of: scenePhase) { _, phase in
                     if phase == .background { MessageAlerts.scheduleBackgroundRefresh() }
-                    if phase == .active { Task { await model.pollSocial() } }
+                    if phase == .active {
+                        model.maintainStreak()
+                        Task { await model.pollSocial() }
+                    }
                 }
                 .onChange(of: router.openFriend) { _, friend in
                     guard let friend else { return }
@@ -56,6 +59,11 @@ struct RootView: View {
             // iPad: keep a comfortable reading width instead of stretching phone layouts edge to edge.
             .frame(maxWidth: UIDevice.current.userInterfaceIdiom == .pad ? 720 : .infinity)
             .frame(maxWidth: .infinity)
+            if let c = model.celebration {
+                CelebrationView(c: c)
+                    .transition(.opacity)
+                    .zIndex(2)
+            }
             if let toast = model.toast {
                 ToastView(text: toast)
                     .transition(.move(edge: .top).combined(with: .opacity))
