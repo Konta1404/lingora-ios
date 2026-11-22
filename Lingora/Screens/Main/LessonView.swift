@@ -103,7 +103,7 @@ struct LessonView: View {
                 .frame(maxWidth: .infinity, minHeight: 280)
                 .background(theme.card, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).strokeBorder(theme.cardBorder, lineWidth: 1))
-                .shadow(color: Color(hex: 0x2b2a28, opacity: theme.isOpen ? 0 : 0.06), radius: 14, y: 6)
+                .shadow(color: theme.shadow.opacity(theme.isOpen ? 0 : 0.06), radius: 14, y: 6)
             }
             .buttonStyle(.plain)
             Text(flipped ? L("Be honest — it shapes tomorrow.") : L("Tap the card to see the meaning"))

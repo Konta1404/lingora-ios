@@ -22,7 +22,7 @@ struct LingoraApp: App {
                 .environmentObject(model)
                 .environment(\.theme, model.theme)
                 .tint(model.theme.a)
-                .preferredColorScheme(.light)
+                .preferredColorScheme(model.s.settings.appearance.scheme)
                 .onOpenURL { url in if !model.handle(url: url) { _ = GIDSignIn.sharedInstance.handle(url) } }
                 .onChange(of: scenePhase) { _, phase in
                     if phase == .background { MessageAlerts.scheduleBackgroundRefresh() }
@@ -80,7 +80,7 @@ struct ToastView: View {
             .font(.fig(14, .medium))
             .foregroundStyle(theme.onDark)
             .padding(.horizontal, 16).padding(.vertical, 12)
-            .background(Color(hex: 0x2b2a28), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .background(theme.text, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
             .padding(.horizontal, 20)
             .padding(.top, 6)
             .accessibilityAddTraits(.isStaticText)

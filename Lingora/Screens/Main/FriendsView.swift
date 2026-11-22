@@ -103,7 +103,7 @@ struct FriendsView: View {
                     Text(label).font(.fig(14, .semibold)).foregroundStyle(theme.text)
                         .frame(maxWidth: .infinity, minHeight: 30)
                         .background(tab == i ? theme.card : .clear, in: Capsule())
-                        .shadow(color: tab == i ? Color(hex: 0x2b2a28, opacity: 0.1) : .clear, radius: 2, y: 1)
+                        .shadow(color: tab == i ? theme.shadow.opacity(0.1) : .clear, radius: 2, y: 1)
                 }
                 .buttonStyle(.plain)
                 .accessibilityAddTraits(tab == i ? .isSelected : [])

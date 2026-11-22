@@ -15,8 +15,8 @@ struct CardModifier: ViewModifier {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(theme.card, in: RoundedRectangle(cornerRadius: r, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: r, style: .continuous).strokeBorder(theme.cardBorder, lineWidth: 1))
-            .shadow(color: theme.isOpen ? .clear : Color(hex: 0x2b2a28, opacity: 0.04), radius: 1, y: 1)
-            .shadow(color: theme.isOpen ? .clear : Color(hex: 0x2b2a28, opacity: 0.05), radius: 10, y: 6)
+            .shadow(color: theme.isOpen ? .clear : theme.shadow.opacity(0.04), radius: 1, y: 1)
+            .shadow(color: theme.isOpen ? .clear : theme.shadow.opacity(0.05), radius: 10, y: 6)
     }
 }
 
@@ -48,9 +48,9 @@ struct PrimaryButtonStyle: ButtonStyle {
         let (bg, fg): (Color, Color) = {
             switch kind {
             case .accent: return (configuration.isPressed ? theme.ad : theme.a, .white)
-            case .dark: return (Color(hex: 0x2b2a28), theme.onDark)
+            case .dark: return (theme.text, theme.onDark)
             case .chip: return (configuration.isPressed ? theme.chip2 : theme.chip, theme.text)
-            case .white: return (configuration.isPressed ? theme.chip : .white, theme.text)
+            case .white: return (configuration.isPressed ? theme.chip : theme.paper, theme.text)
             }
         }()
         configuration.label

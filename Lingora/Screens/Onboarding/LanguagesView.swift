@@ -157,7 +157,7 @@ struct LanguageCard: View {
             .background(theme.card, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .strokeBorder(selected ? theme.a : theme.cardBorder, lineWidth: selected ? 2 : 1))
-            .shadow(color: theme.isOpen ? .clear : Color(hex: 0x2b2a28, opacity: 0.05), radius: 8, y: 4)
+            .shadow(color: theme.isOpen ? .clear : theme.shadow.opacity(0.05), radius: 8, y: 4)
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(selected ? .isSelected : [])

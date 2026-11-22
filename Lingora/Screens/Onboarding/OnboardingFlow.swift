@@ -49,6 +49,7 @@ struct SetupHeader: View {
 struct SocialSignInButtons: View {
     @EnvironmentObject private var model: AppModel
     @Environment(\.theme) private var theme
+    @Environment(\.colorScheme) private var colorScheme
     var compact = false
 
     var body: some View {
@@ -64,7 +65,7 @@ struct SocialSignInButtons: View {
             } onCompletion: { result in
                 model.signInWithApple(result)
             }
-            .signInWithAppleButtonStyle(.black)
+            .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
             .frame(height: compact ? 52 : 54)
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
 

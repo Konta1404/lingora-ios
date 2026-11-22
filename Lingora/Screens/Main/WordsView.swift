@@ -258,7 +258,7 @@ struct WordsView: View {
             }
             if !meaningNote.isEmpty { Text(verbatim: meaningNote).font(.fig(13)) }
         }
-        .tintedNote(meaningVerdict == .wrong ? Color(hex: 0xf6e9e4) : theme.at,
+        .tintedNote(meaningVerdict == .wrong ? theme.errorTint : theme.at,
                     meaningVerdict == .wrong ? theme.errorText : theme.ad, radius: 16)
     }
 

@@ -125,6 +125,7 @@ struct AppSettings: Codable, Equatable {
     var shareActivity = true
     /// Notify me about new messages, friend requests and nudges.
     var notifyMessages = true
+    var appearance: Appearance = .system
 
     init() {}
 
@@ -139,6 +140,7 @@ struct AppSettings: Codable, Equatable {
         languageTints = v(.languageTints, d.languageTints)
         shareActivity = v(.shareActivity, d.shareActivity)
         notifyMessages = v(.notifyMessages, d.notifyMessages)
+        appearance = v(.appearance, d.appearance)
     }
 }
 

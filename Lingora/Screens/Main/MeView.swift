@@ -145,12 +145,18 @@ struct MeView: View {
 
                 SectionLabel(text: L("Appearance")).padding(.top, 6)
                 VStack(spacing: 0) {
-                    row(L("Accent"), first: true) {
+                    row(L("Light or dark"), first: true) {
+                        Picker(L("Appearance"), selection: $model.s.settings.appearance) {
+                            ForEach(Appearance.allCases) { Text($0.label).tag($0) }
+                        }
+                        .pickerStyle(.segmented).frame(maxWidth: 220)
+                    }
+                    row(L("Accent")) {
                         HStack(spacing: 10) {
                             ForEach(Accent.allCases) { a in
                                 Button { model.s.settings.accent = a } label: {
                                     Circle().fill(Hue(h: a.hue).base).frame(width: 26, height: 26)
-                                        .overlay(Circle().strokeBorder(.white, lineWidth: model.s.settings.accent == a ? 3 : 0))
+                                        .overlay(Circle().strokeBorder(theme.ground, lineWidth: model.s.settings.accent == a ? 3 : 0))
                                         .overlay(Circle().strokeBorder(Hue(h: a.hue).base, lineWidth: model.s.settings.accent == a ? 1.5 : 0).padding(-2))
                                 }
                                 .buttonStyle(.plain)
