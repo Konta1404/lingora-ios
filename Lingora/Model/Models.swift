@@ -168,6 +168,8 @@ struct PersistedState: Codable {
     var xp: [String: Int] = [:]
     /// Finished course lessons ("<unit id>#<lesson kind>").
     var courseDone: Set<String> = []
+    /// Units ChatGPT wrote for this learner, per language (after or instead of the built-in course).
+    var generatedUnits: [String: [CourseUnit]] = [:]
     var settings = AppSettings()
 
     init() {}
@@ -193,6 +195,7 @@ struct PersistedState: Codable {
         activity = v(.activity, d.activity)
         xp = v(.xp, d.xp)
         courseDone = v(.courseDone, d.courseDone)
+        generatedUnits = v(.generatedUnits, d.generatedUnits)
         settings = v(.settings, d.settings)
     }
 }

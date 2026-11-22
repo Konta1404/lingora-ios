@@ -110,6 +110,59 @@
         }
       }
     },
+    "\"Ein\" for der and das words, \"eine\" for die words: ein Apfel, eine Banane." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "„Ein“ bei der- und das-Wörtern, „eine“ bei die-Wörtern: ein Apfel, eine Banane."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"Ein\" for der and das words, \"eine\" for die words: ein Apfel, eine Banane."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«Ein» con palabras der y das, «eine» con palabras die: ein Apfel, eine Banane."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "« Ein » avec les mots der et das, « eine » avec les mots die : ein Apfel, eine Banane."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«Ein» con parole der e das, «eine» con parole die: ein Apfel, eine Banane."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“Ein” com palavras der e das; “eine” com palavras die: ein Apfel, eine Banane."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«Ein» — для слов der и das, «eine» — для слов die: ein Apfel, eine Banane."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "„Ein“ za der i das riječi, „eine“ za die riječi: ein Apfel, eine Banane."
+          }
+        }
+      }
+    },
     "“geben” takes the dative: der Kellner → dem Kellner." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -159,6 +212,59 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "„geben“ traži dativ: der Kellner → dem Kellner."
+          }
+        }
+      }
+    },
+    "\"Gern\" after the verb says you like doing it: Ich lese gern." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "„Gern“ nach dem Verb heißt, dass du es magst: Ich lese gern."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"Gern\" after the verb says you like doing it: Ich lese gern."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«Gern» tras el verbo indica que te gusta hacerlo: Ich lese gern."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "« Gern » après le verbe dit que tu aimes le faire : Ich lese gern."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«Gern» dopo il verbo dice che ti piace farlo: Ich lese gern."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“Gern” depois do verbo diz que você gosta de fazer: Ich lese gern."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«Gern» после глагола значит, что тебе это нравится: Ich lese gern."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "„Gern“ poslije glagola znači da to voliš da radiš: Ich lese gern."
           }
         }
       }
@@ -5436,6 +5542,59 @@
         }
       }
     },
+    "ChatGPT is writing the next unit…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT schreibt die nächste Einheit …"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT is writing the next unit…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT está escribiendo la siguiente unidad…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT écrit l’unité suivante…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT sta scrivendo la prossima unità…"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O ChatGPT está escrevendo a próxima unidade…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT пишет следующий раздел…"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT piše sljedeću jedinicu…"
+          }
+        }
+      }
+    },
     "ChatGPT plans your week, adapts it every day and practises with you. Learn with friends, on every device." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5538,6 +5697,59 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ChatGPT ovo raspoređuje na vještine kroz sedmicu."
+          }
+        }
+      }
+    },
+    "ChatGPT writes your first unit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT schreibt deine erste Einheit"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT writes your first unit"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT escribe tu primera unidad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT écrit ta première unité"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT scrive la tua prima unità"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O ChatGPT escreve sua primeira unidade"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT напишет твой первый раздел"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT piše tvoju prvu jedinicu"
           }
         }
       }
@@ -8518,6 +8730,59 @@
         }
       }
     },
+    "Everyday life" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alltag"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Everyday life"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vida cotidiana"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vie quotidienne"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vita quotidiana"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dia a dia"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Повседневная жизнь"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Svakodnevni život"
+          }
+        }
+      }
+    },
     "Everyday phrases" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -9048,6 +9313,59 @@
         }
       }
     },
+    "Food and shopping" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Essen und Einkaufen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Food and shopping"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comida y compras"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nourriture et courses"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cibo e spesa"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comida e compras"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Еда и покупки"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hrana i kupovina"
+          }
+        }
+      }
+    },
     "For a more natural voice: Settings → Accessibility → Read & Speak → Voices → %@ → download an Enhanced voice." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -9256,6 +9574,59 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Slobodan razgovor s prijateljem"
+          }
+        }
+      }
+    },
+    "Free time" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freizeit"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free time"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiempo libre"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temps libre"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempo libero"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempo livre"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Свободное время"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slobodno vrijeme"
           }
         }
       }
@@ -11061,6 +11432,59 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Znao sam"
+          }
+        }
+      }
+    },
+    "In the city" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In der Stadt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In the city"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En la ciudad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En ville"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In città"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na cidade"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В городе"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U gradu"
           }
         }
       }
@@ -13556,6 +13980,59 @@
         }
       }
     },
+    "My day" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mein Tag"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My day"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mi día"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ma journée"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La mia giornata"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meu dia"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мой день"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moj dan"
+          }
+        }
+      }
+    },
     "My languages" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -13817,6 +14294,59 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nove poruke, zahtjevi, podsjetnici i pozivnice"
+          }
+        }
+      }
+    },
+    "New units are written by ChatGPT for your level, then saved for everyone learning this language." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Einheiten schreibt ChatGPT für dein Niveau und speichert sie für alle, die diese Sprache lernen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New units are written by ChatGPT for your level, then saved for everyone learning this language."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT escribe las nuevas unidades para tu nivel y se guardan para todos los que aprenden este idioma."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT écrit les nouvelles unités pour ton niveau, puis elles sont gardées pour tous ceux qui apprennent cette langue."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChatGPT scrive le nuove unità per il tuo livello e le salva per tutti quelli che studiano questa lingua."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O ChatGPT escreve as novas unidades para o seu nível e elas ficam salvas para todos que aprendem este idioma."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Новые разделы пишет ChatGPT под твой уровень и сохраняет для всех, кто учит этот язык."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nove jedinice piše ChatGPT za tvoj nivo i čuvaju se za sve koji uče ovaj jezik."
           }
         }
       }
@@ -17637,6 +18167,59 @@
         }
       }
     },
+    "Questions with a question word put the verb second: Wo ist der Bahnhof?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In W-Fragen steht das Verb an zweiter Stelle: Wo ist der Bahnhof?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questions with a question word put the verb second: Wo ist der Bahnhof?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En preguntas con palabra interrogativa el verbo va segundo: Wo ist der Bahnhof?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avec un mot interrogatif, le verbe vient en deuxième : Wo ist der Bahnhof?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nelle domande con parola interrogativa il verbo è al secondo posto: Wo ist der Bahnhof?"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Em perguntas com palavra interrogativa o verbo vem em segundo: Wo ist der Bahnhof?"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В вопросах с вопросительным словом глагол стоит вторым: Wo ist der Bahnhof?"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U pitanjima s upitnom riječju glagol je na drugom mjestu: Wo ist der Bahnhof?"
+          }
+        }
+      }
+    },
     "Quit" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -19863,6 +20446,59 @@
         }
       }
     },
+    "Separable verbs split: aufstehen → Ich stehe um sieben Uhr auf." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trennbare Verben teilen sich: aufstehen → Ich stehe um sieben Uhr auf."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Separable verbs split: aufstehen → Ich stehe um sieben Uhr auf."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los verbos separables se dividen: aufstehen → Ich stehe um sieben Uhr auf."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les verbes séparables se coupent : aufstehen → Ich stehe um sieben Uhr auf."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I verbi separabili si dividono: aufstehen → Ich stehe um sieben Uhr auf."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbos separáveis se dividem: aufstehen → Ich stehe um sieben Uhr auf."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отделяемые глаголы разделяются: aufstehen → Ich stehe um sieben Uhr auf."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odvojivi glagoli se razdvajaju: aufstehen → Ich stehe um sieben Uhr auf."
+          }
+        }
+      }
+    },
     "Settings" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -21926,6 +22562,59 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "račun"
+          }
+        }
+      }
+    },
+    "The built-in course covers German for now. Sign in to have ChatGPT write units for other languages." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der eingebaute Kurs gibt es vorerst für Deutsch. Melde dich an, damit ChatGPT Einheiten für andere Sprachen schreibt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The built-in course covers German for now. Sign in to have ChatGPT write units for other languages."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El curso incluido es de alemán por ahora. Inicia sesión para que ChatGPT escriba unidades de otros idiomas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le cours intégré couvre l’allemand pour l’instant. Connecte-toi pour que ChatGPT écrive des unités pour d’autres langues."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il corso incluso per ora è di tedesco. Accedi perché ChatGPT scriva unità per altre lingue."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O curso incluído é de alemão por enquanto. Entre para o ChatGPT escrever unidades de outros idiomas."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Встроенный курс пока только по немецкому. Войди, чтобы ChatGPT писал разделы для других языков."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ugrađeni kurs za sada pokriva njemački. Prijavi se da ChatGPT piše jedinice za druge jezike."
           }
         }
       }
@@ -24103,6 +24792,112 @@
         }
       }
     },
+    "Weather and seasons" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wetter und Jahreszeiten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weather and seasons"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El tiempo y las estaciones"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Météo et saisons"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempo e stagioni"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clima e estações"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Погода и времена года"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vrijeme i godišnja doba"
+          }
+        }
+      }
+    },
+    "Weather uses \"es\": Es regnet. Es ist kalt." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beim Wetter steht „es“: Es regnet. Es ist kalt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weather uses \"es\": Es regnet. Es ist kalt."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El tiempo usa «es»: Es regnet. Es ist kalt."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La météo utilise « es » : Es regnet. Es ist kalt."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per il tempo si usa «es»: Es regnet. Es ist kalt."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O clima usa “es”: Es regnet. Es ist kalt."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "О погоде говорят с «es»: Es regnet. Es ist kalt."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za vrijeme se koristi „es“: Es regnet. Es ist kalt."
+          }
+        }
+      }
+    },
     "Weekly check-in" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -24739,6 +25534,59 @@
         }
       }
     },
+    "Write the next unit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nächste Einheit schreiben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write the next unit"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escribir la siguiente unidad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Écrire l’unité suivante"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scrivi la prossima unità"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escrever a próxima unidade"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Написать следующий раздел"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Napiši sljedeću jedinicu"
+          }
+        }
+      }
+    },
     "Write this in your new language" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -24894,6 +25742,59 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pišemo današnje zadatke"
+          }
+        }
+      }
+    },
+    "Written for you" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für dich geschrieben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Written for you"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escrito para ti"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Écrit pour toi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scritto per te"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escrito para você"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Написано для тебя"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Napisano za tebe"
           }
         }
       }

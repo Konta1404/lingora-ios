@@ -51,8 +51,22 @@ struct CourseMapView: View {
                                 }
                                 .tintedNote(theme.at, theme.ad, radius: theme.radius)
                             }
-                            Text(L("More units are on the way."))
-                                .font(.fig(13)).foregroundStyle(theme.muted).frame(maxWidth: .infinity).padding(.vertical, 8)
+                            if model.canWriteUnits {
+                                Button {
+                                    Task { await model.writeNextUnit(lang) }
+                                } label: {
+                                    Label(model.writingUnit ? L("ChatGPT is writing the next unit…") : L("Write the next unit"),
+                                          systemImage: "sparkles")
+                                }
+                                .buttonStyle(PrimaryButtonStyle(kind: model.nextLesson(lang) == nil ? .accent : .chip))
+                                .disabled(model.writingUnit)
+                                .padding(.top, 4)
+                                Text(L("New units are written by ChatGPT for your level, then saved for everyone learning this language."))
+                                    .font(.fig(12)).foregroundStyle(theme.muted).frame(maxWidth: .infinity)
+                            } else {
+                                Text(L("More units are on the way."))
+                                    .font(.fig(13)).foregroundStyle(theme.muted).frame(maxWidth: .infinity).padding(.vertical, 8)
+                            }
                         }
                         .padding(.horizontal, 20).padding(.bottom, 24)
                     }
@@ -60,17 +74,16 @@ struct CourseMapView: View {
                         if let next = model.nextLesson(lang) { proxy.scrollTo(next.unit.id, anchor: .center) }
                     }
                 }
-                Button(model.nextLesson(lang).map { L("Continue: %@", $0.unit.title) } ?? L("Course complete")) {
-                    playing = model.nextLesson(lang)
+                if let next = model.nextLesson(lang) {
+                    Button(L("Continue: %@", L(next.unit.title))) { playing = next }
+                        .buttonStyle(.primary)
+                        .padding(.horizontal, 20).padding(.vertical, 10)
                 }
-                .buttonStyle(.primary)
-                .disabled(model.nextLesson(lang) == nil)
-                .padding(.horizontal, 20).padding(.vertical, 10)
             } else {
                 Spacer()
                 VStack(spacing: 10) {
                     Image(systemName: "books.vertical").font(.system(size: 34)).foregroundStyle(theme.muted)
-                    Text(L("The built-in course covers German for now. Units for other languages will come from ChatGPT."))
+                    Text(L("The built-in course covers German for now. Sign in to have ChatGPT write units for other languages."))
                         .font(.fig(15)).foregroundStyle(theme.muted).multilineTextAlignment(.center)
                 }
                 .padding(32)
@@ -179,11 +192,11 @@ struct CourseSummaryCard: View {
                     CodeBadge(code: lang.code, hue: h, size: 40, filled: true)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(L("%@ course", lang.name)).font(.fig(16, .bold))
-                        Text(next.map { "\(L($0.unit.title)) · \($0.kind.title)" } ?? L("Course complete"))
+                        Text(next.map { "\(L($0.unit.title)) · \($0.kind.title)" } ?? (p.total == 0 ? L("ChatGPT writes your first unit") : L("Course complete")))
                             .font(.fig(13)).foregroundStyle(theme.muted).lineLimit(1)
                     }
                     Spacer(minLength: 0)
-                    Text(next == nil ? L("Review") : p.done == 0 ? L("Start") : L("Continue"))
+                    Text(p.total == 0 || p.done == 0 ? L("Start") : next == nil ? L("Review") : L("Continue"))
                         .font(.fig(14, .semibold)).foregroundStyle(.white)
                         .padding(.horizontal, 14).frame(height: 34).background(h.base, in: Capsule())
                 }

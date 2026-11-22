@@ -1,127 +1,669 @@
 {
-  "lang": "de",
-  "sections": [
+ "lang": "de",
+ "sections": [
+  {
+   "id": "de-a1-1",
+   "title": "First conversations",
+   "level": "A1",
+   "units": [
     {
-      "id": "de-a1-1",
-      "title": "First conversations",
-      "level": "A1",
-      "units": [
-        {
-          "id": "de-a1-1-1",
-          "title": "Hello and goodbye",
-          "tip": "\"Du\" is for friends and family, \"Sie\" (always capitalised) is the polite you for strangers and at work.",
-          "words": [
-            {"t": "Hallo", "en": "hello"},
-            {"t": "Guten Morgen", "en": "good morning"},
-            {"t": "Guten Tag", "en": "good day"},
-            {"t": "Tschüss", "en": "bye"},
-            {"t": "danke", "en": "thank you"},
-            {"t": "bitte", "en": "please"},
-            {"t": "ja", "en": "yes"},
-            {"t": "nein", "en": "no"}
-          ],
-          "sentences": [
-            {"t": "Hallo, ich bin Anna.", "en": "Hello, I am Anna."},
-            {"t": "Guten Morgen, Herr Weber.", "en": "Good morning, Mr Weber."},
-            {"t": "Wie geht es dir?", "en": "How are you?"},
-            {"t": "Danke, gut.", "en": "Thanks, good."},
-            {"t": "Tschüss, bis morgen!", "en": "Bye, see you tomorrow!"},
-            {"t": "Ja, bitte.", "en": "Yes, please."}
-          ]
-        },
-        {
-          "id": "de-a1-1-2",
-          "title": "Introduce yourself",
-          "tip": "Verbs change with the person: ich komme, du kommst, er kommt.",
-          "words": [
-            {"t": "ich", "en": "I"},
-            {"t": "du", "en": "you"},
-            {"t": "heißen", "en": "to be called"},
-            {"t": "kommen", "en": "to come"},
-            {"t": "wohnen", "en": "to live"},
-            {"t": "aus", "en": "from"},
-            {"t": "in", "en": "in"},
-            {"t": "woher", "en": "where from"}
-          ],
-          "sentences": [
-            {"t": "Ich heiße Marco.", "en": "My name is Marco."},
-            {"t": "Wie heißt du?", "en": "What is your name?"},
-            {"t": "Ich komme aus Italien.", "en": "I come from Italy."},
-            {"t": "Woher kommst du?", "en": "Where do you come from?"},
-            {"t": "Ich wohne in Berlin.", "en": "I live in Berlin."},
-            {"t": "Du wohnst in Wien.", "en": "You live in Vienna."}
-          ]
-        },
-        {
-          "id": "de-a1-1-3",
-          "title": "At the café",
-          "tip": "Every noun has a gender: der (masculine), die (feminine), das (neuter). Learn the article with the word.",
-          "words": [
-            {"t": "der Kaffee", "en": "the coffee"},
-            {"t": "der Tee", "en": "the tea"},
-            {"t": "das Wasser", "en": "the water"},
-            {"t": "die Milch", "en": "the milk"},
-            {"t": "das Brot", "en": "the bread"},
-            {"t": "ich möchte", "en": "I would like"},
-            {"t": "und", "en": "and"},
-            {"t": "oder", "en": "or"}
-          ],
-          "sentences": [
-            {"t": "Ich möchte einen Kaffee, bitte.", "en": "I would like a coffee, please."},
-            {"t": "Kaffee oder Tee?", "en": "Coffee or tea?"},
-            {"t": "Ein Wasser, bitte.", "en": "A water, please."},
-            {"t": "Mit Milch, bitte.", "en": "With milk, please."},
-            {"t": "Das Brot ist frisch.", "en": "The bread is fresh."},
-            {"t": "Ich trinke Tee und Wasser.", "en": "I drink tea and water."}
-          ]
-        },
-        {
-          "id": "de-a1-1-4",
-          "title": "Family",
-          "tip": "\"Mein\" goes with der and das words, \"meine\" with die words: mein Bruder, meine Schwester.",
-          "words": [
-            {"t": "die Mutter", "en": "the mother"},
-            {"t": "der Vater", "en": "the father"},
-            {"t": "der Bruder", "en": "the brother"},
-            {"t": "die Schwester", "en": "the sister"},
-            {"t": "das Kind", "en": "the child"},
-            {"t": "mein", "en": "my"},
-            {"t": "haben", "en": "to have"},
-            {"t": "die Familie", "en": "the family"}
-          ],
-          "sentences": [
-            {"t": "Das ist meine Mutter.", "en": "That is my mother."},
-            {"t": "Mein Vater heißt Peter.", "en": "My father is called Peter."},
-            {"t": "Ich habe einen Bruder.", "en": "I have a brother."},
-            {"t": "Hast du eine Schwester?", "en": "Do you have a sister?"},
-            {"t": "Wir haben ein Kind.", "en": "We have a child."},
-            {"t": "Meine Familie wohnt in Hamburg.", "en": "My family lives in Hamburg."}
-          ]
-        },
-        {
-          "id": "de-a1-1-5",
-          "title": "Numbers and time",
-          "tip": "Numbers over twenty start with the ones: einundzwanzig = one-and-twenty.",
-          "words": [
-            {"t": "eins", "en": "one"},
-            {"t": "zwei", "en": "two"},
-            {"t": "drei", "en": "three"},
-            {"t": "vier", "en": "four"},
-            {"t": "fünf", "en": "five"},
-            {"t": "heute", "en": "today"},
-            {"t": "morgen", "en": "tomorrow"},
-            {"t": "die Uhr", "en": "the clock"}
-          ],
-          "sentences": [
-            {"t": "Wie spät ist es?", "en": "What time is it?"},
-            {"t": "Es ist drei Uhr.", "en": "It is three o'clock."},
-            {"t": "Ich habe zwei Kinder.", "en": "I have two children."},
-            {"t": "Heute ist Montag.", "en": "Today is Monday."},
-            {"t": "Bis morgen um vier!", "en": "See you tomorrow at four!"},
-            {"t": "Ich brauche fünf Brötchen.", "en": "I need five bread rolls."}
-          ]
-        }
-      ]
+     "id": "de-a1-1-1",
+     "title": "Hello and goodbye",
+     "tip": "\"Du\" is for friends and family, \"Sie\" (always capitalised) is the polite you for strangers and at work.",
+     "words": [
+      {
+       "t": "Hallo",
+       "en": "hello"
+      },
+      {
+       "t": "Guten Morgen",
+       "en": "good morning"
+      },
+      {
+       "t": "Guten Tag",
+       "en": "good day"
+      },
+      {
+       "t": "Tschüss",
+       "en": "bye"
+      },
+      {
+       "t": "danke",
+       "en": "thank you"
+      },
+      {
+       "t": "bitte",
+       "en": "please"
+      },
+      {
+       "t": "ja",
+       "en": "yes"
+      },
+      {
+       "t": "nein",
+       "en": "no"
+      }
+     ],
+     "sentences": [
+      {
+       "t": "Hallo, ich bin Anna.",
+       "en": "Hello, I am Anna."
+      },
+      {
+       "t": "Guten Morgen, Herr Weber.",
+       "en": "Good morning, Mr Weber."
+      },
+      {
+       "t": "Wie geht es dir?",
+       "en": "How are you?"
+      },
+      {
+       "t": "Danke, gut.",
+       "en": "Thanks, good."
+      },
+      {
+       "t": "Tschüss, bis morgen!",
+       "en": "Bye, see you tomorrow!"
+      },
+      {
+       "t": "Ja, bitte.",
+       "en": "Yes, please."
+      }
+     ]
+    },
+    {
+     "id": "de-a1-1-2",
+     "title": "Introduce yourself",
+     "tip": "Verbs change with the person: ich komme, du kommst, er kommt.",
+     "words": [
+      {
+       "t": "ich",
+       "en": "I"
+      },
+      {
+       "t": "du",
+       "en": "you"
+      },
+      {
+       "t": "heißen",
+       "en": "to be called"
+      },
+      {
+       "t": "kommen",
+       "en": "to come"
+      },
+      {
+       "t": "wohnen",
+       "en": "to live"
+      },
+      {
+       "t": "aus",
+       "en": "from"
+      },
+      {
+       "t": "in",
+       "en": "in"
+      },
+      {
+       "t": "woher",
+       "en": "where from"
+      }
+     ],
+     "sentences": [
+      {
+       "t": "Ich heiße Marco.",
+       "en": "My name is Marco."
+      },
+      {
+       "t": "Wie heißt du?",
+       "en": "What is your name?"
+      },
+      {
+       "t": "Ich komme aus Italien.",
+       "en": "I come from Italy."
+      },
+      {
+       "t": "Woher kommst du?",
+       "en": "Where do you come from?"
+      },
+      {
+       "t": "Ich wohne in Berlin.",
+       "en": "I live in Berlin."
+      },
+      {
+       "t": "Du wohnst in Wien.",
+       "en": "You live in Vienna."
+      }
+     ]
+    },
+    {
+     "id": "de-a1-1-3",
+     "title": "At the café",
+     "tip": "Every noun has a gender: der (masculine), die (feminine), das (neuter). Learn the article with the word.",
+     "words": [
+      {
+       "t": "der Kaffee",
+       "en": "the coffee"
+      },
+      {
+       "t": "der Tee",
+       "en": "the tea"
+      },
+      {
+       "t": "das Wasser",
+       "en": "the water"
+      },
+      {
+       "t": "die Milch",
+       "en": "the milk"
+      },
+      {
+       "t": "das Brot",
+       "en": "the bread"
+      },
+      {
+       "t": "ich möchte",
+       "en": "I would like"
+      },
+      {
+       "t": "und",
+       "en": "and"
+      },
+      {
+       "t": "oder",
+       "en": "or"
+      }
+     ],
+     "sentences": [
+      {
+       "t": "Ich möchte einen Kaffee, bitte.",
+       "en": "I would like a coffee, please."
+      },
+      {
+       "t": "Kaffee oder Tee?",
+       "en": "Coffee or tea?"
+      },
+      {
+       "t": "Ein Wasser, bitte.",
+       "en": "A water, please."
+      },
+      {
+       "t": "Mit Milch, bitte.",
+       "en": "With milk, please."
+      },
+      {
+       "t": "Das Brot ist frisch.",
+       "en": "The bread is fresh."
+      },
+      {
+       "t": "Ich trinke Tee und Wasser.",
+       "en": "I drink tea and water."
+      }
+     ]
+    },
+    {
+     "id": "de-a1-1-4",
+     "title": "Family",
+     "tip": "\"Mein\" goes with der and das words, \"meine\" with die words: mein Bruder, meine Schwester.",
+     "words": [
+      {
+       "t": "die Mutter",
+       "en": "the mother"
+      },
+      {
+       "t": "der Vater",
+       "en": "the father"
+      },
+      {
+       "t": "der Bruder",
+       "en": "the brother"
+      },
+      {
+       "t": "die Schwester",
+       "en": "the sister"
+      },
+      {
+       "t": "das Kind",
+       "en": "the child"
+      },
+      {
+       "t": "mein",
+       "en": "my"
+      },
+      {
+       "t": "haben",
+       "en": "to have"
+      },
+      {
+       "t": "die Familie",
+       "en": "the family"
+      }
+     ],
+     "sentences": [
+      {
+       "t": "Das ist meine Mutter.",
+       "en": "That is my mother."
+      },
+      {
+       "t": "Mein Vater heißt Peter.",
+       "en": "My father is called Peter."
+      },
+      {
+       "t": "Ich habe einen Bruder.",
+       "en": "I have a brother."
+      },
+      {
+       "t": "Hast du eine Schwester?",
+       "en": "Do you have a sister?"
+      },
+      {
+       "t": "Wir haben ein Kind.",
+       "en": "We have a child."
+      },
+      {
+       "t": "Meine Familie wohnt in Hamburg.",
+       "en": "My family lives in Hamburg."
+      }
+     ]
+    },
+    {
+     "id": "de-a1-1-5",
+     "title": "Numbers and time",
+     "tip": "Numbers over twenty start with the ones: einundzwanzig = one-and-twenty.",
+     "words": [
+      {
+       "t": "eins",
+       "en": "one"
+      },
+      {
+       "t": "zwei",
+       "en": "two"
+      },
+      {
+       "t": "drei",
+       "en": "three"
+      },
+      {
+       "t": "vier",
+       "en": "four"
+      },
+      {
+       "t": "fünf",
+       "en": "five"
+      },
+      {
+       "t": "heute",
+       "en": "today"
+      },
+      {
+       "t": "morgen",
+       "en": "tomorrow"
+      },
+      {
+       "t": "die Uhr",
+       "en": "the clock"
+      }
+     ],
+     "sentences": [
+      {
+       "t": "Wie spät ist es?",
+       "en": "What time is it?"
+      },
+      {
+       "t": "Es ist drei Uhr.",
+       "en": "It is three o'clock."
+      },
+      {
+       "t": "Ich habe zwei Kinder.",
+       "en": "I have two children."
+      },
+      {
+       "t": "Heute ist Montag.",
+       "en": "Today is Monday."
+      },
+      {
+       "t": "Bis morgen um vier!",
+       "en": "See you tomorrow at four!"
+      },
+      {
+       "t": "Ich brauche fünf Brötchen.",
+       "en": "I need five bread rolls."
+      }
+     ]
     }
-  ]
+   ]
+  },
+  {
+   "id": "de-a1-2",
+   "title": "Everyday life",
+   "level": "A1",
+   "units": [
+    {
+     "id": "de-a1-2-1",
+     "title": "Food and shopping",
+     "tip": "\"Ein\" for der and das words, \"eine\" for die words: ein Apfel, eine Banane.",
+     "words": [
+      {
+       "t": "der Apfel",
+       "en": "the apple"
+      },
+      {
+       "t": "die Banane",
+       "en": "the banana"
+      },
+      {
+       "t": "der Käse",
+       "en": "the cheese"
+      },
+      {
+       "t": "das Ei",
+       "en": "the egg"
+      },
+      {
+       "t": "kaufen",
+       "en": "to buy"
+      },
+      {
+       "t": "kosten",
+       "en": "to cost"
+      },
+      {
+       "t": "teuer",
+       "en": "expensive"
+      },
+      {
+       "t": "billig",
+       "en": "cheap"
+      }
+     ],
+     "sentences": [
+      {
+       "t": "Was kostet der Käse?",
+       "en": "How much is the cheese?"
+      },
+      {
+       "t": "Ich kaufe zwei Äpfel.",
+       "en": "I buy two apples."
+      },
+      {
+       "t": "Die Bananen sind billig.",
+       "en": "The bananas are cheap."
+      },
+      {
+       "t": "Das ist zu teuer.",
+       "en": "That is too expensive."
+      },
+      {
+       "t": "Ich esse ein Ei.",
+       "en": "I eat an egg."
+      },
+      {
+       "t": "Haben Sie Brot?",
+       "en": "Do you have bread?"
+      }
+     ]
+    },
+    {
+     "id": "de-a1-2-2",
+     "title": "In the city",
+     "tip": "Questions with a question word put the verb second: Wo ist der Bahnhof?",
+     "words": [
+      {
+       "t": "der Bahnhof",
+       "en": "the train station"
+      },
+      {
+       "t": "die Straße",
+       "en": "the street"
+      },
+      {
+       "t": "das Hotel",
+       "en": "the hotel"
+      },
+      {
+       "t": "links",
+       "en": "left"
+      },
+      {
+       "t": "rechts",
+       "en": "right"
+      },
+      {
+       "t": "geradeaus",
+       "en": "straight ahead"
+      },
+      {
+       "t": "wo",
+       "en": "where"
+      },
+      {
+       "t": "weit",
+       "en": "far"
+      }
+     ],
+     "sentences": [
+      {
+       "t": "Wo ist der Bahnhof?",
+       "en": "Where is the train station?"
+      },
+      {
+       "t": "Gehen Sie geradeaus.",
+       "en": "Go straight ahead."
+      },
+      {
+       "t": "Das Hotel ist links.",
+       "en": "The hotel is on the left."
+      },
+      {
+       "t": "Ist es weit?",
+       "en": "Is it far?"
+      },
+      {
+       "t": "Die Straße ist rechts.",
+       "en": "The street is on the right."
+      },
+      {
+       "t": "Ich suche das Hotel.",
+       "en": "I am looking for the hotel."
+      }
+     ]
+    },
+    {
+     "id": "de-a1-2-3",
+     "title": "My day",
+     "tip": "Separable verbs split: aufstehen → Ich stehe um sieben Uhr auf.",
+     "words": [
+      {
+       "t": "aufstehen",
+       "en": "to get up"
+      },
+      {
+       "t": "arbeiten",
+       "en": "to work"
+      },
+      {
+       "t": "essen",
+       "en": "to eat"
+      },
+      {
+       "t": "schlafen",
+       "en": "to sleep"
+      },
+      {
+       "t": "der Morgen",
+       "en": "the morning"
+      },
+      {
+       "t": "der Abend",
+       "en": "the evening"
+      },
+      {
+       "t": "früh",
+       "en": "early"
+      },
+      {
+       "t": "spät",
+       "en": "late"
+      }
+     ],
+     "sentences": [
+      {
+       "t": "Ich stehe früh auf.",
+       "en": "I get up early."
+      },
+      {
+       "t": "Am Morgen trinke ich Kaffee.",
+       "en": "In the morning I drink coffee."
+      },
+      {
+       "t": "Ich arbeite bis fünf Uhr.",
+       "en": "I work until five o'clock."
+      },
+      {
+       "t": "Am Abend esse ich mit meiner Familie.",
+       "en": "In the evening I eat with my family."
+      },
+      {
+       "t": "Er schläft lange.",
+       "en": "He sleeps for a long time."
+      },
+      {
+       "t": "Es ist schon spät.",
+       "en": "It is already late."
+      }
+     ]
+    },
+    {
+     "id": "de-a1-2-4",
+     "title": "Free time",
+     "tip": "\"Gern\" after the verb says you like doing it: Ich lese gern.",
+     "words": [
+      {
+       "t": "spielen",
+       "en": "to play"
+      },
+      {
+       "t": "lesen",
+       "en": "to read"
+      },
+      {
+       "t": "schwimmen",
+       "en": "to swim"
+      },
+      {
+       "t": "gern",
+       "en": "gladly / like to"
+      },
+      {
+       "t": "der Fußball",
+       "en": "the football"
+      },
+      {
+       "t": "das Buch",
+       "en": "the book"
+      },
+      {
+       "t": "die Musik",
+       "en": "the music"
+      },
+      {
+       "t": "das Wochenende",
+       "en": "the weekend"
+      }
+     ],
+     "sentences": [
+      {
+       "t": "Ich lese gern.",
+       "en": "I like to read."
+      },
+      {
+       "t": "Spielst du Fußball?",
+       "en": "Do you play football?"
+      },
+      {
+       "t": "Wir schwimmen am Wochenende.",
+       "en": "We swim at the weekend."
+      },
+      {
+       "t": "Sie hört gern Musik.",
+       "en": "She likes to listen to music."
+      },
+      {
+       "t": "Das Buch ist gut.",
+       "en": "The book is good."
+      },
+      {
+       "t": "Was machst du am Wochenende?",
+       "en": "What are you doing at the weekend?"
+      }
+     ]
+    },
+    {
+     "id": "de-a1-2-5",
+     "title": "Weather and seasons",
+     "tip": "Weather uses \"es\": Es regnet. Es ist kalt.",
+     "words": [
+      {
+       "t": "das Wetter",
+       "en": "the weather"
+      },
+      {
+       "t": "die Sonne",
+       "en": "the sun"
+      },
+      {
+       "t": "der Regen",
+       "en": "the rain"
+      },
+      {
+       "t": "kalt",
+       "en": "cold"
+      },
+      {
+       "t": "warm",
+       "en": "warm"
+      },
+      {
+       "t": "der Sommer",
+       "en": "the summer"
+      },
+      {
+       "t": "der Winter",
+       "en": "the winter"
+      },
+      {
+       "t": "regnen",
+       "en": "to rain"
+      }
+     ],
+     "sentences": [
+      {
+       "t": "Wie ist das Wetter?",
+       "en": "What is the weather like?"
+      },
+      {
+       "t": "Es regnet heute.",
+       "en": "It is raining today."
+      },
+      {
+       "t": "Im Winter ist es kalt.",
+       "en": "In winter it is cold."
+      },
+      {
+       "t": "Die Sonne scheint.",
+       "en": "The sun is shining."
+      },
+      {
+       "t": "Im Sommer ist es warm.",
+       "en": "In summer it is warm."
+      },
+      {
+       "t": "Ich mag den Regen nicht.",
+       "en": "I don't like the rain."
+      }
+     ]
+    }
+   ]
+  }
+ ]
 }

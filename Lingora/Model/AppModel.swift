@@ -879,9 +879,39 @@ final class AppModel: ObservableObject {
 
     // MARK: - Course
 
-    func course(_ lang: String) -> Course? { CourseLibrary.builtIn(lang) }
+    /// Built-in units first, then the ones ChatGPT wrote for this learner.
+    func course(_ lang: String) -> Course? {
+        let extra = s.generatedUnits[lang] ?? []
+        var c = CourseLibrary.builtIn(lang) ?? Course(lang: lang, sections: [])
+        if !extra.isEmpty {
+            c.sections.append(CourseSection(id: "\(lang)-more", title: "Written for you", level: level(lang).code, units: extra))
+        }
+        return c.sections.isEmpty && !canWriteUnits ? nil : c
+    }
+
+    var canWriteUnits: Bool { Backend.isConfigured && signedInUID != nil }
 
     var courseLanguages: [Language] { languages.filter { course($0.key) != nil } }
+
+    @Published var writingUnit = false
+
+    /// Asks the backend for the next unit (cached for everyone, or written by the learner's ChatGPT plan).
+    func writeNextUnit(_ lang: String) async {
+        guard let l = language(lang), !writingUnit else { return }
+        writingUnit = true
+        defer { writingUnit = false }
+        let built = CourseLibrary.builtIn(lang)?.sections.flatMap(\.units) ?? []
+        let mine = s.generatedUnits[lang] ?? []
+        do {
+            var unit = try await ai.courseUnit(language: l, level: level(lang), index: built.count + mine.count,
+                                               previous: (built + mine).map(\.title))
+            if mine.contains(where: { $0.id == unit.id }) { unit.id += "-\(mine.count)" }
+            s.generatedUnits[lang, default: []].append(unit)
+            Haptics.success()
+        } catch {
+            toast = chatGPTMessage(error)
+        }
+    }
 
     func isDone(_ l: CourseLesson) -> Bool { s.courseDone.contains(l.id) }
 
