@@ -489,14 +489,16 @@ final class AppModel: ObservableObject {
     var lifetimeStats: [String: Any] {
         var ach: [String: Int] = [:]
         for a in Achievement.all { ach[a.kind.rawValue] = a.level(for: achievementValue(a.kind)).reached }
-        return ["totalXP": s.totalXP, "bestStreak": s.bestStreak, "lessons": lessonsCompleted, "words": wordsMastered,
+        // XP earned before lifetime totals existed still counts.
+        let xp = max(s.totalXP, s.xp.values.reduce(0, +))
+        return ["totalXP": xp, "bestStreak": max(s.bestStreak, streak), "lessons": lessonsCompleted, "words": wordsMastered,
                 "stories": s.storiesDone.count, "achievements": ach]
     }
 
     func achievementValue(_ k: Achievement.Kind) -> Int {
         switch k {
-        case .streak: s.bestStreak
-        case .xp: s.totalXP
+        case .streak: max(s.bestStreak, streak)
+        case .xp: max(s.totalXP, s.xp.values.reduce(0, +))
         case .lessons: lessonsCompleted
         case .perfect: perfectLessons
         case .words: wordsMastered
@@ -519,10 +521,17 @@ final class AppModel: ObservableObject {
 
     @Published var league: Social.League?
 
+    /// Sends today's numbers and lifetime totals so profiles and leagues are current.
+    func syncStats() async {
+        guard socialAvailable else { return }
+        let p = reportPayload
+        try? await Social.report(days: p.days, xp: p.xp, frozen: p.frozen, stats: lifetimeStats, event: nil)
+    }
+
     func refreshLeague() async {
         guard socialAvailable else { return }
         let p = reportPayload
-        try? await Social.report(days: p.days, xp: p.xp, frozen: p.frozen, event: nil)
+        try? await Social.report(days: p.days, xp: p.xp, frozen: p.frozen, stats: lifetimeStats, event: nil)
         if let l = try? await Social.league() { league = l }
     }
 

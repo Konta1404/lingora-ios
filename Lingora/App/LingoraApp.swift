@@ -29,7 +29,7 @@ struct LingoraApp: App {
                     if phase == .active {
                         model.maintainStreak()
                         model.scheduleNotifications()
-                        Task { await model.pollSocial() }
+                        Task { await model.syncStats(); await model.pollSocial() }
                     }
                 }
                 .onChange(of: router.openFriend) { _, friend in

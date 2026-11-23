@@ -30,6 +30,7 @@ struct ProfileView: View {
         .scrollBounceBehavior(.basedOnSize, axes: [.horizontal])
         .background(theme.ground)
         .task {
+            if uid == Backend.currentUID { await model.syncStats() }
             do { p = try await Social.profile(uid: uid) } catch { failed = true }
         }
     }
