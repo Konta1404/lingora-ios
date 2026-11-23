@@ -3392,6 +3392,59 @@
         }
       }
     },
+    "A little" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein bisschen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A little"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un poco"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un peu"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un po'"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um pouco"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Немного"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Malo"
+          }
+        }
+      }
+    },
     "A neighbourhood café" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -16494,6 +16547,642 @@
         }
       }
     },
+    "I can chat with native speakers without much effort on either side." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich kann mich mit Muttersprachlern ohne große Mühe auf beiden Seiten unterhalten."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I can chat with native speakers without much effort on either side."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puedo charlar con nativos sin mucho esfuerzo por ninguna de las partes."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je peux discuter avec des natifs sans grand effort de part et d’autre."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riesco a chiacchierare con madrelingua senza troppa fatica da entrambe le parti."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consigo conversar com nativos sem muito esforço de nenhum dos lados."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я могу общаться с носителями без особых усилий с обеих сторон."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mogu da pričam sa izvornim govornicima bez većeg napora s obje strane."
+          }
+        }
+      }
+    },
+    "I can express fine shades of meaning, even in complex situations." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich kann feine Bedeutungsnuancen ausdrücken, auch in komplexen Situationen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I can express fine shades of meaning, even in complex situations."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puedo expresar matices finos de significado, incluso en situaciones complejas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je sais exprimer des nuances fines, même dans des situations complexes."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "So esprimere sottili sfumature di significato, anche in situazioni complesse."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consigo expressar nuances sutis, mesmo em situações complexas."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я могу передавать тонкие оттенки смысла даже в сложных ситуациях."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mogu izraziti fine nijanse značenja, čak i u složenim situacijama."
+          }
+        }
+      }
+    },
+    "I can follow the main points of clear talk about familiar topics." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich verstehe das Wichtigste, wenn klar über vertraute Themen gesprochen wird."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I can follow the main points of clear talk about familiar topics."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entiendo las ideas principales cuando se habla claro de temas conocidos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je comprends l’essentiel quand on parle clairement de sujets familiers."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capisco i punti principali quando si parla chiaramente di argomenti noti."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entendo as ideias principais quando falam claramente de assuntos conhecidos."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я понимаю главное, когда ясно говорят на знакомые темы."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Razumijem glavne stvari kad se jasno priča o poznatim temama."
+          }
+        }
+      }
+    },
+    "I can follow TV news and give my opinion with reasons." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich verstehe Fernsehnachrichten und kann meine Meinung begründen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I can follow TV news and give my opinion with reasons."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sigo las noticias de la tele y puedo dar mi opinión con argumentos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je suis les infos à la télé et je peux justifier mon avis."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seguo il telegiornale e so motivare la mia opinione."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acompanho o noticiário e consigo justificar minha opinião."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я понимаю теленовости и могу обосновать своё мнение."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pratim vijesti na TV-u i mogu obrazložiti svoje mišljenje."
+          }
+        }
+      }
+    },
+    "I can handle most travel situations and explain a problem." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich komme auf Reisen meist zurecht und kann ein Problem erklären."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I can handle most travel situations and explain a problem."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Me desenvuelvo en la mayoría de situaciones de viaje y puedo explicar un problema."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je me débrouille en voyage et je peux expliquer un problème."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Me la cavo nella maggior parte delle situazioni di viaggio e so spiegare un problema."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Me viro na maioria das situações de viagem e consigo explicar um problema."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я справляюсь в большинстве ситуаций в поездке и могу объяснить проблему."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Snalazim se u većini situacija na putovanju i mogu objasniti problem."
+          }
+        }
+      }
+    },
+    "I can order food, ask for directions and shop for basics." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich kann Essen bestellen, nach dem Weg fragen und Einkäufe erledigen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I can order food, ask for directions and shop for basics."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puedo pedir comida, preguntar direcciones y hacer compras básicas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je peux commander à manger, demander mon chemin et faire des courses simples."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "So ordinare da mangiare, chiedere indicazioni e fare piccoli acquisti."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consigo pedir comida, perguntar o caminho e fazer compras simples."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я могу заказать еду, спросить дорогу и сделать простые покупки."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mogu da naručim hranu, pitam za put i kupim osnovne stvari."
+          }
+        }
+      }
+    },
+    "I can say hello, introduce myself and say where I'm from." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich kann grüßen, mich vorstellen und sagen, woher ich komme."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I can say hello, introduce myself and say where I'm from."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puedo saludar, presentarme y decir de dónde soy."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je peux saluer, me présenter et dire d’où je viens."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "So salutare, presentarmi e dire da dove vengo."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consigo cumprimentar, me apresentar e dizer de onde sou."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я могу поздороваться, представиться и сказать, откуда я."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mogu da pozdravim, predstavim se i kažem odakle sam."
+          }
+        }
+      }
+    },
+    "I can speak fluently at work or in study without searching for words." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich spreche im Beruf oder Studium fließend, ohne nach Wörtern zu suchen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I can speak fluently at work or in study without searching for words."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hablo con fluidez en el trabajo o los estudios sin buscar palabras."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je parle couramment au travail ou en études sans chercher mes mots."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parlo fluentemente al lavoro o nello studio senza cercare le parole."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falo com fluência no trabalho ou nos estudos sem procurar palavras."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я свободно говорю на работе или учёбе, не подбирая слов."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tečno govorim na poslu ili studijama bez traženja riječi."
+          }
+        }
+      }
+    },
+    "I can talk about my family, my job and what I did yesterday." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich kann über meine Familie, meine Arbeit und meinen gestrigen Tag sprechen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I can talk about my family, my job and what I did yesterday."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puedo hablar de mi familia, mi trabajo y lo que hice ayer."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je peux parler de ma famille, de mon travail et de ma journée d’hier."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "So parlare della mia famiglia, del mio lavoro e di cosa ho fatto ieri."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consigo falar da minha família, do meu trabalho e do que fiz ontem."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я могу рассказать о семье, работе и о том, что делал вчера."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mogu da pričam o porodici, poslu i šta sam radio juče."
+          }
+        }
+      }
+    },
+    "I can understand almost everything I hear or read with ease." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich verstehe praktisch alles, was ich höre oder lese, mühelos."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I can understand almost everything I hear or read with ease."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entiendo con facilidad casi todo lo que oigo o leo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je comprends sans effort presque tout ce que j’entends ou lis."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capisco con facilità quasi tutto ciò che sento o leggo."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entendo com facilidade quase tudo o que ouço ou leio."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я легко понимаю почти всё, что слышу или читаю."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S lakoćom razumijem gotovo sve što čujem ili pročitam."
+          }
+        }
+      }
+    },
+    "I can understand long, complex texts and notice implied meaning." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich verstehe lange, komplexe Texte und erkenne Zwischentöne."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I can understand long, complex texts and notice implied meaning."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entiendo textos largos y complejos y capto el sentido implícito."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je comprends des textes longs et complexes et je saisis l’implicite."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capisco testi lunghi e complessi e colgo i significati impliciti."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entendo textos longos e complexos e percebo o sentido implícito."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я понимаю длинные сложные тексты и улавливаю подтекст."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Razumijem duge, složene tekstove i primjećujem skriveno značenje."
+          }
+        }
+      }
+    },
+    "I can understand simple words like numbers, days and prices." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich verstehe einfache Wörter wie Zahlen, Tage und Preise."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I can understand simple words like numbers, days and prices."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entiendo palabras sencillas como números, días y precios."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je comprends des mots simples comme les nombres, les jours et les prix."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capisco parole semplici come numeri, giorni e prezzi."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entendo palavras simples como números, dias e preços."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я понимаю простые слова: числа, дни недели, цены."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Razumijem jednostavne riječi poput brojeva, dana i cijena."
+          }
+        }
+      }
+    },
     "I didn't" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -18239,6 +18928,59 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Slova %lld"
+          }
+        }
+      }
+    },
+    "Level check · %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstufung · %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Level check · %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prueba de nivel · %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Test de niveau · %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Test di livello · %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teste de nível · %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Проверка уровня · %@"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Provjera nivoa · %@"
           }
         }
       }
@@ -22376,6 +23118,59 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Još ne baš"
+          }
+        }
+      }
+    },
+    "Not sure? Take a 1-minute level check" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unsicher? Mach den 1-Minuten-Einstufungstest"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not sure? Take a 1-minute level check"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿No estás seguro? Haz una prueba de nivel de 1 minuto"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas sûr ? Fais un test de niveau d’une minute"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non sei sicuro? Fai un test di livello di 1 minuto"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não tem certeza? Faça um teste de nível de 1 minuto"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не уверен? Пройди проверку уровня за 1 минуту"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nisi siguran? Uradi provjeru nivoa za 1 minut"
           }
         }
       }
@@ -35047,6 +35842,59 @@
         }
       }
     },
+    "Use %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ verwenden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать %@"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koristi %@"
+          }
+        }
+      }
+    },
     "Use 3–20 letters, numbers, dots or underscores." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -37644,6 +38492,59 @@
         }
       }
     },
+    "Yes, easily" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ja, mühelos"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yes, easily"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sí, fácilmente"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oui, facilement"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sì, facilmente"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sim, facilmente"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Да, легко"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Da, lako"
+          }
+        }
+      }
+    },
     "Yes, that’s it." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -38594,6 +39495,59 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Limit tvog ChatGPT plana za Lingoru je za sada potrošen. Pokušaj kasnije."
+          }
+        }
+      }
+    },
+    "Your course starts here. You can still jump ahead or go back any time." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Kurs beginnt hier. Du kannst jederzeit vorspringen oder zurückgehen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your course starts here. You can still jump ahead or go back any time."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu curso empieza aquí. Puedes avanzar o volver cuando quieras."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ton cours commence ici. Tu peux avancer ou revenir quand tu veux."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il tuo corso inizia qui. Puoi andare avanti o tornare indietro quando vuoi."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seu curso começa aqui. Você pode avançar ou voltar quando quiser."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Твой курс начинается здесь. Можно перейти вперёд или вернуться в любое время."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tvoj kurs počinje ovdje. Uvijek možeš preskočiti naprijed ili se vratiti."
           }
         }
       }

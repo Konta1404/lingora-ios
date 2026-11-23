@@ -170,6 +170,7 @@ struct LevelsView: View {
     let addMode: Bool
     @EnvironmentObject private var model: AppModel
     @Environment(\.theme) private var theme
+    @State private var checking: Language?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -207,6 +208,11 @@ struct LevelsView: View {
                                     .accessibilityLabel(Text(verbatim: "\(level.code) \(level.label)"))
                                 }
                             }
+                            Button { checking = l } label: {
+                                Label(L("Not sure? Take a 1-minute level check"), systemImage: "checklist")
+                                    .font(.fig(14, .semibold)).foregroundStyle(theme.a)
+                            }
+                            .buttonStyle(.plain)
                         }
                         .card()
                     }
@@ -243,6 +249,9 @@ struct LevelsView: View {
             .padding(.horizontal, 20).padding(.vertical, 12)
         }
         .background(theme.ground)
+        .sheet(item: $checking) { l in
+            PlacementView(lang: l) { model.s.levels[l.key] = $0 }
+        }
     }
 
     private var splitNote: String {
