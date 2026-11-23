@@ -490,7 +490,7 @@ final class AppModel: ObservableObject {
         var ach: [String: Int] = [:]
         for a in Achievement.all { ach[a.kind.rawValue] = a.level(for: achievementValue(a.kind)).reached }
         // XP earned before lifetime totals existed still counts.
-        let xp = max(s.totalXP, s.xp.values.reduce(0, +))
+        let xp = max(s.totalXP, s.days.values.reduce(0) { $0 + $1.xp })
         return ["totalXP": xp, "bestStreak": max(s.bestStreak, streak), "lessons": lessonsCompleted, "words": wordsMastered,
                 "stories": s.storiesDone.count, "achievements": ach]
     }
@@ -498,7 +498,7 @@ final class AppModel: ObservableObject {
     func achievementValue(_ k: Achievement.Kind) -> Int {
         switch k {
         case .streak: max(s.bestStreak, streak)
-        case .xp: max(s.totalXP, s.xp.values.reduce(0, +))
+        case .xp: max(s.totalXP, s.days.values.reduce(0) { $0 + $1.xp })
         case .lessons: lessonsCompleted
         case .perfect: perfectLessons
         case .words: wordsMastered
