@@ -132,6 +132,8 @@ struct AppSettings: Codable, Equatable {
     var soundEffects = true
     var dailyXPGoal = 20
     var haptics = true
+    var streakAlerts = true
+    var weeklySummary = true
     var listeningExercises = true
     var showRomanization = true
 
@@ -153,6 +155,8 @@ struct AppSettings: Codable, Equatable {
         soundEffects = v(.soundEffects, d.soundEffects)
         dailyXPGoal = v(.dailyXPGoal, d.dailyXPGoal)
         haptics = v(.haptics, d.haptics)
+        streakAlerts = v(.streakAlerts, d.streakAlerts)
+        weeklySummary = v(.weeklySummary, d.weeklySummary)
         listeningExercises = v(.listeningExercises, d.listeningExercises)
         showRomanization = v(.showRomanization, d.showRomanization)
     }
@@ -192,7 +196,11 @@ struct PersistedState: Codable {
     var streakFreezes = 1
     var freezeAwardedAt = 0
     var claimedQuests: Set<String> = []
+    /// Daily plan tasks that have already paid their gem reward.
+    var rewardedTasks: Set<String> = []
     var storiesDone: Set<String> = []
+    /// Hours of the day (0–23) of recent practice, for a reminder at the learner's usual time.
+    var practiceHours: [Int] = []
     // Gems & shop
     var gems = 50
     var doubleXPUntil: Date? = nil
@@ -242,8 +250,10 @@ struct PersistedState: Codable {
         streakFreezes = v(.streakFreezes, d.streakFreezes)
         freezeAwardedAt = v(.freezeAwardedAt, d.freezeAwardedAt)
         claimedQuests = v(.claimedQuests, d.claimedQuests)
+        rewardedTasks = v(.rewardedTasks, d.rewardedTasks)
         repairDay = (try? c.decodeIfPresent(String.self, forKey: .repairDay)) ?? nil
         storiesDone = v(.storiesDone, d.storiesDone)
+        practiceHours = v(.practiceHours, d.practiceHours)
         gems = v(.gems, d.gems)
         doubleXPUntil = (try? c.decodeIfPresent(Date.self, forKey: .doubleXPUntil)) ?? nil
         chestDay = (try? c.decodeIfPresent(String.self, forKey: .chestDay)) ?? nil

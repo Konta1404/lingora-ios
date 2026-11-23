@@ -104,6 +104,7 @@ final class AppModel: ObservableObject {
         }
         Haptics.enabled = s.settings.haptics
         maintainStreak()
+        if s.settings.reminders || s.settings.streakAlerts { scheduleNotifications() }
         if Backend.isConfigured {
             authHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
                 Task { @MainActor in self?.authChanged(uid: user?.uid) }
@@ -430,6 +431,7 @@ final class AppModel: ObservableObject {
     func complete(_ t: PlanTask, score: Int) {
         let key = "\(DateUtil.dayKey())|\(t.id)"
         if s.done[key] != true {
+            rewardTask(key)
             let lang = language(t.langKey)?.name ?? ""
             logActivity(seconds: t.minutes * 60, lang: t.langKey, points: t.minutes * 2 + score * 5,
                         event: (t.type == .roleplay ? "roleplay" : "lesson",
@@ -445,11 +447,16 @@ final class AppModel: ObservableObject {
         let k = "\(DateUtil.dayKey())|\(t.id)"
         let undo = s.done[k] == true
         s.done[k] = undo ? nil : true
+        if !undo { rewardTask(k) }
         logActivity(seconds: (undo ? -1 : 1) * t.minutes * 60, lang: t.langKey, points: (undo ? -1 : 1) * t.minutes * 2)
         Haptics.success()
     }
 
     // MARK: - Activity (streak, minutes, level progress)
+
+    private func rewardTask(_ key: String) {
+        if s.rewardedTasks.insert(key).inserted { s.gems += 5 }
+    }
 
     /// Records practice time and level points, and tells friends (through the backend) when it's worth sharing.
     func logActivity(seconds: Int, lang: String? = nil, points: Int = 0, event: (String, [String: String])? = nil) {
@@ -462,11 +469,6 @@ final class AppModel: ObservableObject {
         if let lang, points > 0 { s.yearTotals[year, default: YearTotal()].xpByLanguage[lang, default: 0] += points }
         if points != 0 { addXP(points) }
         afterProgress()
-        // Keep about three months.
-        if s.activity.count > 100, let cutoff = DateUtil.calendar.date(byAdding: .day, value: -95, to: Date()) {
-            let c = DateUtil.dayKey(cutoff)
-            s.activity = s.activity.filter { $0.key >= c }
-        }
         guard socialAvailable else { return }
         reportTask?.cancel()
         let p = reportPayload
@@ -537,8 +539,8 @@ final class AppModel: ObservableObject {
     var todayMinutes: Int { (s.activity[DateUtil.dayKey()] ?? 0) / 60 }
     var todaysQuests: [Quest] { Quest.forDay(DateUtil.dayKey()) }
     func questDone(_ q: Quest) -> Bool { s.claimedQuests.contains("\(DateUtil.dayKey())|\(q.id)") }
-    var questsCompleted: Int { s.claimedQuests.count }
-    var lessonsCompleted: Int { s.days.values.reduce(0) { $0 + $1.lessons } }
+    var questsCompleted: Int { s.claimedQuests.filter { $0.contains("|") && !$0.hasPrefix("fq|") }.count }
+    var lessonsCompleted: Int { max(s.yearTotals.values.reduce(0) { $0 + $1.lessons }, s.days.values.reduce(0) { $0 + $1.lessons }) }
     var perfectLessons: Int { s.days.values.reduce(0) { $0 + $1.perfect } }
     var wordsMastered: Int { vocab.words.values.filter { $0.box >= 3 }.count + s.courseDone.filter { $0.hasSuffix("#0") || $0.hasSuffix("#1") }.count * 4 }
 
@@ -553,10 +555,6 @@ final class AppModel: ObservableObject {
         if before < goal && before + n >= goal {
             celebration = .dailyGoal(goal)
             s.gems += 5
-        }
-        if s.days.count > 120, let cutoff = DateUtil.calendar.date(byAdding: .day, value: -100, to: Date()) {
-            let c = DateUtil.dayKey(cutoff)
-            s.days = s.days.filter { $0.key >= c }
         }
     }
 
@@ -580,10 +578,6 @@ final class AppModel: ObservableObject {
             s.gems += 10
             addXP(q.reward)
             celebration = .quest(q.title, q.reward)
-        }
-        if s.claimedQuests.count > 400 {
-            let cutoff = DateUtil.dayKey(DateUtil.calendar.date(byAdding: .day, value: -40, to: Date()) ?? Date())
-            s.claimedQuests = s.claimedQuests.filter { $0 >= cutoff }
         }
         checkMonthly()
         if let r = s.repairDay, today.lessons >= 2 {
@@ -693,6 +687,7 @@ final class AppModel: ObservableObject {
         if monthQuests >= MonthlyChallenge.goal && !s.monthlyBadges.contains(m) {
             s.monthlyBadges.insert(m)
             s.gems += 100
+            addXP(100)
             celebration = .quest(L("%@ challenge", MonthlyChallenge.title(m)), 100)
         }
     }
@@ -1389,6 +1384,8 @@ final class AppModel: ObservableObject {
             return xp
         }
         bumpDay { $0.lessons += 1; if correct == total { $0.perfect += 1 } }
+        s.practiceHours = Array((s.practiceHours + [DateUtil.calendar.component(.hour, from: Date())]).suffix(30))
+        scheduleNotifications()
         s.gems += correct == total ? 10 : 5
         let first = !isDone(l)
         s.courseDone.insert(l.id)
@@ -1445,21 +1442,61 @@ final class AppModel: ObservableObject {
 
     func setReminders(_ on: Bool) {
         s.settings.reminders = on
+        if on { MessageAlerts.requestPermission() }
+        scheduleNotifications()
+    }
+
+    /// The hour you usually practise (median of the last practice times), 19:00 until we know.
+    var usualHour: Int {
+        let h = s.practiceHours.suffix(20).sorted()
+        return h.isEmpty ? 19 : h[h.count / 2]
+    }
+
+    /// Daily reminder at your usual hour, "streak at risk" in the evening if you haven't practised,
+    /// and a Sunday summary. Re-planned whenever you practise or open the app.
+    func scheduleNotifications() {
         let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: ["daily"])
-        guard on else { return }
-        let title = L("A calm ten minutes?")
-        let body = L("Today's tasks are ready whenever you are.")
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
-            guard granted else { return }
-            let content = UNMutableNotificationContent()
-            content.title = title
-            content.body = body
+        center.removePendingNotificationRequests(withIdentifiers: ["daily", "streak-risk", "weekly"])
+        let cal = DateUtil.calendar
+        let now = Date()
+
+        if s.settings.reminders {
+            let c = UNMutableNotificationContent()
+            c.title = L("A calm ten minutes?")
+            c.body = L("Today's tasks are ready whenever you are.")
             var comps = DateComponents()
-            comps.hour = 19
-            let req = UNNotificationRequest(identifier: "daily", content: content,
-                                            trigger: UNCalendarNotificationTrigger(dateMatching: comps, repeats: true))
-            center.add(req)
+            comps.hour = usualHour
+            comps.minute = 0
+            center.add(UNNotificationRequest(identifier: "daily", content: c,
+                                             trigger: UNCalendarNotificationTrigger(dateMatching: comps, repeats: true)))
+        }
+
+        if s.settings.streakAlerts, streak > 0 || practisedToday {
+            // Next evening without practice: today at 21:00 if not done yet, otherwise tomorrow.
+            let day = practisedToday ? cal.date(byAdding: .day, value: 1, to: now) ?? now : now
+            if var fire = cal.date(bySettingHour: 21, minute: 0, second: 0, of: day), fire > now || !practisedToday {
+                if fire <= now { fire = now.addingTimeInterval(60 * 30) }
+                let n = practisedToday ? streak : max(1, streak)
+                let c = UNMutableNotificationContent()
+                c.title = L("Your %lld-day streak is at risk", n)
+                c.body = s.streakFreezes > 0 ? L("A few minutes today keeps it going. You have a streak freeze, just in case.")
+                                             : L("A few minutes today keeps it going.")
+                c.sound = .default
+                let comps = cal.dateComponents([.year, .month, .day, .hour, .minute], from: fire)
+                center.add(UNNotificationRequest(identifier: "streak-risk", content: c,
+                                                 trigger: UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)))
+            }
+        }
+
+        if s.settings.weeklySummary {
+            let c = UNMutableNotificationContent()
+            c.title = L("Your week in Lingora")
+            c.body = L("See your minutes, XP and streak for the week.")
+            var comps = DateComponents()
+            comps.weekday = 1      // Sunday
+            comps.hour = 18
+            center.add(UNNotificationRequest(identifier: "weekly", content: c,
+                                             trigger: UNCalendarNotificationTrigger(dateMatching: comps, repeats: true)))
         }
     }
 }

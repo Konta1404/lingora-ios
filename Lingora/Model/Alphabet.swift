@@ -55,7 +55,14 @@ struct Alphabet {
 
     /// Groups of 8 letters, each a practice lesson.
     var groups: [[(char: String, sound: String)]] {
-        stride(from: 0, to: letters.count, by: 8).map { Array(letters[$0..<min($0 + 8, letters.count)]) }
+        var result = stride(from: 0, to: letters.count, by: 8).map { Array(letters[$0..<min($0 + 8, letters.count)]) }
+        // A single-letter exercise has no alternative answer (Russian has 33 letters).
+        if result.count > 1, result[result.count - 1].count == 1 {
+            let previous = result.count - 2
+            let letter = result[previous].removeLast()
+            result[result.count - 1].insert(letter, at: 0)
+        }
+        return result
     }
 
     func lesson(group i: Int) -> CourseLesson {

@@ -28,6 +28,7 @@ struct LingoraApp: App {
                     if phase == .background { MessageAlerts.scheduleBackgroundRefresh() }
                     if phase == .active {
                         model.maintainStreak()
+                        model.scheduleNotifications()
                         Task { await model.pollSocial() }
                     }
                 }

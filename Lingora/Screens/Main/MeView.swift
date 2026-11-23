@@ -144,8 +144,16 @@ struct MeView: View {
                     row(L("Adapt tasks daily"), sub: L("ChatGPT adjusts today from your results")) {
                         LingoraSwitch(isOn: $model.s.settings.adaptDaily)
                     }
-                    row(L("Daily reminder"), sub: L("A gentle nudge at 19:00")) {
+                    row(L("Daily reminder"), sub: L("Around %@, when you usually practise", DateUtil.format(DateUtil.calendar.date(bySettingHour: model.usualHour, minute: 0, second: 0, of: Date()) ?? Date(), "j:mm"))) {
                         LingoraSwitch(isOn: Binding(get: { model.s.settings.reminders }, set: { model.setReminders($0) }))
+                    }
+                    row(L("Streak alerts"), sub: L("In the evening if you haven't practised yet")) {
+                        LingoraSwitch(isOn: Binding(get: { model.s.settings.streakAlerts },
+                                                    set: { model.s.settings.streakAlerts = $0; if $0 { MessageAlerts.requestPermission() }; model.scheduleNotifications() }))
+                    }
+                    row(L("Weekly summary"), sub: L("Sunday evening")) {
+                        LingoraSwitch(isOn: Binding(get: { model.s.settings.weeklySummary },
+                                                    set: { model.s.settings.weeklySummary = $0; model.scheduleNotifications() }))
                     }
                     if model.socialAvailable {
                         row(L("Message notifications"), sub: L("New messages, friend requests, nudges and invites")) {
@@ -282,6 +290,7 @@ struct MeView: View {
                 }
             }
             .padding(.horizontal, 20).padding(.bottom, 24)
+            .containerRelativeFrame(.horizontal)
         }
         .scrollBounceBehavior(.basedOnSize, axes: [.horizontal])
         .background(theme.ground)
